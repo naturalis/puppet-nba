@@ -4,7 +4,7 @@
  mount_properties = '(rw,nohide,insecure,no_subtree_check,async)'
 ips = Array.new
 @allowed_ips.each do |ip|
-  ips = "#{ip}#{mount_properties} "
+  ips = "#{ips}#{ip}#{mount_properties} "
 end
 export = "/data/snapshots #{ips}"
 
