@@ -32,7 +32,7 @@ class nba::es (
         'ES_HEAP_SIZE'          => "${$es_memory_gb}g",
         'DATA_DIR'              => $es_data_dir
     },
-  } ->
+  }
 
   if $install_marvel {
     exec { 'install marvel' :
@@ -41,13 +41,9 @@ class nba::es (
     }
   }
 
-  File {['/data',$snapshot_directory]:
+  file {['/data',$snapshot_directory]:
     ensure => directory,
-    mode   => '0777'
-  }
-
-  Exec <<| tag == "nba_nfs_mount_${nba_cluster_name}" |>> {
-    require => File[$snapshot_directory]
+    mode   => '0777',
   }
 
 }
