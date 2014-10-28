@@ -2,7 +2,7 @@
 #
 #
 class nba::management(
-  $nba_cluster_name = 'changeme'
+  $nba_cluster_name = 'changeme',
   $allowed_ips      = ['127.0.0.1']
 ){
 

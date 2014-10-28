@@ -7,7 +7,7 @@ class nba::es (
   $replicas           = 0,
   $es_memory_gb       = 8,
   $es_data_dir        = '/data/elasticsearch',
-  $install_marvel     = false
+  $install_marvel     = false,
   $snapshot_directory = '/data/snapshots'
 ){
 
