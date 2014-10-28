@@ -1,0 +1,12 @@
+# automatic config by puppet
+<%
+
+ mount_properties = '(rw,nohide,insecure,no_subtree_check,async)'
+ips = Array.new
+@allowed_ips.each do |ip|
+  ips = "#{ips}#{mount_properties} "
+end
+export = "/data/snapshots #{ips}"
+puts export
+
+-%>

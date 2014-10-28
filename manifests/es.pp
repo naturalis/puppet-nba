@@ -1,15 +1,17 @@
 # == Class: nba::es
 #
 class nba::es (
-  $nba_cluster_name,
-  $es_version   = '1.2.2',
-  $shards       = 3,
-  $replicas     = 1,
-  $es_memory_gb = 2,
-  $es_data_dir  = '/data/elasticsearch',
-  )
+  $nba_cluster_name   = 'changeme',
+  $es_version         = '1.3.2',
+  $shards             = 1,
+  $replicas           = 0,
+  $es_memory_gb       = 8,
+  $es_data_dir        = '/data/elasticsearch',
+  $install_marvel     = false
+  $snapshot_directory = '/data/snapshots'
+){
 
-  {
+  if $nba_cluster_name == 'changeme' { fail('Change the variable nba_cluster_name to a propper one') }
 
   class{ 'elasticsearch':
     package_url               => "https://download.elasticsearch.org/elasticsearch/elasticsearch/elasticsearch-${es_version}.deb",
@@ -32,11 +34,20 @@ class nba::es (
     },
   } ->
 
-#  exec { 'install marvel' :
-#    command => '/usr/share/elasticsearch/bin/plugin -i elasticsearch/marvel/latest',
-#    unless  => '/usr/bin/test -d /usr/share/elasticsearch/plugins/marvel',
-#  }
+  if $install_marvel {
+    exec { 'install marvel' :
+      command => '/usr/share/elasticsearch/bin/plugin -i elasticsearch/marvel/latest',
+      unless  => '/usr/bin/test -d /usr/share/elasticsearch/plugins/marvel',
+    }
+  }
 
+  File {['/data',$snapshot_directory]:
+    ensure => directory,
+    mode   => '0777'
+  }
 
+  Exec <<| tag == "nba_nfs_mount_${nba_cluster_name}" |>> {
+    require => File[$snapshot_directory]
+  }
 
 }
