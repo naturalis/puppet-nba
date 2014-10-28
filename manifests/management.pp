@@ -19,8 +19,13 @@ class nba::management(
   } ->
 
   file {'/etc/exports':
-    ensure  => present,
-    content => template('nba/nfs/exports.erb')
+    ensure    => present,
+    content   => template('nba/nfs/exports.erb'),
+    subscribe => Service['nfs-kernel-server'],
+  }
+
+  service {'nfs-kernel-server':
+    ensure => running,
   }
 
   # @@exec {'mount snapshot dir':
