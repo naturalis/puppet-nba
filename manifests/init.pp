@@ -72,6 +72,21 @@ class nba (
     unless  => "/bin/sh /opt/wildfly/bin/jboss-cli.sh --connect --command='/system-property=nl.naturalis.nda.conf.dir:read-resource'|/bin/grep result| /bin/grep '${nba_config_dir}'",
   } ->
 
+  file { $nba_config_dir:
+    ensure => directory,
+    mode   => '0755',
+  } ->
+
+  file {"${nba_config_dir}/logback.xml":
+    content => template('nba/nba/wildfly/logback.xml.erb'),
+    mode    => '0644',
+  } ->
+
+  file {"${nba_config_dir}/nda.properties":
+    content => template('nba/nba/wildfly/nda.properties.erb'),
+    mode    => '0644',
+  } ->
+
   class { 'wildfly::deploy' :
     filelocation => 'puppet:///modules/nba',
     filename     => 'nl.naturalis.nda.ear',
