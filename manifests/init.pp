@@ -64,7 +64,7 @@ class nba (
 
   exec {'create wildfly admin user':
     command => "/bin/sh /opt/wildfly/bin/add-user.sh --silent nbaadmin ${admin_password} ",
-    unless  => '/bin/cat /opt/wildfly/stanbalone/configuration/mgmt-users.properties | grep nbaadmin',
+    unless  => '/bin/cat /opt/wildfly/standalone/configuration/mgmt-users.properties | grep nbaadmin',
   } ->
 
   exec {'set nba config dir':
