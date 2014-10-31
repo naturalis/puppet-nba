@@ -9,7 +9,7 @@ class nba::management(
     ensure => present
   } ->
 
-  file {'/data/snapshots':
+  file {['/data','/data/snapshots']:
     ensure => directory,
     mode   => '0777',
   } ->
