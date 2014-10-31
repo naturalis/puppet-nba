@@ -90,7 +90,7 @@ class nba (
   class { 'wildfly::deploy' :
     filelocation => 'puppet:///modules/nba',
     filename     => 'nl.naturalis.nda.ear',
-    notify       => Service['wildfly'],
+    #notify       => Service['wildfly'],
   }
 
 
