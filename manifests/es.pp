@@ -3,12 +3,14 @@
 class nba::es (
   $nba_cluster_name   = 'changeme',
   $es_version         = '1.3.2',
-  $shards             = 1,
+  $shards             = 9,
   $replicas           = 0,
   $es_memory_gb       = 8,
   $es_data_dir        = '/data/elasticsearch',
   $install_marvel     = false,
-  $snapshot_directory = '/data/snapshots'
+  $snapshot_directory = '/data/snapshots',
+  $mount_snapshot     = false,
+  $snapshot_server    = '127.0.0.1',
 ){
 
   if $nba_cluster_name == 'changeme' { fail('Change the variable nba_cluster_name to a propper one') }
@@ -41,9 +43,17 @@ class nba::es (
     }
   }
 
+  package {'nfs-common':}
+
   file {['/data',$snapshot_directory]:
     ensure => directory,
     mode   => '0777',
+  } ->
+
+  exec {"mount snapshot dir to ${snapshot_directory}":
+    cmd     => "/bin/mount ${snapshot_server}:/data/snapshots ${snapshot_directory}",
+    unless  => "/bin/mount | grep ${snapshot_server} | grep ${snapshot_directory}",
+    require => Package['nfs-common']
   }
 
 }

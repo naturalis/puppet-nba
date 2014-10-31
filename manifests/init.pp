@@ -36,22 +36,21 @@
 # Copyright 2014 Your name here, unless otherwise noted.
 #
 class nba (
-  $nba_cluster_id,
-  $admin_password   = 'nba',
-  $application_name = 'nba',
-  $port             = '8080',
-  $extra_users_hash = undef,
+  $nba_cluster_id     = 'changeme',
+  $admin_password     = 'nba',
+  $application_name   = 'nba',
+  $port               = '8080',
+  $extra_users_hash   = undef,
+  $nba_config_dir     = '/etc/nba',
+  $es_host_ip         = '127.0.0.1',
+  $es_transport_port  = '9300'
 ){
+
+  if $nba_cluster_id == 'changeme' { fail('Change the variable nba_cluster_name to a propper one') }
 
   if $extra_users_hash {
     create_resources('base::users', parseyaml($extra_users_hash))
   }
-  # base::users { 'ayco.holleman':
-  #   comment => 'ayco.holleman@naturalis.nl',
-  #   ssh_key => { key => "AAAAB3NzaC1yc2EAAAADAQABAAABAQDXBzKjMOITaKnN3SXX/PIbwma518Z92oRkOOSW+D6lk7Ln1/mCoAHD7YfjYIoZV7PJyF9rQW3FVI5Hj9mi1OYTz3GQ6s+Iys2VM+rpq1N3KCnvVcRpABl9VOZcCyBAJ1JW2ka3gQoWgMfadVZidrMa0IEN1+3ITk7hgIodTx4l/b+TAcxtPYSo+Jr1AaF8fuf3VKP1Ko4EWuR3mwJQmkTymnHqggBfqJE/ulLQIeMUKZCREg5VSH+LUg1Gh6hRyKDnHce7hmPyE3Vm5k3zCvTaDHQXjnnV+kubgZXD4P/Gs3nakuu6BUU/17tt0QMupVuVdgAznbBkitADy+aCVAgD",
-  #                comment => 'ayco.holleman@naturalis.nl',
-  #                type => 'ssh-rsa'},
-  # }
 
   package {'subversion' : }
 
@@ -68,9 +67,15 @@ class nba (
     unless  => '/bin/cat /opt/wildfly/stanbalone/configuration/mgmt-users.properties | grep nbaadmin',
   } ->
 
+  exec {'set nba config dir':
+    command => "/bin/sh /opt/wildfly/bin/jboss-cli.sh --connect --command='/system-property=nl.naturalis.nda.conf.dir:add(value=${nba_config_dir})'",
+    unless  => "/bin/sh /opt/wildfly/bin/jboss-cli.sh --connect --command='/system-property=nl.naturalis.nda.conf.dir:read-resource'|/bin/grep result| /bin/grep '${nba_config_dir}'",
+  } ->
+
   class { 'wildfly::deploy' :
     filelocation => 'puppet:///modules/nba',
-    filename     => 'nl.naturalis.nba.ear',
+    filename     => 'nl.naturalis.nda.ear',
+    notify       => Service['wildfly'],
   }
 
 
