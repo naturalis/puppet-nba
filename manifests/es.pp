@@ -51,7 +51,7 @@ class nba::es (
   } ->
 
   exec {"mount snapshot dir to ${snapshot_directory}":
-    cmd     => "/bin/mount ${snapshot_server}:/data/snapshots ${snapshot_directory}",
+    command => "/bin/mount ${snapshot_server}:/data/snapshots ${snapshot_directory}",
     unless  => "/bin/mount | grep ${snapshot_server} | grep ${snapshot_directory}",
     require => Package['nfs-common']
   }
