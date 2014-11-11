@@ -38,7 +38,7 @@
 class nba (
   $nba_cluster_id     = 'changeme',
   $admin_password     = 'nba',
-  $application_name   = 'nba',
+  $application_name   = 'nl.naturalis.nda.ear',
   $port               = '8080',
   $extra_users_hash   = undef,
   $nba_config_dir     = '/etc/nba',
@@ -89,7 +89,7 @@ class nba (
 
   class { 'wildfly::deploy' :
     filelocation => 'puppet:///modules/nba',
-    filename     => 'nl.naturalis.nda.ear',
+    filename     => $application_name,
     #notify       => Service['wildfly'],
   }
 
