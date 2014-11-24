@@ -55,7 +55,7 @@ class nba (
   }
 
 
-  file { ['/var/log/nda','/opt/nba_ear',$nba_config_dir,'/opt/wildfly_deployments']:
+  file { ['/var/log/nba','/opt/nba_ear',$nba_config_dir,'/opt/wildfly_deployments']:
     ensure  => directory,
     mode    => '0755',
     owner   => 'wildfly',
