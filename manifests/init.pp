@@ -37,11 +37,13 @@
 #
 class nba (
   $nba_cluster_id     = 'changeme',
+  $console_listen_ip  = '127.0.0.1',
   $admin_password     = 'nba',
-  $application_name   = 'nl.naturalis.nda.ear',
-  $port               = '8080',
+  $application_name   = 'nba.ear',
+  $deploy_file        = 'nda-0.9.000.ear',
+  $deploy_source_dir  = 'puppet:///modules/nba/',
   $extra_users_hash   = undef,
-  $nba_config_dir     = '/etc/nba',
+  $nba_config_dir     = '/opt/etc/nba',
   $es_host_ip         = '127.0.0.1',
   $es_transport_port  = '9300'
 ){
@@ -52,46 +54,52 @@ class nba (
     create_resources('base::users', parseyaml($extra_users_hash))
   }
 
-  package {'subversion' : }
 
-  package {'openjdk-7-jdk' :} ->
+  file { ['/var/log/nda','/opt/nba_ear',$nba_config_dir,'/opt/wildfly_deployments']:
+    ensure  => directory,
+    mode    => '0755',
+    owner   => 'wildfly',
+    group   => 'wildfly',
+    require => User['wildfly']
+  }
 
-  class { 'wildfly':
-    bind_address            => $::ipaddress,
-    use_web_download        => true,
-    bind_address_management => 'localhost',
-  } ->
-
-  exec {'create wildfly admin user':
-    command => "/bin/sh /opt/wildfly/bin/add-user.sh --silent nbaadmin ${admin_password} ",
-    unless  => '/bin/cat /opt/wildfly/standalone/configuration/mgmt-users.properties | grep nbaadmin',
-  } ->
-
-  exec {'set nba config dir':
-    command => "/bin/sh /opt/wildfly/bin/jboss-cli.sh --connect --command='/system-property=nl.naturalis.nda.conf.dir:add(value=${nba_config_dir})'",
-    unless  => "/bin/sh /opt/wildfly/bin/jboss-cli.sh --connect --command='/system-property=nl.naturalis.nda.conf.dir:read-resource'|/bin/grep result| /bin/grep '${nba_config_dir}'",
-  } ->
-
-  file { $nba_config_dir:
-    ensure => directory,
-    mode   => '0755',
-  } ->
-
-  file {"${nba_config_dir}/logback.xml":
+  file { "${nba_config_dir}/logback.xml":
     content => template('nba/nba/wildfly/logback.xml.erb'),
     mode    => '0644',
-  } ->
+    require => File[$nba_config_dir],
+  }
 
-  file {"${nba_config_dir}/nda.properties":
+  file { "${nba_config_dir}/nda.properties":
     content => template('nba/nba/wildfly/nda.properties.erb'),
     mode    => '0644',
-  } ->
-
-  class { 'wildfly::deploy' :
-    filelocation => 'puppet:///modules/nba',
-    filename     => $application_name,
-    #notify       => Service['wildfly'],
+    require => File[$nba_config_dir],
   }
+
+  class { 'wildfly':
+    admin_password          => 'nda',
+    admin_user              => 'nda',
+    deployment_dir          => '/opt/wildfly_deployments',
+    install_java            => true,
+    bind_address_management => $console_listen_ip,
+    system_properties       => { 'nl.naturalis.nda.conf.dir' => $nba_config_dir },
+    require                 => Package['curl']
+  }
+
+  file { "/opt/nba_ear/${deploy_file}":
+    ensure  => present,
+    source  => "${deploy_source_dir}${deploy_file}",
+    owner   => 'wildfly',
+    group   => 'wildfly',
+    require => File['/opt/nba_ear'],
+    notify  => Exec['deploy_war'],
+  }
+
+  exec { "deploy or update war with ${deploy_file}":
+    command     => "/bin/cp -f /opt/nba_ear/${deploy_file} /opt/wildfly_deployments/${application_name}",
+    require     => [Class['wildfly'],File['/opt/wildfly_deployments']],
+    refreshonly => true,
+  }
+
 
 
   # exec {'create jboss admin user':
@@ -100,12 +108,12 @@ class nba (
   #   environment => 'JBOSS_HOME="/opt/jboss"',
   # }
 
-  @@haproxy::balancermember {$::hostname :
-    listening_service => $nba_cluster_id,
-    ports             => $port,
-    server_names      => $::hostname,
-    ipaddresses       => $::ipaddress,
-  }
+  # @@haproxy::balancermember {$::hostname :
+  #   listening_service => $nba_cluster_id,
+  #   ports             => 8080,
+  #   server_names      => $::hostname,
+  #   ipaddresses       => $::ipaddress,
+  # }
 
   # jboss::instance { $application_name :
   #   user          => $application_name,   # Default is jboss
