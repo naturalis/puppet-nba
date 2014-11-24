@@ -43,7 +43,7 @@ class nba (
   $deploy_file        = 'nda-0.9.000.ear',
   $deploy_source_dir  = 'puppet:///modules/nba/',
   $extra_users_hash   = undef,
-  $nba_config_dir     = '/opt/etc/nba',
+  $nba_config_dir     = '/etc/nba',
   $es_host_ip         = '127.0.0.1',
   $es_transport_port  = '9300'
 ){
