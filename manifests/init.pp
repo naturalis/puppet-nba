@@ -91,7 +91,7 @@ class nba (
     owner   => 'wildfly',
     group   => 'wildfly',
     require => File['/opt/nba_ear'],
-    notify  => Exec['deploy_war'],
+    notify  => Exec["deploy or update war with ${deploy_file}"],
   }
 
   exec { "deploy or update war with ${deploy_file}":
