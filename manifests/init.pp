@@ -55,7 +55,8 @@ class nba (
   }
 
 
-  file { ['/var/log/nba','/opt/nba_ear',$nba_config_dir,'/opt/wildfly_deployments']:
+  file { ['/var/log/nb
+  a','/opt/nba_ear',$nba_config_dir,'/opt/wildfly_deployments']:
     ensure  => directory,
     mode    => '0755',
     owner   => 'wildfly',
@@ -98,6 +99,18 @@ class nba (
     command     => "/bin/cp -f /opt/nba_ear/${deploy_file} /opt/wildfly_deployments/${application_name}",
     require     => [Class['wildfly'],File['/opt/wildfly_deployments']],
     refreshonly => true,
+  }
+
+  Nginx::Proxy {
+    ensure => present,
+    enable => true,
+  }
+
+  # map proxy to local wildlfy instance
+  nginx::proxy { 'nba_v1':
+    server_name => 'nba.biodiversity.nl',
+    location => '/nl.naturalis.nda.service.rest/',
+    proxy_pass => 'http://localhost:8080/nl.naturalis.nda.service.rest/';
   }
 
 
