@@ -108,51 +108,15 @@ class nba (
   }
 
   nginx::resource::vhost { 'api.biodiversity.nl':
-    proxy => 'http://nba_v1_wildfly_app/nl.naturalis.nda.service.rest/',
+    proxy => 'http://nba_v1_wildfly_app/',
     # proxy => 'http://nba_v1_wildfly_app/nl.naturalis.nda.service.rest/',
   }
-  
 
-  # Nginx::Proxy {
-  #   ensure => present,
-  #   enable => true,
-  # }
-  #
-  # # map proxy to local wildlfy instance
-  # nginx::proxy { 'nba_v1':
-  #   server_name => 'nba.biodiversity.nl',
-  #   location => '/nl.naturalis.nda.service.rest/',
-  #   proxy_pass => 'http://localhost:8080/nl.naturalis.nda.service.rest/';
-  # }
-
-
-
-  # exec {'create jboss admin user':
-  #   command    => "/usr/bin/java -jar /opt/jboss/jboss-modules.jar -mp /opt/jboss/modules org.jboss.as.domain-add-user nbaadmin ${admin_password}",
-  #   unless     => '/bin/cat /opt/jboss/stanbalone/configuration/mgmt-users.properties | grep nbaadmin',
-  #   environment => 'JBOSS_HOME="/opt/jboss"',
-  # }
-
-  # @@haproxy::balancermember {$::hostname :
-  #   listening_service => $nba_cluster_id,
-  #   ports             => 8080,
-  #   server_names      => $::hostname,
-  #   ipaddresses       => $::ipaddress,
-  # }
-
-  # jboss::instance { $application_name :
-  #   user          => $application_name,   # Default is jboss
-  #   group         => $application_name,   # Default is jboss
-  #   createuser    => true,       # Default is true
-  #   template      => "all",     # Default is default
-  #   binbaddr      => $::ipaddress, # Default is 127.0.0.1
-  #   port          => "80",      # Default is 8080
-  #   init_timeout  => 10,        # Default is 0
-  #   #run_conf      => "site/jboss/myapp/run.conf",  # Default is unset
-  #   #conf_dir      => "site/jboss/myapp/conf",      # Default is unset
-  #   #deploy_dir    => "site/jboss/myapp/deploy",    # Default is unset
-  #   #deployers_dir => "site/jboss/myapp/deployers", # Default is unset
-  #  }
-
+  file { '/opt/how_to_manual_deploy.txt':
+    ensure  => present,
+    owner   => 'wildfly',
+    mode    => '0444',
+    content => template('nba/howtodeploy.txt.erb'),
+  }
 
 }
