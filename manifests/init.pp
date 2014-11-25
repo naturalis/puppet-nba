@@ -104,13 +104,13 @@ class nba (
   class { 'nginx': }
 
   nginx::resource::upstream { 'nba_v1_wildfly_app':
-    members => ['localhost:8080',],
+    members => ['localhost:8080/nl.naturalis.nda.service.rest',],
   }
 
   nginx::resource::vhost { 'api.biodiversity.nl':
     proxy => 'http://nba_v1_wildfly_app',
   }
-  
+
   # Nginx::Proxy {
   #   ensure => present,
   #   enable => true,
