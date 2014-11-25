@@ -101,17 +101,27 @@ class nba (
     refreshonly => true,
   }
 
-  Nginx::Proxy {
-    ensure => present,
-    enable => true,
+  class { 'nginx': }
+
+  nginx::resource::upstream { 'nba_v1_wildfly_app':
+    members => ['localhost:8080',],
   }
 
-  # map proxy to local wildlfy instance
-  nginx::proxy { 'nba_v1':
-    server_name => 'nba.biodiversity.nl',
-    location => '/nl.naturalis.nda.service.rest/',
-    proxy_pass => 'http://localhost:8080/nl.naturalis.nda.service.rest/';
+  nginx::resource::vhost { 'api.biodiversity.nl':
+    proxy => 'http://nba_v1_wildfly_app',
   }
+  
+  # Nginx::Proxy {
+  #   ensure => present,
+  #   enable => true,
+  # }
+  #
+  # # map proxy to local wildlfy instance
+  # nginx::proxy { 'nba_v1':
+  #   server_name => 'nba.biodiversity.nl',
+  #   location => '/nl.naturalis.nda.service.rest/',
+  #   proxy_pass => 'http://localhost:8080/nl.naturalis.nda.service.rest/';
+  # }
 
 
 
