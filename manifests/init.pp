@@ -107,7 +107,7 @@ class nba (
     members => ['localhost:8080',],
   }
 
-  nginx::resource::vhost { 'api.biodiversity.nl':
+  nginx::resource::vhost { 'api.biodiversity.nl/v1':
     proxy => 'http://nba_v1_wildfly_app/nl.naturalis.nda.service.rest/',
   }
 
