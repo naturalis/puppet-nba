@@ -1,0 +1,11 @@
+To manually deploy a .ear file just overwrite the .ear file to
+/opt/wildfly/wildfly_deployments/<%= scope.lookupvar("nba::nba.ear") %>
+
+Please note that the filename SHOULD BE <%= scope.lookupvar("nba::nba.ear") %>
+
+After copy the .ear will be redeployed. No need to delete the existing .ear
+
+You can check the deployment by checking the content of /opt/wildfly/wildfly_deployments
+* <%= scope.lookupvar("nba::nba.ear") %>.deployed -> ear is deployed
+* <%= scope.lookupvar("nba::nba.ear") %>.isdeploying -> ear is deploying
+* <%= scope.lookupvar("nba::nba.ear") %>.failed -> deployment failed. You can read the <%= scope.lookupvar("nba::nba.ear") %>.failed 
