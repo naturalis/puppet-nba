@@ -2,7 +2,8 @@
 #
 class nba::es (
   $nba_cluster_name   = 'changeme',
-  $es_version         = '1.3.4',
+  $es_version         = '1.3.2',
+  $es_repo_version    = '1.3'
   $shards             = 9,
   $replicas           = 1,
   $es_memory_gb       = 8,
@@ -18,7 +19,9 @@ class nba::es (
   $es_instance_name = 'nba-instance'
 
   class { 'elasticsearch':
+    manage_repo  => true,
     version      => $es_version,
+    repo_version => $es_repo_version,
     java_install => true,
     config       => {
       'cluster.name'             => $nba_cluster_name,
