@@ -2,9 +2,9 @@
 #
 #
 define nba::lb::sites(
-  $name     = undef,
   $members  = undef,
   $location = undef,
+  $vhost    = undef,
   $endpoint = '/'
 ){
 
@@ -14,7 +14,7 @@ define nba::lb::sites(
 
   nginx::resource::location{ '162_13_138_109_linneaus_ng':
     location => $location,
-    vhost    => $nba::vhost,
+    vhost    => $vhost,
     proxy    => "http://${name}${endpoint}",
   }
 
