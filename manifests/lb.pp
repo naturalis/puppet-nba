@@ -13,7 +13,7 @@ class nba::lb (
   }
 
   file { "${www_root}/index.html" :
-    esnure  => present,
+    ensure  => present,
     content => '<html><h1>hoi</h1></html>',
     require => File[$www_root],
   }
