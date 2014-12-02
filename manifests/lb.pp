@@ -8,7 +8,7 @@ class nba::lb (
 
   $www_root = "/var/www/${vhost}"
 
-  file { $www_root :
+  file { ['/var/www',$www_root] :
     ensure => directory,
   }
 
