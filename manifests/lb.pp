@@ -2,31 +2,28 @@
 #
 #
 class nba::lb (
-  $nba_cluster_id = 'changme',
-  $port           = '8080',
-  $ip             = undef,
-  ){
+  $vhost            = undef,
+  $app_servers_hash = {}
+){
 
-  if $nba_cluster_id == 'changeme' { fail('Change the variable nba_cluster_name to a propper one') }
+  $www_root = "/var/www/${vhost}"
 
-  if ($ip) {
-    $ip_real = $ip
-  }else{
-    $ip_real = $::ipaddress
+  file { $www_root :
+    ensure => directory,
   }
 
-  class { 'haproxy': }
-
-  haproxy::listen { $nba_cluster_id :
-    ipaddress => $ip_real,
-    ports     => $port,
+  file { "${www_root}/index.html" :
+    enure   => present,
+    content => '<html><h1>hoi</h1></html>',
+    require => File[$www_root],
   }
 
-  Haproxy::Balancermember <<| listening_service == $nba_cluster_id |>> {
-    require => Haproxy::Listen[$nba_cluster_id],
+  class { 'nginx': }
+
+  nginx::resource::vhost { $vhost:
+    www_root => $www_root,
   }
 
-
-
+  create_resources(nba::lb::sites,$app_servers_hash,{})
 
 }

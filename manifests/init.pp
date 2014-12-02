@@ -55,8 +55,7 @@ class nba (
   }
 
 
-  file { ['/var/log/nb
-  a','/opt/nba_ear',$nba_config_dir,'/opt/wildfly_deployments']:
+  file { ['/var/log/nba','/opt/nba_ear',$nba_config_dir,'/opt/wildfly_deployments']:
     ensure  => directory,
     mode    => '0755',
     owner   => 'wildfly',
@@ -101,16 +100,18 @@ class nba (
     refreshonly => true,
   }
 
-  class { 'nginx': }
-
-  nginx::resource::upstream { 'nba_v1_wildfly_app':
-    members => ['localhost:8080',],
-  }
-
-  nginx::resource::vhost { 'api.biodiversity.nl':
-    proxy => 'http://nba_v1_wildfly_app/',
-    # proxy => 'http://nba_v1_wildfly_app/nl.naturalis.nda.service.rest/',
-  }
+  # Moved to nginx loadbalancer/rp
+  #
+  # class { 'nginx': }
+  #
+  # nginx::resource::upstream { 'nba_v1_wildfly_app':
+  #   members => ['localhost:8080',],
+  # }
+  #
+  # nginx::resource::vhost { 'api.biodiversity.nl':
+  #   proxy => 'http://nba_v1_wildfly_app/',
+  #   # proxy => 'http://nba_v1_wildfly_app/nl.naturalis.nda.service.rest/',
+  # }
 
   file { '/opt/how_to_manual_deploy.txt':
     ensure  => present,
