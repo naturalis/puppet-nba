@@ -19,30 +19,30 @@ class nba::es (
 
   class { 'elasticsearch':
     version      => $es_version,
-    java_install => true
+    java_install => true,
     config       => {
       'cluster.name'             => $nba_cluster_name,
       'index.number_of_shards'   => $shards,
       'index_number_of_replicas' => $replicas
-    }
+    },
   }
 
   elasticsearch::instance { $es_instance_name :
     init_defaults => {
       'ES_HEAP_SIZE' => "${es_memory_gb}g"
-    }
+    },
   }
 
   if $install_kopf {
     elasticsearch::plugin{'lmenezes/elasticsearch-kopf':
       module_dir => 'kopf',
-      instances  => $es_instance_name
+      instances  => $es_instance_name,
     }
   }
   if $install_marvel {
     elasticsearch::plugin{ 'elasticsearch/marvel/latest':
       module_dir => 'marvel',
-      instances  => $es_instance_name
+      instances  => $es_instance_name,
     }
   }
 
