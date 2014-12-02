@@ -40,12 +40,26 @@ class nba::es (
 
   if $install_kopf {
     elasticsearch::plugin{'lmenezes/elasticsearch-kopf':
+      ensure     => present,
+      module_dir => 'kopf',
+      instances  => $es_instance_name,
+    }
+  }else{
+    elasticsearch::plugin{'lmenezes/elasticsearch-kopf':
+      ensure     => absent,
       module_dir => 'kopf',
       instances  => $es_instance_name,
     }
   }
   if $install_marvel {
     elasticsearch::plugin{ 'elasticsearch/marvel/latest':
+      ensure     => present,
+      module_dir => 'marvel',
+      instances  => $es_instance_name,
+    }
+  }else{
+    elasticsearch::plugin{ 'elasticsearch/marvel/latest':
+      ensure     => absent,
       module_dir => 'marvel',
       instances  => $es_instance_name,
     }
