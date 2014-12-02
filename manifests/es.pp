@@ -1,17 +1,18 @@
 # == Class: nba::es
 #
 class nba::es (
-  $nba_cluster_name   = 'changeme',
-  $es_version         = '1.3.4',
-  $es_repo_version    = '1.3',
-  $shards             = 9,
-  $replicas           = 1,
-  $es_memory_gb       = 8,
-  $install_marvel     = false,
-  $install_kopf       = false,
-  $snapshot_directory = '/data/snapshots',
-  $mount_snapshot     = false,
-  $snapshot_server    = '127.0.0.1',
+  $nba_cluster_name     = 'changeme',
+  $es_version           = '1.3.4',
+  $es_repo_version      = '1.3',
+  $minimal_master_nodes = 2,
+  $shards               = 9,
+  $replicas             = 1,
+  $es_memory_gb         = 8,
+  $install_marvel       = false,
+  $install_kopf         = false,
+  $snapshot_directory   = '/data/snapshots',
+  $mount_snapshot       = false,
+  $snapshot_server      = '127.0.0.1',
 ){
 
   if $nba_cluster_name == 'changeme' { fail('Change the variable nba_cluster_name to a propper one') }
@@ -24,9 +25,10 @@ class nba::es (
     repo_version => $es_repo_version,
     java_install => true,
     config       => {
-      'cluster.name'             => $nba_cluster_name,
-      'index.number_of_shards'   => $shards,
-      'index_number_of_replicas' => $replicas
+      'cluster.name'                       => $nba_cluster_name,
+      'index.number_of_shards'             => $shards,
+      'index_number_of_replicas'           => $replicas,
+      'discovery.zen.minimum_master_nodes' => $minimal_master_nodes
     },
   }
 
