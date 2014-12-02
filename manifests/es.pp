@@ -3,7 +3,7 @@
 class nba::es (
   $nba_cluster_name   = 'changeme',
   $es_version         = '1.3.4',
-  $es_repo_version    = '1.3'
+  $es_repo_version    = '1.3',
   $shards             = 9,
   $replicas           = 1,
   $es_memory_gb       = 8,
