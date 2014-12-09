@@ -14,7 +14,7 @@ class nba::lb (
 
   file { "${www_root}/index.html" :
     ensure  => present,
-    content => '<html><h1>hoi</h1></html>',
+    content => template('nba/404.html.erb'),
     require => File[$www_root],
   }
 
