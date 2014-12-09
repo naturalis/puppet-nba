@@ -29,8 +29,8 @@ class nba::lb (
   nginx::resource::vhost { $vhost:
     www_root            => $www_root,
     location_cfg_append => {
-      'error_page  404 ' => '/404.html' ,
-      'rewrite'          => '^ http://$server_name/404.html'
+      'error_page  404 ' => '/404.html'
+      #'rewrite'          => '^ http://$server_name/404.html'
     },
   }
 
