@@ -18,6 +18,12 @@ class nba::lb (
     require => File[$www_root],
   }
 
+  file { "${www_root}/404.html" :
+    ensure  => present,
+    content => template('nba/404.html.erb'),
+    require => File[$www_root],
+  }
+
   class { 'nginx': }
 
   nginx::resource::vhost { $vhost:
