@@ -31,7 +31,6 @@ class nba::lb (
     location_cfg_append => { 'error_page  404' => '/404.html' },
   }
 
-  }
 
   create_resources(nba::lb::sites,$app_servers_hash,{})
 
