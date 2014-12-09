@@ -76,7 +76,7 @@ class nba (
   }
 
   file { '/etc/logrotate.d/nba':
-    content => template('nba/logrotate.erb'),
+    content => template('nba/nba/wildfly/logrotate.erb'),
     mode    => '0644',
   }
 
