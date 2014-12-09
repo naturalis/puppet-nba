@@ -21,7 +21,10 @@ class nba::lb (
   class { 'nginx': }
 
   nginx::resource::vhost { $vhost:
-    www_root => $www_root,
+    www_root            => $www_root,
+    location_cfg_append => { 'error_page  404' => '/404.html' },
+  }
+
   }
 
   create_resources(nba::lb::sites,$app_servers_hash,{})
