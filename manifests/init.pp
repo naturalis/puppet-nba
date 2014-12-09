@@ -82,7 +82,6 @@ class nba (
     install_java            => true,
     bind_address_management => $console_listen_ip,
     system_properties       => { 'nl.naturalis.nda.conf.dir' => $nba_config_dir },
-    logging_properties      => { 'handler.FILE.fileName' => { value => '/var/log/wildfly/server.log'} },
     require                 => Package['curl']
   }
 

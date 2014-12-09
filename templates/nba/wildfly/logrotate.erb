@@ -1,0 +1,8 @@
+/var/log/puppet/*log
+/opt/wildfly/standalone/log/*log
+{
+  daily
+  create 0644 wildfly wildfly
+  compress
+  rotate 7
+}
