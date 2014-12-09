@@ -75,6 +75,11 @@ class nba (
     require => File[$nba_config_dir],
   }
 
+  file { '/etc/logrotate.d/nba':
+    content => template('nba/logrotate.erb'),
+    mode    => '0644',
+  }
+
   class { 'wildfly':
     admin_password          => 'nda',
     admin_user              => 'nda',
