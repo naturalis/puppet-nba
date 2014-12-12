@@ -41,6 +41,7 @@ class nba (
   $admin_password     = 'nba',
   $application_name   = 'nba.ear',
   $deploy_file        = 'nda-0.9.000.ear',
+  $nba_version        = '0.9.000',
   $deploy_source_dir  = 'puppet:///modules/nba/',
   $extra_users_hash   = undef,
   $nba_config_dir     = '/etc/nba',
