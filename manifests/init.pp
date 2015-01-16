@@ -46,7 +46,9 @@ class nba (
   $extra_users_hash   = undef,
   $nba_config_dir     = '/etc/nba',
   $es_host_ip         = '127.0.0.1',
-  $es_transport_port  = '9300'
+  $es_transport_port  = '9300',
+  $index_name         = 'nda',
+  $wildfly_debug      = false,
 ){
 
   if $nba_cluster_id == 'changeme' { fail('Change the variable nba_cluster_name to a propper one') }
@@ -88,7 +90,8 @@ class nba (
     install_java            => true,
     bind_address_management => $console_listen_ip,
     system_properties       => { 'nl.naturalis.nda.conf.dir' => $nba_config_dir },
-    require                 => Package['curl']
+    require                 => Package['curl'],
+    debug_mode              => $wildfly_debug,
   }
 
   file { "/opt/nba_ear/${deploy_file}":

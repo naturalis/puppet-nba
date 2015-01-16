@@ -1,6 +1,6 @@
 elasticsearch.cluster.name=<%= scope.lookupvar("nba::nba_cluster_id") %>
 elasticsearch.transportaddress.host=<%= scope.lookupvar("nba::es_host_ip") %>
 elasticsearch.transportaddress.port=<%= scope.lookupvar("nba::es_transport_port") %>
-elasticsearch.index.name=nda
+elasticsearch.index.name=<%= scope.lookupvar("nba::index_name") %>
 
 nda.version=<%= scope.lookupvar("nba::nba_version") %>
