@@ -36,19 +36,22 @@
 # Copyright 2014 Your name here, unless otherwise noted.
 #
 class nba (
-  $nba_cluster_id     = 'changeme',
-  $console_listen_ip  = '127.0.0.1',
-  $admin_password     = 'nba',
-  $application_name   = 'nba.ear',
-  $deploy_file        = 'nda-0.9.000.ear',
-  $nba_version        = '0.9.000',
-  $deploy_source_dir  = 'puppet:///modules/nba/',
-  $extra_users_hash   = undef,
-  $nba_config_dir     = '/etc/nba',
-  $es_host_ip         = '127.0.0.1',
-  $es_transport_port  = '9300',
-  $index_name         = 'nda',
-  $wildfly_debug      = false,
+  $nba_cluster_id      = 'changeme',
+  $console_listen_ip   = '127.0.0.1',
+  $admin_password      = 'nba',
+  $application_name    = 'nba.ear',
+  $deploy_file         = 'nda-0.9.000.ear',
+  $nba_version         = '0.9.000',
+  $deploy_source_dir   = 'puppet:///modules/nba/',
+  $extra_users_hash    = undef,
+  $nba_config_dir      = '/etc/nba',
+  $es_host_ip          = '127.0.0.1',
+  $es_transport_port   = '9300',
+  $index_name          = 'nda',
+  $wildfly_debug       = false,
+  $wildfly_xmx         = '1024m',
+  $wildfly_xms         = '256m',
+  $wildlfy_maxpermsize = '512m',
 ){
 
   if $nba_cluster_id == 'changeme' { fail('Change the variable nba_cluster_name to a propper one') }
@@ -92,6 +95,9 @@ class nba (
     system_properties       => { 'nl.naturalis.nda.conf.dir' => $nba_config_dir },
     require                 => Package['curl'],
     debug_mode              => $wildfly_debug,
+    xmx                     => $wildfly::params::xmx,
+    xms                     => $wildfly::params::xms,
+    maxpermsize             => $wildfly::params::maxpermsize,
   }
 
   file { "/opt/nba_ear/${deploy_file}":
