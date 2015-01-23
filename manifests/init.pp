@@ -95,9 +95,9 @@ class nba (
     system_properties       => { 'nl.naturalis.nda.conf.dir' => $nba_config_dir },
     require                 => Package['curl'],
     debug_mode              => $wildfly_debug,
-    xmx                     => $wildfly::params::xmx,
-    xms                     => $wildfly::params::xms,
-    maxpermsize             => $wildfly::params::maxpermsize,
+    xmx                     => $wildfly_xmx,
+    xms                     => $wildfly_xms,
+    maxpermsize             => $wildfly_maxpermsize,
   }
 
   file { "/opt/nba_ear/${deploy_file}":
