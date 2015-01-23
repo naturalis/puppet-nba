@@ -97,7 +97,7 @@ class nba (
     debug_mode              => $wildfly_debug,
     xmx                     => $wildfly_xmx,
     xms                     => $wildfly_xms,
-    maxpermsize             => $wildfly_maxpermsize,
+    maxpermsize             => $wildlfy_maxpermsize,
   }
 
   file { "/opt/nba_ear/${deploy_file}":
