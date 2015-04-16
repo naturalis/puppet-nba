@@ -19,7 +19,8 @@ class nba::build(
     source   => 'https://github.com/naturalis/naturalis_data_api',
     revision => $checkout,
     require  => Package['git'],
-    notify   => Exec['build nba']
+    notify   => Exec['build nba'],
+    user     => 'root'
   }
 
   exec { 'build nba':
