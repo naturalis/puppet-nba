@@ -60,6 +60,13 @@ class nba (
     create_resources('base::users', parseyaml($extra_users_hash))
   }
 
+  #build of new nba with build scripts
+  # packages: git,ant,ivy,openjdk-7-jdk
+  # env: $IVY_HOME=/usr/share/maven-repo/org/apache/ivy/ivy/2.3.0
+  # run to build
+  # all: ant rebuild
+  # ear: ant clean ear
+
 
   file { ['/var/log/nba','/opt/nba_ear',$nba_config_dir,'/opt/wildfly_deployments']:
     ensure  => directory,
