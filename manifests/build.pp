@@ -5,7 +5,7 @@ class nba::build(
   $checkout,
 )
 {
-  package {['git','ant','ivy','openjdk-7-jdk',]
+  package {['git','ant','ivy','openjdk-7-jdk']:
     ensure => installed
   }
 
