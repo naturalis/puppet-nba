@@ -51,7 +51,7 @@ class nba::build(
   vcsrepo { '/opt/nba-git':
     ensure   => present,
     provider => git,
-    source   => 'https://github.com/naturalis/naturalis_data_api',
+    source   => 'git@github.com:naturalis/naturalis_data_api.git',
     revision => $checkout,
     require  => Package['git'],
     notify   => Exec['build nba'],
