@@ -3,7 +3,7 @@
 #
 class nba::dcwa()
 {
-  vcsrepo { '/opt/nba-git':
+  vcsrepo { '/opt/test':
     ensure   => latest,
     provider => git,
     source   => 'git@github.com:atzedevries/thebsrepo.git',
