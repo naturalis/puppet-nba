@@ -30,5 +30,5 @@ class nba::import()
   exec { 'importit':
     command     => '/bin/echo "start import" > /opt/data/info.txt',
     refreshonly => true,
-  } ~>
+  }
 }
