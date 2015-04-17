@@ -10,10 +10,11 @@ class nba::dcwa()
     revision => 'master',
     require  => Package['git'],
     user     => 'root',
-    notify   => Notify['new stuff']
+    notify   => Exec['new stuff exec']
   }
 
-  notify {'new stuff':
-    message => 'neeeWWWWWWW stuff!'
+  exec { 'new stuff exec':
+    command     => 'ls /opt/test',
+    refreshonly => true
   }
 }
