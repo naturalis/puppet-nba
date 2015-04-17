@@ -25,6 +25,7 @@ class nba::import()
     command     => '/bin/mv /opt/boe/* /opt/data',
     unless      => '/usr/bin/lsof /opt/boe/* | grep -v COMMAND',
     notify      => Exec['importit'],
+    logoutput   => true,
     refreshonly => true,
   }
 
