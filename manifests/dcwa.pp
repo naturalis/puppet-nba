@@ -14,7 +14,7 @@ class nba::dcwa()
   }
 
   exec { 'new stuff exec':
-    command     => 'ls /opt/test',
+    command     => '/bin/ls /opt/test',
     refreshonly => true
   }
 }
