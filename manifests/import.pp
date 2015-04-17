@@ -23,7 +23,7 @@ class nba::import()
 
   exec {'wait for it':
     command     => '/bin/mv /opt/boe/* /opt/data',
-    unless      => '/usr/bin/lsof /opt/boe/* | grep -v COMMAND',
+    unless      => '/usr/bin/lsof /opt/boe/*',
     notify      => Exec['importit'],
     logoutput   => true,
     refreshonly => true,
