@@ -17,7 +17,7 @@ class nba::import()
   # no need for concurency checking
   exec {'check if there are new files':
     command => '/bin/echo "new files"',
-    unless  => '/bin/ls /opt/boe/*',
+    onlyif  => '/bin/ls /opt/boe/*',
     notify  => Exec['wait for it'],
   }
 
