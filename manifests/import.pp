@@ -29,6 +29,7 @@ class nba::import()
 
   exec { 'importit':
     command     => '/bin/echo "start import" > /opt/data/info.txt',
+    unless      => '/usr/bin/lsof /opt/boe/*',
     refreshonly => true,
   }
 }
