@@ -26,10 +26,11 @@ class nba::import()
     unless      => '/usr/bin/lsof /opt/boe/*',
     logoutput   => true,
     refreshonly => true,
-  } ->
+  }
 
   exec { 'importit':
     command     => '/bin/echo "start import" > /opt/data/info.txt',
     refreshonly => true,
+    require     => Exec['wait for it']
   }
 }
