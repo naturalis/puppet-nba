@@ -4,8 +4,20 @@
 class nba::build(
   $checkout,
   $repokey,
+  $buildtype    = 'tag',
+  $build_ear    = true,
+  $build_import = false,
+  $build_export = false,
+  $deploy_ear   = false,
 )
 {
+
+  case $buildtype {
+    'tag':    {$deploy_cmd = '/usr/bin/ant clean release ear' }
+    'commit': {$deploy_cmd = '/usr/bin/ant clean nightly ear'}
+    default:  { fail('variable: build type need to be "tag" or "commit"')}
+  }
+
   package {['git','ant','ivy','openjdk-7-jdk']:
     ensure => installed
   }
@@ -61,8 +73,20 @@ class nba::build(
   exec { 'build nba':
     cwd         => '/opt/nba-git/nl.naturalis.nda.build',
     environment => ['IVY_HOME=/usr/share/maven-repo/org/apache/ivy/ivy/2.3.0/'],
-    command     => '/usr/bin/ant rebuild',
+    command     => $deploy_cmd,
     refreshonly => true
+    notify      => Exec['deploy nba']
   }
+
+  if $deploy_ear {
+    exec { 'deploy nba':
+      cwd         => '/opt/nba-git/nl.naturalis.nda.build',
+      environment => ['IVY_HOME=/usr/share/maven-repo/org/apache/ivy/ivy/2.3.0/'],
+      command     => '/usr/bin/ant deploy',
+      refreshonly => true
+    }
+  }
+
+
 
 }
