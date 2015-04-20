@@ -74,7 +74,7 @@ class nba::build(
     cwd         => '/opt/nba-git/nl.naturalis.nda.build',
     environment => ['IVY_HOME=/usr/share/maven-repo/org/apache/ivy/ivy/2.3.0/'],
     command     => $deploy_cmd,
-    refreshonly => true
+    refreshonly => true,
     notify      => Exec['deploy nba']
   }
 
