@@ -67,7 +67,7 @@ class nba::build(
     revision => $checkout,
     require  => Package['git'],
     notify   => Exec['build ear'],
-    user     => 'root'
+    user     => 'root',
   }
 
   exec { 'build ear':
@@ -82,8 +82,8 @@ class nba::build(
       cwd         => '/opt/nba-git/nl.naturalis.nda.build',
       environment => ['IVY_HOME=/usr/share/maven-repo/org/apache/ivy/ivy/2.3.0/'],
       command     => '/usr/bin/ant deploy',
-      refreshonly => true
-      subscribe   => Exec['build ear']
+      refreshonly => true,
+      subscribe   => Exec['build ear'],
     }
   }
 
