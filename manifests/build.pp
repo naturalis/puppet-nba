@@ -18,6 +18,8 @@ class nba::build(
     default:  { fail('variable: build type need to be "tag" or "commit"')}
   }
 
+  fail ('Unable to deploy ear without build of ear') if $build_ear == false and $deploy_ear == true
+
   package {['git','ant','ivy','openjdk-7-jdk']:
     ensure => installed
   }
@@ -69,13 +71,23 @@ class nba::build(
     user     => 'root',
   }
 
+  file { '/opt/nba-git/nl.naturalis.nda.build/build.properties':
+    ensure  => present,
+    content => template('nba/nba/build/build.properties.erb'),
+    require => Vcsrepo['/opt/nba-git'],
+    notify  => Exec['build sh-config'],
+  }
+
   if $build_ear {
     exec { 'build ear':
       cwd         => '/opt/nba-git/nl.naturalis.nda.build',
       environment => ['IVY_HOME=/usr/share/maven-repo/org/apache/ivy/ivy/2.3.0/'],
       command     => $deploy_cmd,
       refreshonly => true,
-      subscribe   => Vcsrepo['/opt/nba-git']
+      subscribe   => [
+        Vcsrepo['/opt/nba-git'],
+        File['/opt/nba-git/nl.naturalis.nda.build/build.properties']
+      ]
     }
   }
 
@@ -96,7 +108,10 @@ class nba::build(
       environment => ['IVY_HOME=/usr/share/maven-repo/org/apache/ivy/ivy/2.3.0/'],
       command     => '/usr/bin/ant clean load',
       refreshonly => true,
-      subscribe   => Vcsrepo['/opt/nba-git'],
+      subscribe   => [
+        Vcsrepo['/opt/nba-git'],
+        File['/opt/nba-git/nl.naturalis.nda.build/build.properties']
+      ]
       notify      => Exec['build sh'],
     }
   }
@@ -106,7 +121,10 @@ class nba::build(
       environment => ['IVY_HOME=/usr/share/maven-repo/org/apache/ivy/ivy/2.3.0/'],
       command     => '/usr/bin/ant clean export',
       refreshonly => true,
-      subscribe   => Vcsrepo['/opt/nba-git']
+      subscribe   => [
+        Vcsrepo['/opt/nba-git'],
+        File['/opt/nba-git/nl.naturalis.nda.build/build.properties']
+      ]
       notify      => Exec['build sh']
     }
   }
@@ -115,6 +133,13 @@ class nba::build(
     cwd         => '/opt/nba-git/nl.naturalis.nda.build',
     environment => ['IVY_HOME=/usr/share/maven-repo/org/apache/ivy/ivy/2.3.0/'],
     command     => '/usr/bin/ant clean sh',
+    refreshonly => true,
+  }
+
+  exec { 'build sh-config':
+    cwd         => '/opt/nba-git/nl.naturalis.nda.build',
+    environment => ['IVY_HOME=/usr/share/maven-repo/org/apache/ivy/ivy/2.3.0/'],
+    command     => '/usr/bin/ant clean sh-config',
     refreshonly => true,
   }
 
