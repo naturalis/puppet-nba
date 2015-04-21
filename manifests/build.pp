@@ -66,16 +66,15 @@ class nba::build(
     source   => 'git@github.com:naturalis/naturalis_data_api.git',
     revision => $checkout,
     require  => Package['git'],
-    notify   => Exec['build nba'],
+    notify   => Exec['build ear'],
     user     => 'root'
   }
 
-  exec { 'build nba':
+  exec { 'build ear':
     cwd         => '/opt/nba-git/nl.naturalis.nda.build',
     environment => ['IVY_HOME=/usr/share/maven-repo/org/apache/ivy/ivy/2.3.0/'],
     command     => $deploy_cmd,
     refreshonly => true,
-    notify      => Exec['deploy nba']
   }
 
   if $deploy_ear {
@@ -84,6 +83,7 @@ class nba::build(
       environment => ['IVY_HOME=/usr/share/maven-repo/org/apache/ivy/ivy/2.3.0/'],
       command     => '/usr/bin/ant deploy',
       refreshonly => true
+      subscribe   => Exec['build ear']
     }
   }
 
