@@ -13,7 +13,7 @@ class nba::build(
 {
 
   case $buildtype {
-    'tag':    {$deploy_cmd = '/usr/bin/ant clean release ear' }
+    'tag':    {$deploy_cmd = '/usr/bin/ant clean ear' }
     'commit': {$deploy_cmd = '/usr/bin/ant clean nightly ear'}
     default:  { fail('variable: build type need to be "tag" or "commit"')}
   }
