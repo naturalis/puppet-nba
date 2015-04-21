@@ -90,5 +90,32 @@ class nba::build(
   }
 
 
+  if $build_import {
+    exec { 'build import':
+      cwd         => '/opt/nba-git/nl.naturalis.nda.build',
+      environment => ['IVY_HOME=/usr/share/maven-repo/org/apache/ivy/ivy/2.3.0/'],
+      command     => '/usr/bin/ant clean load',
+      refreshonly => true,
+      subscribe   => Vcsrepo['/opt/nba-git'],
+      notify      => Exec['build sh'],
+    }
+  }
+  if $build_export {
+    exec { 'build export':
+      cwd         => '/opt/nba-git/nl.naturalis.nda.build',
+      environment => ['IVY_HOME=/usr/share/maven-repo/org/apache/ivy/ivy/2.3.0/'],
+      command     => '/usr/bin/ant clean export',
+      refreshonly => true,
+      subscribe   => Vcsrepo['/opt/nba-git']
+      notify      => Exec['build sh']
+    }
+  }
+
+  exec { 'build sh':
+    cwd         => '/opt/nba-git/nl.naturalis.nda.build',
+    environment => ['IVY_HOME=/usr/share/maven-repo/org/apache/ivy/ivy/2.3.0/'],
+    command     => '/usr/bin/ant clean sh',
+    refreshonly => true,
+  }
 
 }

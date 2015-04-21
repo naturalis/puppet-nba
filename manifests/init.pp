@@ -107,20 +107,22 @@ class nba (
     maxpermsize             => $wildlfy_maxpermsize,
   }
 
-  file { "/opt/nba_ear/${deploy_file}":
-    ensure  => present,
-    source  => "${deploy_source_dir}${deploy_file}",
-    owner   => 'wildfly',
-    group   => 'wildfly',
-    require => File['/opt/nba_ear'],
-    notify  => Exec["deploy or update war with ${deploy_file}"],
-  }
+  
 
-  exec { "deploy or update war with ${deploy_file}":
-    command     => "/bin/cp -f /opt/nba_ear/${deploy_file} /opt/wildfly_deployments/${application_name}",
-    require     => [Class['wildfly'],File['/opt/wildfly_deployments']],
-    refreshonly => true,
-  }
+  # file { "/opt/nba_ear/${deploy_file}":
+  #   ensure  => present,
+  #   source  => "${deploy_source_dir}${deploy_file}",
+  #   owner   => 'wildfly',
+  #   group   => 'wildfly',
+  #   require => File['/opt/nba_ear'],
+  #   notify  => Exec["deploy or update war with ${deploy_file}"],
+  # }
+
+  # exec { "deploy or update war with ${deploy_file}":
+  #   command     => "/bin/cp -f /opt/nba_ear/${deploy_file} /opt/wildfly_deployments/${application_name}",
+  #   require     => [Class['wildfly'],File['/opt/wildfly_deployments']],
+  #   refreshonly => true,
+  # }
 
   # Moved to nginx loadbalancer/rp
   #

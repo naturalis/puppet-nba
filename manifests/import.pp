@@ -4,7 +4,6 @@
 
 class nba::import()
 {
-
   exec {'importit':
     command   => '/bin/mv /opt/boe/* /opt/data/ && /bin/echo "importing files"',
     logoutput => true,
