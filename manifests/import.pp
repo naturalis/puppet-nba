@@ -34,7 +34,7 @@ class nba::import()
   # }
 
   exec {'importit':
-    command   => '/bin/echo "moving files" && /bin/echo "importing files"',
+    command   => '/bin/mv /opt/boe/* /opt/data/ && /bin/echo "importing files"',
     logoutput => true,
     unless    => '/usr/bin/lsof boe/*  2>&1 | grep "status\|COMMAND"'
   }
