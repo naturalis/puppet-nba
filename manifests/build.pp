@@ -66,7 +66,7 @@ class nba::build(
     mode      => '0600',
   }->
 
-  vcsrepo { '/opt/nba-git':
+  vcsrepo { '/data/nba-git':
     ensure   => present,
     provider => git,
     source   => 'git@github.com:naturalis/naturalis_data_api.git',
@@ -75,7 +75,7 @@ class nba::build(
     user     => 'root',
   }
 
-  file { '/opt/nba-git/nl.naturalis.nda.build/build.properties':
+  file { '/data/nba-git/nl.naturalis.nda.build/build.properties':
     ensure  => present,
     content => template('nba/build/build.properties.erb'),
     require => Vcsrepo['/opt/nba-git'],
@@ -84,7 +84,7 @@ class nba::build(
 
   if $build_ear {
     exec { 'build ear':
-      cwd         => '/opt/nba-git/nl.naturalis.nda.build',
+      cwd         => '/data/nba-git/nl.naturalis.nda.build',
       environment => ['IVY_HOME=/usr/share/maven-repo/org/apache/ivy/ivy/2.3.0/'],
       command     => $deploy_cmd,
       refreshonly => true,
@@ -97,7 +97,7 @@ class nba::build(
 
   if $deploy_ear {
     exec { 'deploy nba':
-      cwd         => '/opt/nba-git/nl.naturalis.nda.build',
+      cwd         => '/data/nba-git/nl.naturalis.nda.build',
       environment => ['IVY_HOME=/usr/share/maven-repo/org/apache/ivy/ivy/2.3.0/'],
       command     => '/usr/bin/ant deploy',
       refreshonly => true,
@@ -108,40 +108,40 @@ class nba::build(
 
   if $build_import {
     exec { 'build import':
-      cwd         => '/opt/nba-git/nl.naturalis.nda.build',
+      cwd         => '/data/nba-git/nl.naturalis.nda.build',
       environment => ['IVY_HOME=/usr/share/maven-repo/org/apache/ivy/ivy/2.3.0/'],
       command     => '/usr/bin/ant clean load',
       refreshonly => true,
       subscribe   => [
-        Vcsrepo['/opt/nba-git'],
-        File['/opt/nba-git/nl.naturalis.nda.build/build.properties']
+        Vcsrepo['/data/nba-git'],
+        File['/data/nba-git/nl.naturalis.nda.build/build.properties']
       ],
       notify      => Exec['build sh'],
     }
   }
   if $build_export {
     exec { 'build export':
-      cwd         => '/opt/nba-git/nl.naturalis.nda.build',
+      cwd         => '/data/nba-git/nl.naturalis.nda.build',
       environment => ['IVY_HOME=/usr/share/maven-repo/org/apache/ivy/ivy/2.3.0/'],
       command     => '/usr/bin/ant clean export',
       refreshonly => true,
       subscribe   => [
-        Vcsrepo['/opt/nba-git'],
-        File['/opt/nba-git/nl.naturalis.nda.build/build.properties']
+        Vcsrepo['/data/nba-git'],
+        File['/data/nba-git/nl.naturalis.nda.build/build.properties']
       ],
       notify      => Exec['build sh']
     }
   }
 
   exec { 'build sh':
-    cwd         => '/opt/nba-git/nl.naturalis.nda.build',
+    cwd         => '/data/nba-git/nl.naturalis.nda.build',
     environment => ['IVY_HOME=/usr/share/maven-repo/org/apache/ivy/ivy/2.3.0/'],
     command     => '/usr/bin/ant clean sh',
     refreshonly => true,
   }
 
   exec { 'build sh-config':
-    cwd         => '/opt/nba-git/nl.naturalis.nda.build',
+    cwd         => '/data/nba-git/nl.naturalis.nda.build',
     environment => ['IVY_HOME=/usr/share/maven-repo/org/apache/ivy/ivy/2.3.0/'],
     command     => '/usr/bin/ant clean sh-config',
     refreshonly => true,
