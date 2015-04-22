@@ -79,7 +79,7 @@ class nba::build(
     ensure  => present,
     content => template('nba/build/build.properties.erb'),
     require => Vcsrepo['/source/nba-git'],
-    notify  => Exec['build sh-config'],
+    #notify  => Exec['build sh-config'],
   }
 
   if $build_ear {
