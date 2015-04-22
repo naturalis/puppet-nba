@@ -52,6 +52,7 @@ class nba (
   $wildfly_xmx         = '1024m',
   $wildfly_xms         = '256m',
   $wildlfy_maxpermsize = '512m',
+  $wildfly_version     = '8.1.0.Final'
 ){
 
   if $nba_cluster_id == 'changeme' { fail('Change the variable nba_cluster_name to a propper one') }
@@ -98,6 +99,7 @@ class nba (
     xmx                     => $wildfly_xmx,
     xms                     => $wildfly_xms,
     maxpermsize             => $wildlfy_maxpermsize,
+    version                 => $wildfly_version,
   }
 
   file { "/opt/nba_ear/${deploy_file}":
