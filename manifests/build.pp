@@ -18,16 +18,14 @@ class nba::build(
     default:  { fail('variable: build type need to be "tag" or "commit"')}
   }
 
-  fail ('Unable to deploy ear without build of ear') if $build_ear == false and $deploy_ear == true
+  #fail ('Unable to deploy ear without build of ear') if $build_ear == false and $deploy_ear == true
 
-  package { ['git','ant','ivy']:
+  package {['git','ant','ivy']:
     ensure => installed
   }
 
-  if  ! defined( Package['openjdk-7-jdk'] ) {
-    package { 'openjdk-7-jdk':
-      ensure => installed
-    }
+  if !defined(Package['openjdk-7-jdk']) {
+    package { 'openjdk-7-jdk': ensure => installed }
   }
 
   file { '/etc/profile.d/ivy.sh':
@@ -117,7 +115,7 @@ class nba::build(
       subscribe   => [
         Vcsrepo['/opt/nba-git'],
         File['/opt/nba-git/nl.naturalis.nda.build/build.properties']
-      ]
+      ],
       notify      => Exec['build sh'],
     }
   }
@@ -130,7 +128,7 @@ class nba::build(
       subscribe   => [
         Vcsrepo['/opt/nba-git'],
         File['/opt/nba-git/nl.naturalis.nda.build/build.properties']
-      ]
+      ],
       notify      => Exec['build sh']
     }
   }
