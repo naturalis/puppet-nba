@@ -13,6 +13,7 @@ class nba::es (
   $snapshot_directory   = '/data/snapshots',
   $mount_snapshot       = false,
   $snapshot_server      = '127.0.0.1',
+  $install_java         = true
 ){
 
   if $nba_cluster_name == 'changeme' { fail('Change the variable nba_cluster_name to a propper one') }
@@ -23,7 +24,7 @@ class nba::es (
     manage_repo  => true,
     version      => $es_version,
     repo_version => $es_repo_version,
-    java_install => true,
+    java_install => $install_java,
     config       => {
       'cluster.name'                       => $nba_cluster_name,
       'index.number_of_shards'             => $shards,
