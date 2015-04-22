@@ -77,7 +77,7 @@ class nba::build(
 
   file { '/opt/nba-git/nl.naturalis.nda.build/build.properties':
     ensure  => present,
-    content => template('nba/nba/build/build.properties.erb'),
+    content => template('nba/build/build.properties.erb'),
     require => Vcsrepo['/opt/nba-git'],
     notify  => Exec['build sh-config'],
   }
