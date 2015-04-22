@@ -20,15 +20,16 @@ class nba::build(
 
   fail ('Unable to deploy ear without build of ear') if $build_ear == false and $deploy_ear == true
 
-  package {['git','ant','ivy']:
+  package { ['git','ant','ivy']:
     ensure => installed
   }
 
-  if !defined(Package['openjdk-7-jdk']) {
-    package {'openjdk-7-jdk':
+  if  ! defined( Package['openjdk-7-jdk'] ) {
+    package { 'openjdk-7-jdk':
       ensure => installed
     }
   }
+
   file { '/etc/profile.d/ivy.sh':
     content => 'export IVY_HOME="/usr/share/maven-repo/org/apache/ivy/ivy/2.3.0/"'
   }
