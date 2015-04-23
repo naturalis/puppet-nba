@@ -90,7 +90,7 @@ class nba::es (
   #   config => { },        # Configuration hash
   #   init_defaults => { }, # Init defaults hash
   # }
-  service
+  
 
   if $mount_snapshot {
 
