@@ -13,7 +13,8 @@ class nba::es (
   $snapshot_directory   = '/data/snapshots',
   $mount_snapshot       = false,
   $snapshot_server      = '127.0.0.1',
-  $install_java         = true
+  $install_java         = true,
+  install_knapsack      = false,
 ){
 
   if $nba_cluster_name == 'changeme' { fail('Change the variable nba_cluster_name to a propper one') }
@@ -63,6 +64,24 @@ class nba::es (
       ensure     => absent,
       module_dir => 'marvel',
       instances  => $es_instance_name,
+    }
+  }
+
+  if $install_knapsack {
+    elasticsearch::plugin{ 'elasticsearch/marvel/latest':
+      ensure     => present,
+      url        => 'http://xbib.org/repository/org/xbib/elasticsearch/plugin/elasticsearch-knapsack/1.5.1.0/elasticsearch-knapsack-1.5.1.0-plugin.zip'
+      module_dir => 'knapsack',
+      instances  => $es_instance_name,
+      notify     => Service['elasticsearch'],
+    }
+  }else{
+    elasticsearch::plugin{ 'elasticsearch/marvel/latest':
+      ensure     => absent,
+      url        => 'http://xbib.org/repository/org/xbib/elasticsearch/plugin/elasticsearch-knapsack/1.5.1.0/elasticsearch-knapsack-1.5.1.0-plugin.zip'
+      module_dir => 'knapsack',
+      instances  => $es_instance_name,
+      notify     => Service['elasticsearch'],
     }
   }
 
