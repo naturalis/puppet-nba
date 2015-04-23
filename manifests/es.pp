@@ -73,7 +73,7 @@ class nba::es (
       url        => 'http://xbib.org/repository/org/xbib/elasticsearch/plugin/elasticsearch-knapsack/1.5.1.0/elasticsearch-knapsack-1.5.1.0-plugin.zip',
       module_dir => 'knapsack',
       instances  => $es_instance_name,
-      notify     => Service['elasticsearch'],
+      notify     => Service["elasticsearch-${es_instance_name}"],
     }
   }else{
     elasticsearch::plugin{ 'install-knapsack':
@@ -81,7 +81,7 @@ class nba::es (
       url        => 'http://xbib.org/repository/org/xbib/elasticsearch/plugin/elasticsearch-knapsack/1.5.1.0/elasticsearch-knapsack-1.5.1.0-plugin.zip',
       module_dir => 'knapsack',
       instances  => $es_instance_name,
-      notify     => Service['elasticsearch'],
+      notify     => Service["elasticsearch-${es_instance_name}"],
     }
   }
 
@@ -90,7 +90,7 @@ class nba::es (
   #   config => { },        # Configuration hash
   #   init_defaults => { }, # Init defaults hash
   # }
-
+  service
 
   if $mount_snapshot {
 
