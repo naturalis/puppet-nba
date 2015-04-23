@@ -70,7 +70,7 @@ class nba::es (
   if $install_knapsack {
     elasticsearch::plugin{ 'elasticsearch/marvel/latest':
       ensure     => present,
-      url        => 'http://xbib.org/repository/org/xbib/elasticsearch/plugin/elasticsearch-knapsack/1.5.1.0/elasticsearch-knapsack-1.5.1.0-plugin.zip'
+      url        => 'http://xbib.org/repository/org/xbib/elasticsearch/plugin/elasticsearch-knapsack/1.5.1.0/elasticsearch-knapsack-1.5.1.0-plugin.zip',
       module_dir => 'knapsack',
       instances  => $es_instance_name,
       notify     => Service['elasticsearch'],
@@ -78,7 +78,7 @@ class nba::es (
   }else{
     elasticsearch::plugin{ 'elasticsearch/marvel/latest':
       ensure     => absent,
-      url        => 'http://xbib.org/repository/org/xbib/elasticsearch/plugin/elasticsearch-knapsack/1.5.1.0/elasticsearch-knapsack-1.5.1.0-plugin.zip'
+      url        => 'http://xbib.org/repository/org/xbib/elasticsearch/plugin/elasticsearch-knapsack/1.5.1.0/elasticsearch-knapsack-1.5.1.0-plugin.zip',
       module_dir => 'knapsack',
       instances  => $es_instance_name,
       notify     => Service['elasticsearch'],
