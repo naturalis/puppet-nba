@@ -107,7 +107,7 @@ class nba (
     maxpermsize             => $wildlfy_maxpermsize,
   }
 
-  
+
 
   # file { "/opt/nba_ear/${deploy_file}":
   #   ensure  => present,
