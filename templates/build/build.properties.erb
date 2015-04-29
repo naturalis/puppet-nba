@@ -3,7 +3,8 @@
 # before you can start executing Ant targets. Adjust the
 # properties in this file as appropriate before executing
 # Ant targets.
-<% es_host = scope.lookupvar("nba::es_host_ip").split(',')[0] %>
+<% es_host = scope.lookupvar("nba::es_host_ip")
+%>
 # ES configuration (read by all modules)
 elasticsearch.cluster.name=<%= scope.lookupvar("nba::nba_cluster_id") %>
 elasticsearch.transportaddress.host=<%=es_host%>
