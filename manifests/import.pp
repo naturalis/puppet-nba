@@ -18,7 +18,7 @@ class nba::import()
     '/data/upload/brahms',
     '/data/upload/nsr',
     '/data/import-logs']:
-    ensure => Directory,
+    ensure => 'directory',
     owner  => 'root',
     group  => 'wheel',
     mode   => '0770',
@@ -30,7 +30,7 @@ class nba::import()
       '/data/import/col',
       '/data/import/brahms',
       '/data/import/nsr']:
-      ensure  => Directory,
+      ensure  => 'directory',
       owner   => 'root',
       group   => 'root',
       mode    => '0700',
