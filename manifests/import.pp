@@ -40,6 +40,7 @@ class nba::import()
     exec { 'import - bootstrap':
       command => '/bin/sh /opt/nba-import/sh/bootstrap-nda.sh',
       unless  => '/usr/bin/curl -s -XGET localhost:9200/_cat/indices | grep nda',
+      cwd     => '/opt/nba-import/sh',
     }
 
     exec { 'import - crs':
@@ -47,5 +48,6 @@ class nba::import()
       logoutput => false,
       unless    => '/usr/bin/lsof /data/upload/crs/*  2>&1 | grep "status\|COMMAND"',
       require   => Exec['import - bootstrap'],
+      cwd       => '/opt/nba-import/sh',
     }
 }
