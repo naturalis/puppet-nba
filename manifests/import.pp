@@ -30,9 +30,10 @@ class nba::import()
       '/data/import/col',
       '/data/import/brahms',
       '/data/import/nsr']:
-      ensure => Directory,
-      owner  => 'root',
-      group  => 'root',
-      mode   => '0700',
+      ensure  => Directory,
+      owner   => 'root',
+      group   => 'root',
+      mode    => '0700',
+      require => [File['/data']],
     }
 }
