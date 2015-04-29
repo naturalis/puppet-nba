@@ -4,11 +4,13 @@
 class nba::build(
   $checkout,
   $repokey,
+  $es_cluster_id,
   $buildtype    = 'tag',
   $build_ear    = true,
   $build_import = false,
   $build_export = false,
   $deploy_ear   = false,
+  $main_es_ip   = '127.0.0.1'
 )
 {
 
