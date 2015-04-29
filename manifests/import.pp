@@ -4,11 +4,11 @@
 
 class nba::import()
 {
-  exec {'importit':
-    command   => '/bin/mv /opt/boe/* /opt/data/ && /bin/echo "importing files"',
-    logoutput => true,
-    unless    => '/usr/bin/lsof /opt/boe/*  2>&1 | grep "status\|COMMAND"'
-  }
+  # exec {'importit':
+  #   command   => '/bin/mv /opt/boe/* /opt/data/ && /bin/echo "importing files"',
+  #   logoutput => true,
+  #   unless    => '/usr/bin/lsof /opt/boe/*  2>&1 | grep "status\|COMMAND"'
+  # }
 
   file {[
     '/data',
@@ -35,5 +35,11 @@ class nba::import()
       group   => 'root',
       mode    => '0700',
       require => [File['/data']],
+    }
+
+    exec {'import - crs':
+      command   => '/bin/mv /data/upload/crs/* /data/import/crs/ && /bin/sh /opt/nda-import/sh/import-crs.sh&',
+      logoutput => false,
+      unless    => '/usr/bin/lsof /data/upload/crs/*  2>&1 | grep "status\|COMMAND"'
     }
 }
