@@ -45,7 +45,7 @@ class nba::import()
     exec { 'import - crs':
       command   => '/bin/mv /data/upload/crs/* /data/import/crs/ && /bin/sh /opt/nda-import/sh/import-crs.sh&',
       logoutput => false,
-      unless    => '/usr/bin/lsof /data/upload/crs/*  2>&1 | grep "status\|COMMAND"'
-      require   => Exec['import - bootstrap']
+      unless    => '/usr/bin/lsof /data/upload/crs/*  2>&1 | grep "status\|COMMAND"',
+      require   => Exec['import - bootstrap'],
     }
 }
