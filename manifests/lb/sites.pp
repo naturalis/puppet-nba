@@ -12,7 +12,7 @@ define nba::lb::sites(
     members => $members,
   }
 
-  nginx::resource::location{ '162_13_138_109_linneaus_ng':
+  nginx::resource::location{ $location :
     location => $location,
     vhost    => $vhost,
     proxy    => "http://${name}${endpoint}",
