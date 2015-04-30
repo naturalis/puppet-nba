@@ -81,12 +81,12 @@ class nba::import()
 
     exec { 'set nda import pid':
       command     => '/usr/bin/touch /var/run/nda-import.pid',
-      unless      => '/usr/bin/test /var/run/nda-import.pid',
+      creates     => '/var/run/nda-import.pid',
       refreshonly => true,
     }
 
     exec { 'take elasticsearch snapshot':
-      command   => '/bin/echo taking snapshot tbi',
+      command   => '/bin/echo taking snapshot tbi && /bin/rm /var/run/nda-import.pid',
       logoutput => true,
       unless    => ['/bin/ps aux | grep java | grep import | grep -v grep','/bin/ls /var/run/nda-import.pid  2>&1 | grep cannot'],
     }
