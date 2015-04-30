@@ -84,8 +84,7 @@ class nba::import()
     exec { 'take elasticsearch snapshot':
       command   => '/bin/echo taking snapshot tbi',
       logoutput => true,
-      unless    => '/bin/ps aux | grep import',
-      onlyif    => '/usr/bin/test -f /var/run/nda-import.pid'
+      unless    => ['/bin/ps aux | grep import','ls /var/run/nda-import.pid  2>&1 | grep cannot'],
     }
 
 }
