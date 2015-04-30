@@ -49,6 +49,7 @@ class nba::import()
       unless    => '/usr/bin/lsof /data/upload/crs/*  2>&1 | grep "status\|COMMAND"',
       require   => Exec['import - bootstrap'],
       cwd       => '/opt/nba-import/sh',
+      notify    => Exec['set nda import pid'],
     }
 
     exec { 'import - col':
@@ -57,6 +58,7 @@ class nba::import()
       unless    => '/usr/bin/lsof /data/upload/col/*  2>&1 | grep "status\|COMMAND"',
       require   => Exec['import - bootstrap'],
       cwd       => '/opt/nba-import/sh',
+      notify    => Exec['set nda import pid'],
     }
 
     exec { 'import - brahms':
@@ -65,6 +67,7 @@ class nba::import()
       unless    => '/usr/bin/lsof /data/upload/brahms/*  2>&1 | grep "status\|COMMAND"',
       require   => Exec['import - bootstrap'],
       cwd       => '/opt/nba-import/sh',
+      notify    => Exec['set nda import pid'],
     }
 
     exec { 'import - nsr':
@@ -73,6 +76,7 @@ class nba::import()
       unless    => '/usr/bin/lsof /data/upload/nsr/*  2>&1 | grep "status\|COMMAND"',
       require   => Exec['import - bootstrap'],
       cwd       => '/opt/nba-import/sh',
+      notify    => Exec['set nda import pid'],
     }
 
     exec { 'set nda import pid':
