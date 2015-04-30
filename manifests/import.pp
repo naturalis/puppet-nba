@@ -50,4 +50,42 @@ class nba::import()
       require   => Exec['import - bootstrap'],
       cwd       => '/opt/nba-import/sh',
     }
+
+    exec { 'import - col':
+      command   => '/bin/mv /data/upload/col/* /data/import/col/ && /bin/sh /opt/nba-import/sh/import-col.sh&',
+      logoutput => false,
+      unless    => '/usr/bin/lsof /data/upload/col/*  2>&1 | grep "status\|COMMAND"',
+      require   => Exec['import - bootstrap'],
+      cwd       => '/opt/nba-import/sh',
+    }
+
+    exec { 'import - brahms':
+      command   => '/bin/mv /data/upload/brahms/* /data/import/brahms/ && /bin/sh /opt/nba-import/sh/import-brahms.sh&',
+      logoutput => false,
+      unless    => '/usr/bin/lsof /data/upload/brahms/*  2>&1 | grep "status\|COMMAND"',
+      require   => Exec['import - bootstrap'],
+      cwd       => '/opt/nba-import/sh',
+    }
+
+    exec { 'import - nsr':
+      command   => '/bin/mv /data/upload/nsr/* /data/import/nsr/ && /bin/sh /opt/nba-import/sh/import-nsr.sh&',
+      logoutput => false,
+      unless    => '/usr/bin/lsof /data/upload/nsr/*  2>&1 | grep "status\|COMMAND"',
+      require   => Exec['import - bootstrap'],
+      cwd       => '/opt/nba-import/sh',
+    }
+
+    exec { 'set nda import pid':
+      command     => '/bin/echo running > /var/run/nda-import.pid',
+      unless      => '/usr/bin/test /var/run/nda-import.pid',
+      refreshonly => true,
+    }
+
+    exec { 'take elasticsearch snapshot':
+      command   => '/bin/echo taking snapshot tbi',
+      logoutput => true
+      unless    => '/bin/ps aux | grep import',
+      onlyif    => '/usr/bin/test -f /var/run/nda-import.pid'
+    }
+
 }
