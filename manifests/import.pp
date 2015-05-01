@@ -112,12 +112,12 @@ class nba::import()
       },
       ip       => '127.0.0.1',
       port     => '9200',
-      require  => File['/data/backup/import'],
+      #require  => File['/data/backup/import'],
     }
 
     file{[
       '/data/backup',
-      '/data/backup/import']:
+      '/data/backup/d']:
       ensure  => 'directory',
       owner   => 'elasticsearch',
       group   => 'wheel',
