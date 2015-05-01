@@ -120,8 +120,8 @@ class nba::import()
       '/data/backup/d']:
       ensure  => 'directory',
       owner   => 'elasticsearch',
-      group   => 'wheel',
-      mode    => '0770',
+      group   => 'elasticsearch',
+      mode    => '0777',
       require => File['/data']
     }
 
