@@ -99,7 +99,9 @@ class nba (
     deployment_dir          => '/opt/wildfly_deployments',
     install_java            => true,
     bind_address_management => $console_listen_ip,
-    system_properties       => { 'nl.naturalis.nda.conf.dir' => $nba_config_dir },
+    system_properties       => {
+      'nl.naturalis.nda.conf.dir' => $nba_config_dir
+    },
     require                 => Package['curl'],
     debug_mode              => $wildfly_debug,
     xmx                     => $wildfly_xmx,

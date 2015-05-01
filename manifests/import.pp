@@ -91,4 +91,42 @@ class nba::import()
       unless    => ['/bin/ps aux | grep java | grep import | grep -v grep','/bin/ls /var/run/nda-import.pid  2>&1 | grep cannot'],
     }
 
+    $timestamp = strftime('%Y%m%d%H%M')
+
+    es_snapshot { 'make_snapshot':
+      ensure        => present,
+      snapshot_name => "snapshot_${timestamp}",
+      repo          => 'mybackup',
+      ip            => '127.0.0.1',
+      port          => '9200',
+      subscribe     => Exec['take elasticsearch snapshot'],
+      require       => Es_repo['import'],
+    }
+
+    es_repo { 'import':
+      ensure   => present,
+      type     => 'fs',
+      settings => {
+        'location' => '/data/backup/import',
+        'compress' => true,
+      },
+      ip       => '127.0.0.1',
+      port     => '9200',
+      require  => File['/data/backup/import'],
+    }
+
+    file{[
+      '/data/backup',
+      '/data/backup/import']:
+      ensure  => 'directory',
+      owner   => 'elasticsearch',
+      group   => 'wheel',
+      mode    => '0770',
+      require => File['/data']
+    }
+
+
+
+
+
 }
