@@ -96,7 +96,7 @@ class nba::import()
     es_snapshot { 'make_snapshot':
       ensure        => present,
       snapshot_name => "snapshot_${timestamp}",
-      repo          => 'mybackup',
+      repo          => 'import',
       ip            => '127.0.0.1',
       port          => '9200',
       subscribe     => Exec['take elasticsearch snapshot'],
