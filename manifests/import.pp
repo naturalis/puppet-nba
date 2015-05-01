@@ -107,22 +107,19 @@ class nba::import()
       ensure   => present,
       type     => 'fs',
       settings => {
-        'location' => '/data/backup/import',
+        'location' => '/snapshot',
         'compress' => true,
       },
       ip       => '127.0.0.1',
       port     => '9200',
-      #require  => File['/data/backup/import'],
+      require  => File['/snapshot'],
     }
 
-    file{[
-      '/data/backup',
-      '/data/backup/d']:
-      ensure  => 'directory',
-      owner   => 'elasticsearch',
-      group   => 'elasticsearch',
-      mode    => '0777',
-      require => File['/data']
+    file{ '/snapshot':
+      ensure => 'directory',
+      owner  => 'elasticsearch',
+      group  => 'elasticsearch',
+      mode   => '0777',
     }
 
 
