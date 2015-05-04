@@ -92,7 +92,7 @@ class nba::import()
       notify    => Es_snapshot['make_snapshot']
     }
 
-    $timestamp = strftime('%Y%m%d%H%M')
+    $timestamp = strftime('%Y.%m.%d.%H.%M')
 
     es_snapshot { 'make_snapshot':
       snapshot_name => "snapshot_${timestamp}",
