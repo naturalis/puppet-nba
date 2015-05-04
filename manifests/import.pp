@@ -89,18 +89,18 @@ class nba::import()
       command   => '/bin/echo taking snapshot tbi && /bin/rm /var/run/nda-import.pid',
       logoutput => true,
       unless    => ['/bin/ps aux | grep java | grep import | grep -v grep','/bin/ls /var/run/nda-import.pid  2>&1 | grep cannot'],
+      notify    => Es_snapshot['make_snapshot']
     }
 
     $timestamp = strftime('%Y%m%d%H%M')
 
     es_snapshot { 'make_snapshot':
-      ensure        => present,
       snapshot_name => "snapshot_${timestamp}",
       repo          => 'import',
       ip            => '127.0.0.1',
       port          => '9200',
-      subscribe     => Exec['take elasticsearch snapshot'],
       require       => Es_repo['import'],
+      refreshonly   => true,
     }
 
     es_repo { 'import':
