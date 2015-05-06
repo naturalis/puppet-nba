@@ -124,7 +124,7 @@ class nba::build(
     exec { 'patch-import':
       cwd         => '/source/nba-git/nl.naturalis.nda.build',
       environment => ['IVY_HOME=/usr/share/maven-repo/org/apache/ivy/ivy/2.3.0/'],
-      command     => '/usr/bin/ant patch-import-module',
+      command     => '/usr/bin/ant install-import-cli',
       refreshonly => true,
       require     => Exec['build import'],
       subscribe   => File['/source/nba-git/nl.naturalis.nda.build/build.properties'],
@@ -146,7 +146,7 @@ class nba::build(
     exec { 'patch-export':
       cwd         => '/source/nba-git/nl.naturalis.nda.build',
       environment => ['IVY_HOME=/usr/share/maven-repo/org/apache/ivy/ivy/2.3.0/'],
-      command     => '/usr/bin/ant patch-export-module',
+      command     => '/usr/bin/ant install-export-cli',
       refreshonly => true,
       require     => Exec['build export'],
       subscribe   => File['/source/nba-git/nl.naturalis.nda.build/build.properties'],
