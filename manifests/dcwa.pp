@@ -9,7 +9,7 @@ class nba::dcwa()
     source   => 'git@github.com:atzedevries/thebsrepo.git',
     revision => 'master',
     require  => Package['git'],
-    user     => 'root',
+    user     => 'atze.devries',
     notify   => Exec['new stuff exec']
   }
 
