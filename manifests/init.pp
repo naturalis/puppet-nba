@@ -70,9 +70,9 @@ class nba (
 
   file { ['/var/log/nba','/opt/nba_ear',$nba_config_dir,'/opt/wildfly_deployments']:
     ensure  => directory,
-    mode    => '0755',
+    mode    => '0770',
     owner   => 'wildfly',
-    group   => 'wildfly',
+    group   => 'wheel',
     require => User['wildfly']
   }
 
@@ -82,11 +82,11 @@ class nba (
     require => File[$nba_config_dir],
   }
 
-  file { "${nba_config_dir}/nda.properties":
-    content => template('nba/nba/wildfly/nda.properties.erb'),
-    mode    => '0644',
-    require => File[$nba_config_dir],
-  }
+  # file { "${nba_config_dir}/nda.properties":
+  #   content => template('nba/nba/wildfly/nda.properties.erb'),
+  #   mode    => '0644',
+  #   require => File[$nba_config_dir],
+  # }
 
   file { '/etc/logrotate.d/nba':
     content => template('nba/nba/wildfly/logrotate.erb'),

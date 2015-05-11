@@ -153,18 +153,4 @@ class nba::build(
     }
   }
 
-  # exec { 'build sh':
-  #   cwd         => '/source/nba-git/nl.naturalis.nda.build',
-  #   environment => ['IVY_HOME=/usr/share/maven-repo/org/apache/ivy/ivy/2.3.0/'],
-  #   command     => '/usr/bin/ant clean sh',
-  #   refreshonly => true,
-  # }
-  #
-  # exec { 'build sh-config':
-  #   cwd         => '/source/nba-git/nl.naturalis.nda.build',
-  #   environment => ['IVY_HOME=/usr/share/maven-repo/org/apache/ivy/ivy/2.3.0/'],
-  #   command     => '/usr/bin/ant clean sh-config',
-  #   refreshonly => true,
-  # }
-
 }

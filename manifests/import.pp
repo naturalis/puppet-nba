@@ -62,7 +62,7 @@ class nba::import()
     }
 
     exec { 'import - brahms':
-      command   => '/bin/mv /data/upload/brahms/* /data/impor',
+      command   => '/bin/mv /data/upload/brahms/* /data/import/brahms',
       logoutput => false,
       unless    => '/usr/bin/lsof /data/upload/brahms/*  2>&1 | grep "status\|COMMAND"',
       require   => Exec['import - bootstrap'],
@@ -88,7 +88,7 @@ class nba::import()
     exec { 'take elasticsearch snapshot':
       command   => '/bin/echo taking snapshot tbi && /bin/rm /var/run/nda-import.pid',
       logoutput => true,
-      unless    => ['/bin/ps aux | grep java | grep import | grep -v grep','/bin/ls /var/run/nda-import.pid  2>&1 | grep cannot'],
+      unless    => ['/bin/ps aux | grep java | grep import | grep -v logstash | grep -v grep','/bin/ls /var/run/nda-import.pid  2>&1 | grep cannot'],
       notify    => Es_snapshot['make_snapshot']
     }
 
