@@ -10,7 +10,8 @@ class nba::build(
   $build_import = false,
   $build_export = false,
   $deploy_ear   = false,
-  $main_es_ip   = '127.0.0.1'
+  $main_es_ip   = '127.0.0.1',
+  $es_replicas  = 1
 )
 {
 
