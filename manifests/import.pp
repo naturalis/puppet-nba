@@ -40,7 +40,7 @@ class nba::import()
     exec { 'import - bootstrap':
       command => '/bin/sh /data/nba-import/sh/bootstrap-nda.sh',
       unless  => '/usr/bin/curl -s -XGET localhost:9200/_cat/indices | grep nda',
-      cwd     => '/opt/nba-import/sh',
+      cwd     => '/data/nba-import/sh',
     }
 
     exec { 'import - crs':
@@ -48,7 +48,7 @@ class nba::import()
       logoutput => false,
       unless    => '/usr/bin/lsof /data/upload/crs/*  2>&1 | grep "status\|COMMAND"',
       require   => Exec['import - bootstrap'],
-      cwd       => '/opt/nba-import/sh',
+      cwd       => '/data/nba-import/sh',
       notify    => Exec['set nda import pid'],
     }
 
@@ -57,7 +57,7 @@ class nba::import()
       logoutput => false,
       unless    => '/usr/bin/lsof /data/upload/col/*  2>&1 | grep "status\|COMMAND"',
       require   => Exec['import - bootstrap'],
-      cwd       => '/opt/nba-import/sh',
+      cwd       => '/data/nba-import/sh',
       notify    => Exec['set nda import pid'],
     }
 
@@ -66,7 +66,7 @@ class nba::import()
       logoutput => false,
       unless    => '/usr/bin/lsof /data/upload/brahms/*  2>&1 | grep "status\|COMMAND"',
       require   => Exec['import - bootstrap'],
-      cwd       => '/opt/nba-import/sh',
+      cwd       => '/data/nba-import/sh',
       notify    => Exec['set nda import pid'],
     }
 
@@ -75,7 +75,7 @@ class nba::import()
       logoutput => false,
       unless    => '/usr/bin/lsof /data/upload/nsr/*  2>&1 | grep "status\|COMMAND"',
       require   => Exec['import - bootstrap'],
-      cwd       => '/opt/nba-import/sh',
+      cwd       => '/data/nba-import/sh',
       notify    => Exec['set nda import pid'],
     }
 
