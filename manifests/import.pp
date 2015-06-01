@@ -38,13 +38,13 @@ class nba::import()
     }
 
     exec { 'import - bootstrap':
-      command => '/bin/sh /opt/nba-import/sh/bootstrap-nda.sh',
+      command => '/bin/sh /data/nba-import/sh/bootstrap-nda.sh',
       unless  => '/usr/bin/curl -s -XGET localhost:9200/_cat/indices | grep nda',
       cwd     => '/opt/nba-import/sh',
     }
 
     exec { 'import - crs':
-      command   => '/bin/mv /data/upload/crs/* /data/import/crs/ && /bin/sh /opt/nba-import/sh/import-crs.sh&',
+      command   => '/bin/mv /data/upload/crs/* /data/import/crs/ && /bin/sh /data/nba-import/sh/import-crs.sh&',
       logoutput => false,
       unless    => '/usr/bin/lsof /data/upload/crs/*  2>&1 | grep "status\|COMMAND"',
       require   => Exec['import - bootstrap'],
@@ -53,7 +53,7 @@ class nba::import()
     }
 
     exec { 'import - col':
-      command   => '/bin/mv /data/upload/col/* /data/import/col/ && /bin/sh /opt/nba-import/sh/import-col.sh&',
+      command   => '/bin/mv /data/upload/col/* /data/import/col/ && /bin/sh /data/nba-import/sh/import-col.sh&',
       logoutput => false,
       unless    => '/usr/bin/lsof /data/upload/col/*  2>&1 | grep "status\|COMMAND"',
       require   => Exec['import - bootstrap'],
@@ -71,7 +71,7 @@ class nba::import()
     }
 
     exec { 'import - nsr':
-      command   => '/bin/mv /data/upload/nsr/* /data/import/nsr/ && /bin/sh /opt/nba-import/sh/import-nsr.sh&',
+      command   => '/bin/mv /data/upload/nsr/* /data/import/nsr/ && /bin/sh /data/nba-import/sh/import-nsr.sh&',
       logoutput => false,
       unless    => '/usr/bin/lsof /data/upload/nsr/*  2>&1 | grep "status\|COMMAND"',
       require   => Exec['import - bootstrap'],
