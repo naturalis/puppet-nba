@@ -1,0 +1,23 @@
+input {
+  file {
+    path         => "/data/import-logs/*.log"
+  }
+}
+filter {
+   grok {
+      match => ["message", "%{TIMESTAMP_ISO8601:ts} %{LOGLEVEL:loglevel}%{SPACE}\|%{SPACE}%{WORD:function}%{SPACE}\|%{SPACE}%{GREEDYDATA:library}%{SPACE}\|%{SPACE}%{GREEDYDATA:log_message}"]
+    }
+
+    date {
+      match => ["ts", "YYYY-MM-dd HH:mm:ss,SSS"]
+      timezone => "Europe/Amsterdam"
+    }
+    mutate {
+        remove_field => [ "ts", "message"]
+        strip => ["library","function","loglevel","log_message"]
+    }
+}
+output {
+ # stdout {codec => rubydebug }
+  elasticsearch { cluster => "deef9a8e-ce80-48d0-9a78-69b493f8e571" }
+}
