@@ -16,8 +16,8 @@ class nba::build(
 {
 
   case $buildtype {
-    'tag':    {$deploy_cmd = '/usr/bin/ant clean ear' }
-    'commit': {$deploy_cmd = '/usr/bin/ant clean nightly ear'}
+    'tag':    {$deploy_cmd = '/usr/bin/ant clean build-ear-file' }
+    'commit': {$deploy_cmd = '/usr/bin/ant clean nightly build-ear-file'}
     default:  { fail('variable: build type need to be "tag" or "commit"')}
   }
 
@@ -104,6 +104,7 @@ class nba::build(
       environment => ['IVY_HOME=/usr/share/maven-repo/org/apache/ivy/ivy/2.3.0/'],
       command     => '/usr/bin/ant deploy-ear-file',
       refreshonly => true,
+      require     => File['/opt/wildfly_deployments'],
       subscribe   => Exec['build ear'],
     }
   }
