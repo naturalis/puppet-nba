@@ -33,7 +33,7 @@ class  nba::roles::app (
     wildfly_xmx         => '1024m',
     wildfly_xms         => '256m',
     wildlfy_maxpermsize => '512m',
-    stage               => wildfly,
+    #stage               => wildfly,
   }
 
   class { 'nba::build':
