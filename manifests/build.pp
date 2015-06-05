@@ -23,11 +23,11 @@ class nba::build(
 
 
 
-  if !defined(File['/data']) {
-    file { '/data':
-      ensure => directory,
-    }
-  }
+  # if !defined(File['/data']) {
+  #   file { '/data':
+  #     ensure => directory,
+  #   }
+  # }
 
   #fail ('Unable to deploy ear without build of ear') if $build_ear == false and $deploy_ear == true
 
