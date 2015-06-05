@@ -44,10 +44,10 @@ class nba::build(
     }
   }
 
-  file { '/etc/environment':
-    content => 'PATH="/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games"
-IVY_HOME="/usr/share/maven-repo/org/apache/ivy/ivy/2.3.0/"',
-  }
+#   file { '/etc/environment':
+#     content => 'PATH="/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games"
+# IVY_HOME="/usr/share/maven-repo/org/apache/ivy/ivy/2.3.0/"',
+#   }
 
   file { '/root/.ssh':
     ensure => directory,
