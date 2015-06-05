@@ -28,7 +28,6 @@ class nba::build(
   if !defined(File['/data']) {
     file { '/data':
       ensure => directory,
-      stage  => build,
     }
   }
 
