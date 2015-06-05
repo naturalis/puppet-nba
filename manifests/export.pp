@@ -34,6 +34,7 @@ class nba::export(
     cwd         => '/data/nba-export/sh/',
     command     => '/bin/sh /data/nba-export/sh/export-dwca.sh',
     require     => File['/data/dwca-zip'],
+    subscribe   => [Exec['build export'],Exec['patch-export']]
     refreshonly => true,
   }
 }

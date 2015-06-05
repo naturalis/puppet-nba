@@ -171,7 +171,6 @@ class nba::build(
       refreshonly => true,
       require     => Exec['build export'],
       subscribe   => File['/source/nba-git/nl.naturalis.nda.build/build.properties'],
-      notify      => Exec['run export'],
     }
   }
 
