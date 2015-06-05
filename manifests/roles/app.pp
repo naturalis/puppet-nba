@@ -20,7 +20,7 @@ class  nba::roles::app (
 
   Stage['wildfly'] -> Stage['build'] -> Stage['main']
 
-  class { 'nba::init':
+  class { 'nba':
     nba_cluster_id      => $elasticsearch_cluster_name,
     console_listen_ip   => '127.0.0.1',
     admin_password      => $wildfly_console_password,
