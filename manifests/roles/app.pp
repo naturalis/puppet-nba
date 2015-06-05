@@ -23,7 +23,7 @@ class  nba::roles::app (
   class { 'nba::init':
     nba_cluster_id      => $elasticsearch_cluster_name,
     console_listen_ip   => '127.0.0.1',
-    admin_password      => $wildfly_console_password,,
+    admin_password      => $wildfly_console_password,
     extra_users_hash    => undef,
     nba_config_dir      => '/etc/nba',
     es_host_ip          => $elasticsearch_ip_addresses,
@@ -49,8 +49,8 @@ class  nba::roles::app (
     stage         => build,
   }
 
-  class {'nba::export':
-    version => 'master',
+  class { 'nba::export':
+    version => $dcwa_eml_version,
     stage   => main,
   }
 }
