@@ -31,7 +31,6 @@ class nba::build(
   file {'/opt/wildfly_deployments':
     ensure => directory,
     mode   => '0777',
-    group  => 'wheel',
   }
   #fail ('Unable to deploy ear without build of ear') if $build_ear == false and $deploy_ear == true
 
