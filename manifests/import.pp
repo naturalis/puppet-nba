@@ -11,7 +11,6 @@ class nba::import()
   # }
 
   file {[
-    '/data',
     '/data/upload',
     '/data/upload/crs',
     '/data/upload/col',
