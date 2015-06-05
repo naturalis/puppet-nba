@@ -49,33 +49,28 @@ class nba::build(
   file { '/etc/environment':
     content => 'PATH="/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games"
 IVY_HOME="/usr/share/maven-repo/org/apache/ivy/ivy/2.3.0/"',
-    stage   => build,
   }
 
   file { '/root/.ssh':
     ensure => directory,
-    stage  => build,
   }->
 # Create /root/.ssh/repokeyname file
   file { '/root/.ssh/nbagit':
     ensure  => present,
     content => $repokey,
     mode    => '0600',
-    stage   => build,
   }->
 # Create sshconfig file
   file { '/root/.ssh/config':
     ensure  => present,
     content =>  "Host github.com\n\tIdentityFile ~/.ssh/nbagit",
     mode    => '0600',
-    stage   => build,
   }->
 # copy known_hosts.sh file from puppet module
   file{ '/usr/local/sbin/known_hosts.sh' :
     ensure => present,
     mode   => '0700',
     source => 'puppet:///modules/nba/known_hosts.sh',
-    stage  => build,
   }->
 # run known_hosts.sh for future acceptance of github key
   exec{ 'add_known_hosts' :
@@ -89,7 +84,6 @@ IVY_HOME="/usr/share/maven-repo/org/apache/ivy/ivy/2.3.0/"',
 # give known_hosts file the correct permissions
   file{ '/root/.ssh/known_hosts':
     mode  => '0600',
-    stage => build,
   }->
 
   vcsrepo { '/source/nba-git':
@@ -106,7 +100,6 @@ IVY_HOME="/usr/share/maven-repo/org/apache/ivy/ivy/2.3.0/"',
     ensure  => present,
     content => template('nba/build/build.properties.erb'),
     require => Vcsrepo['/source/nba-git'],
-    stage   => build,
     #notify  => Exec['build sh-config'],
   }
 
