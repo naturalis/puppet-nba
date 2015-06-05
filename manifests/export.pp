@@ -10,7 +10,7 @@ class nba::export(
     ensure => directory,
   }
 
-  if (version == 'latest' ) {
+  if ($version == 'latest' ) {
     vcsrepo { '/data/dcwa-conf/dcwa':
       ensure   => latest,
       provider => git,
