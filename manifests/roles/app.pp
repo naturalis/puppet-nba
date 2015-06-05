@@ -13,6 +13,7 @@ class  nba::roles::app (
   #optional variables
   $wildfly_debug    = false,
   $dcwa_eml_version = 'master',
+  $deploy_export    = false,
 
 ){
 
@@ -49,8 +50,10 @@ class  nba::roles::app (
     stage         => build,
   }
 
-  class { 'nba::export':
-    version => $dcwa_eml_version,
-    stage   => main,
+  if ($deploy_export) {
+    class { 'nba::export':
+      version => $dcwa_eml_version,
+      stage   => main,
+    }
   }
 }
