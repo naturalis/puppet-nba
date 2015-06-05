@@ -2,7 +2,7 @@
 #
 #
 class nba::export(
-  version => 'latest',
+  $version = 'latest',
 )
 {
 
@@ -28,7 +28,7 @@ class nba::export(
       ensure   => present,
       provider => git,
       source   => 'git@github.com:naturalis/nba-eml.git',
-      revision => version,
+      revision => $version,
       require  => [Package['git'],File['/data/dcwa-conf']],
       notify   => Exec['run export'],
     }
