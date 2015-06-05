@@ -21,9 +21,7 @@ class nba::build(
     default:  { fail('variable: build type need to be "tag" or "commit"')}
   }
 
-  stage {'build':
-    before => Stage['main']
-  }
+
 
   if !defined(File['/data']) {
     file { '/data':
@@ -35,13 +33,11 @@ class nba::build(
 
   package {['git','ant','ivy']:
     ensure => installed,
-    stage  => build,
   }
 
   if !defined(Package['openjdk-7-jdk']) {
     package { 'openjdk-7-jdk':
       ensure => installed,
-      stage  => build,
     }
   }
 
@@ -78,7 +74,6 @@ IVY_HOME="/usr/share/maven-repo/org/apache/ivy/ivy/2.3.0/"',
     provider => shell,
     user     => 'root',
     unless   => 'test -f /root/.ssh/known_hosts',
-    stage    => build,
   }->
 # give known_hosts file the correct permissions
   file{ '/root/.ssh/known_hosts':
@@ -92,7 +87,6 @@ IVY_HOME="/usr/share/maven-repo/org/apache/ivy/ivy/2.3.0/"',
     revision => $checkout,
     require  => Package['git'],
     user     => 'root',
-    stage    => build,
   }
 
   file { '/source/nba-git/nl.naturalis.nda.build/build.properties':
@@ -112,7 +106,6 @@ IVY_HOME="/usr/share/maven-repo/org/apache/ivy/ivy/2.3.0/"',
         Vcsrepo['/source/nba-git'],
         File['/source/nba-git/nl.naturalis.nda.build/build.properties']
       ],
-      stage       => build,
     }
   }
 
@@ -124,7 +117,6 @@ IVY_HOME="/usr/share/maven-repo/org/apache/ivy/ivy/2.3.0/"',
       refreshonly => true,
       require     => File['/opt/wildfly_deployments'],
       subscribe   => Exec['build ear'],
-      stage       => build,
     }
   }
 
@@ -139,7 +131,6 @@ IVY_HOME="/usr/share/maven-repo/org/apache/ivy/ivy/2.3.0/"',
         Vcsrepo['/source/nba-git'],
         File['/source/nba-git/nl.naturalis.nda.build/build.properties']
       ],
-      stage       => build,
       #notify      => Exec['build sh'],
     }
 
@@ -150,7 +141,6 @@ IVY_HOME="/usr/share/maven-repo/org/apache/ivy/ivy/2.3.0/"',
       refreshonly => true,
       require     => Exec['build import'],
       subscribe   => File['/source/nba-git/nl.naturalis.nda.build/build.properties'],
-      stage       => build,
     }
 
   }
@@ -164,7 +154,6 @@ IVY_HOME="/usr/share/maven-repo/org/apache/ivy/ivy/2.3.0/"',
         Vcsrepo['/source/nba-git'],
         File['/source/nba-git/nl.naturalis.nda.build/build.properties']
       ],
-      stage       => build,
     }
     exec { 'patch-export':
       cwd         => '/source/nba-git/nl.naturalis.nda.build',
@@ -174,7 +163,6 @@ IVY_HOME="/usr/share/maven-repo/org/apache/ivy/ivy/2.3.0/"',
       require     => Exec['build export'],
       subscribe   => File['/source/nba-git/nl.naturalis.nda.build/build.properties'],
       notify      => Exec['run export'],
-      stage       => build,
     }
   }
 
