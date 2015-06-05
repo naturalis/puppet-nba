@@ -50,7 +50,7 @@ class  nba::roles::app (
     stage         => build,
   }
 
-  if ($deploy_export) {
+  if ($deploy_export == true) {
     class { 'nba::export':
       version => $dcwa_eml_version,
       stage   => main,
