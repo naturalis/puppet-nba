@@ -35,7 +35,7 @@ class nba::build(
   #fail ('Unable to deploy ear without build of ear') if $build_ear == false and $deploy_ear == true
 
   package {['git','ant','ivy']:
-    ensure => installed
+    ensure => installed,
     stage  => build,
   }
 
@@ -48,7 +48,7 @@ class nba::build(
 
   file { '/etc/environment':
     content => 'PATH="/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games"
-IVY_HOME="/usr/share/maven-repo/org/apache/ivy/ivy/2.3.0/"'
+IVY_HOME="/usr/share/maven-repo/org/apache/ivy/ivy/2.3.0/"',
     stage   => build,
   }
 
