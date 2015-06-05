@@ -16,7 +16,7 @@ class nba::export(
       provider => git,
       source   => 'git@github.com:naturalis/nba-eml.git',
       revision => 'master',
-      require  => [Package['git'],File['/data/dcwa-conf']],
+      require  => [Package['git'],File['/data/dwca-conf']],
       notify   => Exec['run export'],
     }
   } else {
