@@ -21,40 +21,61 @@ class nba::build(
     default:  { fail('variable: build type need to be "tag" or "commit"')}
   }
 
+  stage {'build':
+    before => Stage['main']
+  }
+
+  if !defined(File['/data']) {
+    file { '/data':
+      ensure => directory,
+      stage  => build,
+    }
+  }
+
   #fail ('Unable to deploy ear without build of ear') if $build_ear == false and $deploy_ear == true
 
   package {['git','ant','ivy']:
     ensure => installed
+    stage  => build,
   }
 
   if !defined(Package['openjdk-7-jdk']) {
-    package { 'openjdk-7-jdk': ensure => installed }
+    package { 'openjdk-7-jdk':
+      ensure => installed,
+      stage  => build,
+    }
   }
 
-  file { '/etc/profile.d/ivy.sh':
-    content => 'export IVY_HOME="/usr/share/maven-repo/org/apache/ivy/ivy/2.3.0/"'
+  file { '/etc/environment':
+    content => 'PATH="/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games"
+IVY_HOME="/usr/share/maven-repo/org/apache/ivy/ivy/2.3.0/"'
+    stage   => build,
   }
 
   file { '/root/.ssh':
-    ensure    => directory,
+    ensure => directory,
+    stage  => build,
   }->
 # Create /root/.ssh/repokeyname file
   file { '/root/.ssh/nbagit':
     ensure  => present,
     content => $repokey,
     mode    => '0600',
+    stage   => build,
   }->
 # Create sshconfig file
   file { '/root/.ssh/config':
     ensure  => present,
     content =>  "Host github.com\n\tIdentityFile ~/.ssh/nbagit",
     mode    => '0600',
+    stage   => build,
   }->
 # copy known_hosts.sh file from puppet module
   file{ '/usr/local/sbin/known_hosts.sh' :
     ensure => present,
     mode   => '0700',
     source => 'puppet:///modules/nba/known_hosts.sh',
+    stage  => build,
   }->
 # run known_hosts.sh for future acceptance of github key
   exec{ 'add_known_hosts' :
@@ -62,11 +83,13 @@ class nba::build(
     path     => '/sbin:/usr/bin:/usr/local/bin/:/bin/',
     provider => shell,
     user     => 'root',
-    unless   => 'test -f /root/.ssh/known_hosts'
+    unless   => 'test -f /root/.ssh/known_hosts',
+    stage    => build,
   }->
 # give known_hosts file the correct permissions
   file{ '/root/.ssh/known_hosts':
-    mode      => '0600',
+    mode  => '0600',
+    stage => build,
   }->
 
   vcsrepo { '/source/nba-git':
@@ -76,12 +99,14 @@ class nba::build(
     revision => $checkout,
     require  => Package['git'],
     user     => 'root',
+    stage    => build,
   }
 
   file { '/source/nba-git/nl.naturalis.nda.build/build.properties':
     ensure  => present,
     content => template('nba/build/build.properties.erb'),
     require => Vcsrepo['/source/nba-git'],
+    stage   => build,
     #notify  => Exec['build sh-config'],
   }
 
@@ -94,7 +119,8 @@ class nba::build(
       subscribe   => [
         Vcsrepo['/source/nba-git'],
         File['/source/nba-git/nl.naturalis.nda.build/build.properties']
-      ]
+      ],
+      stage       => build,
     }
   }
 
@@ -106,6 +132,7 @@ class nba::build(
       refreshonly => true,
       require     => File['/opt/wildfly_deployments'],
       subscribe   => Exec['build ear'],
+      stage       => build,
     }
   }
 
@@ -120,6 +147,7 @@ class nba::build(
         Vcsrepo['/source/nba-git'],
         File['/source/nba-git/nl.naturalis.nda.build/build.properties']
       ],
+      stage       => build,
       #notify      => Exec['build sh'],
     }
 
@@ -130,6 +158,7 @@ class nba::build(
       refreshonly => true,
       require     => Exec['build import'],
       subscribe   => File['/source/nba-git/nl.naturalis.nda.build/build.properties'],
+      stage       => build,
     }
 
   }
@@ -143,7 +172,7 @@ class nba::build(
         Vcsrepo['/source/nba-git'],
         File['/source/nba-git/nl.naturalis.nda.build/build.properties']
       ],
-      #notify      => Exec['build sh']
+      stage       => build,
     }
     exec { 'patch-export':
       cwd         => '/source/nba-git/nl.naturalis.nda.build',
@@ -152,6 +181,8 @@ class nba::build(
       refreshonly => true,
       require     => Exec['build export'],
       subscribe   => File['/source/nba-git/nl.naturalis.nda.build/build.properties'],
+      notify      => Exec['run export'],
+      stage       => build,
     }
   }
 
