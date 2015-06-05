@@ -6,12 +6,12 @@ class nba::export(
 )
 {
 
-  file { ['/data/dcwa-zip','/data/dcwa-conf','/data/export-log'] :
+  file { ['/data/dwca-zip','/data/dwca-conf','/data/export-log'] :
     ensure => directory,
   }
 
   if ($version == 'latest' ) {
-    vcsrepo { '/data/dcwa-conf/dcwa':
+    vcsrepo { '/data/dwca-conf/dwca':
       ensure   => latest,
       provider => git,
       source   => 'git@github.com:naturalis/nba-eml.git',
@@ -20,7 +20,7 @@ class nba::export(
       notify   => Exec['run export'],
     }
   } else {
-    vcsrepo { '/data/dcwa-conf/dcwa':
+    vcsrepo { '/data/dwca-conf/dwca':
       ensure   => present,
       provider => git,
       source   => 'git@github.com:naturalis/nba-eml.git',
@@ -32,7 +32,7 @@ class nba::export(
 
   exec { 'run export':
     command     => '/bin/sh /data/nba-export/sh/export-dwca.sh',
-    require     => File['/data/dcwa-zip'],
+    require     => File['/data/dwca-zip'],
     refreshonly => true,
   }
 }
