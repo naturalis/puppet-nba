@@ -68,7 +68,7 @@ class nba (
   # ear: ant clean ear
 
 
-  file { ['/var/log/nba','/opt/nba_ear',$nba_config_dir,'/opt/wildfly_deployments']:
+  file { ['/var/log/nba','/opt/nba_ear',$nba_config_dir]:
     ensure  => directory,
     mode    => '0770',
     owner   => 'wildfly',

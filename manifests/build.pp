@@ -28,7 +28,11 @@ class nba::build(
   #     ensure => directory,
   #   }
   # }
-
+  file {'/opt/wildfly_deployments':
+    ensure => directory,
+    mode   => '0777',
+    group  => 'wheel',
+  }
   #fail ('Unable to deploy ear without build of ear') if $build_ear == false and $deploy_ear == true
 
   package {['git','ant','ivy']:
@@ -110,6 +114,7 @@ IVY_HOME="/usr/share/maven-repo/org/apache/ivy/ivy/2.3.0/"',
   }
 
   if $deploy_ear {
+
     exec { 'deploy nba':
       cwd         => '/source/nba-git/nl.naturalis.nda.build',
       environment => ['IVY_HOME=/usr/share/maven-repo/org/apache/ivy/ivy/2.3.0/'],
