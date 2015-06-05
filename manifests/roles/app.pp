@@ -49,8 +49,8 @@ class  nba::roles::app (
     stage         => build,
   }
 
-  class { 'nba::export':
-    version => $dcwa_eml_version,
-    stage   => main,
-  }
+  #class { 'nba::export':
+  #  version => $dcwa_eml_version,
+  #  stage   => main,
+  #}
 }
