@@ -10,8 +10,8 @@ class nba::export(
     file { '/data': ensure => directory }
   }
 
-  file { ['/data/dcwa-zip','/data/dcwa-conf','/data/export-log']
-    ensure => directory
+  file { ['/data/dcwa-zip','/data/dcwa-conf','/data/export-log'] :
+    ensure => directory,
   }
 
   if (version == 'latest' ) {
