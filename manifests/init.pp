@@ -52,6 +52,7 @@ class nba (
   $wildfly_xmx         = '1024m',
   $wildfly_xms         = '256m',
   $wildlfy_maxpermsize = '512m',
+  $install_java        = true
 ){
 
   if $nba_cluster_id == 'changeme' { fail('Change the variable nba_cluster_name to a propper one') }
@@ -97,7 +98,7 @@ class nba (
     admin_password          => 'nda',
     admin_user              => 'nda',
     deployment_dir          => '/opt/wildfly_deployments',
-    install_java            => true,
+    install_java            => $install_java,
     bind_address_management => $console_listen_ip,
     system_properties       => {
       'nl.naturalis.nda.conf.dir' => $nba_config_dir
