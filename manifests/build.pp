@@ -126,7 +126,7 @@ class nba::build(
       cwd         => '/source/nba-git/nl.naturalis.nda.build',
       environment => ['IVY_HOME=/usr/share/maven-repo/org/apache/ivy/ivy/2.3.0/'],
       #command     => "/usr/bin/sudo /bin/bash -c \"export IVY_HOME=${ivy_home} ;  cd /source/nba-git/nl.naturalis.nda.build ; /usr/bin/ant deploy-ear-file\"" ,
-
+      command     => '/usr/bin/ant deploy-ear-file',
       refreshonly => true,
       require     => File['/opt/wildfly_deployments'],
       subscribe   => Exec['build ear'],
