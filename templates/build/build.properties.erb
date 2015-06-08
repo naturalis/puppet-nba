@@ -1,0 +1,25 @@
+
+elasticsearch.cluster.name=<%= scope.lookupvar("nba::build::es_cluster_id") %>
+elasticsearch.transportaddress.host=<%= scope.lookupvar("nba::build::main_es_ip") %>
+elasticsearch.transportaddress.port=9300
+elasticsearch.index.name=nda
+elasticsearch.index.numshards=9
+elasticsearch.index.numreplicas=<%= scope.lookupvar("nba::build::es_replicas") %>
+
+ear.install.dir=/opt/wildfly_deployments
+
+nl.naturalis.nda.conf.dir=/etc/nba
+nl.naturalis.nda.baseurl=v0
+
+nda.import.install.dir=/data/nba-import
+nda.import.crs.datadir=/data/import/crs
+nda.import.col.datadir=/data/import/col
+nda.import.brahms.datadir=/data/import/brahms
+nda.import.nsr.datadir=/data/import/nsr
+nda.import.col.year=2014
+nda.import.log.dir=/data/import-logs
+
+nda.export.install.dir=/data/nba-export
+nda.export.output.dir=/data/dwca-zip
+nda.export.user.conf.dir=/data/dwca-conf
+nda.export.log.dir=/data/export-log

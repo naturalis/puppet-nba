@@ -15,9 +15,9 @@ class nba::management(
   } ->
 
   file {'/etc/exports':
-    ensure    => present,
-    content   => template('nba/nfs/exports.erb'),
-    notify    => Service['nfs-kernel-server'],
+    ensure  => present,
+    content => template('nba/nfs/exports.erb'),
+    notify  => Service['nfs-kernel-server'],
   }
 
   service {'nfs-kernel-server':
