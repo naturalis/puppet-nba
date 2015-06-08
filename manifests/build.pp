@@ -108,8 +108,10 @@ class nba::build(
   if $build_ear {
     exec { 'build ear':
       cwd         => '/source/nba-git/nl.naturalis.nda.build',
-      #environment => ['IVY_HOME=/usr/share/maven-repo/org/apache/ivy/ivy/2.3.0/'],
-      command     => $deploy_cmd,
+      environment => ['IVY_HOME=/usr/share/maven-repo/org/apache/ivy/ivy/2.3.0/'],
+      logoutput   => true,
+      #command     => $deploy_cmd,
+      command     => '/usr/bin/ant clean build-ear-file',
       refreshonly => true,
       subscribe   => [
         Vcsrepo['/source/nba-git'],
@@ -122,8 +124,9 @@ class nba::build(
 
     exec { 'deploy nba':
       cwd         => '/source/nba-git/nl.naturalis.nda.build',
-      #environment => ['IVY_HOME=/usr/share/maven-repo/org/apache/ivy/ivy/2.3.0/'],
-      command     => "/usr/bin/sudo /bin/bash -c \"export IVY_HOME=${ivy_home} ;  cd /source/nba-git/nl.naturalis.nda.build ; /usr/bin/antdeploy-ear-file\"" ,
+      environment => ['IVY_HOME=/usr/share/maven-repo/org/apache/ivy/ivy/2.3.0/'],
+      #command     => "/usr/bin/sudo /bin/bash -c \"export IVY_HOME=${ivy_home} ;  cd /source/nba-git/nl.naturalis.nda.build ; /usr/bin/ant deploy-ear-file\"" ,
+
       refreshonly => true,
       require     => File['/opt/wildfly_deployments'],
       subscribe   => Exec['build ear'],

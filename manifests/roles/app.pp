@@ -43,7 +43,7 @@ class  nba::roles::app (
     es_cluster_id => $elasticsearch_cluster_name,
     buildtype     => 'tag',
     build_ear     => true,
-    build_export  => true,
+    build_export  => $deploy_export,
     deploy_ear    => true,
     main_es_ip    => $elasticsearch_ip_addresses,
     es_replicas   => 0,
