@@ -11,13 +11,14 @@ class nba::build(
   $build_export = false,
   $deploy_ear   = false,
   $main_es_ip   = '127.0.0.1',
-  $es_replicas  = 1
+  $es_replicas  = 1,
+  $ivy_home     = '/usr/share/maven-repo/org/apache/ivy/ivy/2.3.0/'
 )
 {
 
   case $buildtype {
-    'tag':    {$deploy_cmd = '/bin/bash -c "export IVY_HOME=/usr/share/maven-repo/org/apache/ivy/ivy/2.3.0/ ; /usr/bin/ant clean build-ear-file"' }
-    'commit': {$deploy_cmd = '/bin/bash -c "export IVY_HOME=/usr/share/maven-repo/org/apache/ivy/ivy/2.3.0/ ; /usr/bin/ant clean nightly build-ear-file"'}
+    'tag':    {$deploy_cmd = "/bin/bash -c \"export IVY_HOME=${ivy_home} ; /usr/bin/ant clean build-ear-file\"" }
+    'commit': {$deploy_cmd = "/bin/bash -c \"export IVY_HOME=${ivy_home} ; /usr/bin/ant clean nighty build-ear-file\""}
     default:  { fail('variable: build type need to be "tag" or "commit"')}
   }
 
@@ -107,7 +108,7 @@ class nba::build(
   if $build_ear {
     exec { 'build ear':
       cwd         => '/source/nba-git/nl.naturalis.nda.build',
-      environment => ['IVY_HOME=/usr/share/maven-repo/org/apache/ivy/ivy/2.3.0/'],
+      #environment => ['IVY_HOME=/usr/share/maven-repo/org/apache/ivy/ivy/2.3.0/'],
       command     => $deploy_cmd,
       refreshonly => true,
       subscribe   => [
@@ -121,8 +122,8 @@ class nba::build(
 
     exec { 'deploy nba':
       cwd         => '/source/nba-git/nl.naturalis.nda.build',
-      environment => ['IVY_HOME=/usr/share/maven-repo/org/apache/ivy/ivy/2.3.0/'],
-      command     => '/bin/bash -c "export IVY_HOME=/usr/share/maven-repo/org/apache/ivy/ivy/2.3.0/ ; /usr/bin/ant deploy-ear-file"',
+      #environment => ['IVY_HOME=/usr/share/maven-repo/org/apache/ivy/ivy/2.3.0/'],
+      command     => "/bin/bash -c \"export IVY_HOME=${ivy_home} ; /usr/bin/antdeploy-ear-file\"" ,
       refreshonly => true,
       require     => File['/opt/wildfly_deployments'],
       subscribe   => Exec['build ear'],
