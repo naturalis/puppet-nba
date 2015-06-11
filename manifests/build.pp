@@ -36,7 +36,7 @@ class nba::build(
 
   file {'/data':
     ensure => directory,
-    mode   => '0770',
+    mode   => '0775',
   }
   #fail ('Unable to deploy ear without build of ear') if $build_ear == false and $deploy_ear == true
 
