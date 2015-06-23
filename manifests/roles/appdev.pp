@@ -1,7 +1,7 @@
 #
 #
 #
-class  nba::roles::devapp (
+class  nba::roles::appdev (
   $wildfly_console_password,
 ){
 
