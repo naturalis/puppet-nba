@@ -61,12 +61,6 @@ class nba (
     create_resources('base::users', parseyaml($extra_users_hash))
   }
 
-  #build of new nba with build scripts
-  # packages: git,ant,ivy,openjdk-7-jdk
-  # env: $IVY_HOME=/usr/share/maven-repo/org/apache/ivy/ivy/2.3.0
-  # run to build
-  # all: ant rebuild
-  # ear: ant clean ear
 
 
   file { ['/var/log/nba','/opt/nba_ear',$nba_config_dir]:
@@ -83,11 +77,6 @@ class nba (
     require => File[$nba_config_dir],
   }
 
-  # file { "${nba_config_dir}/nda.properties":
-  #   content => template('nba/nba/wildfly/nda.properties.erb'),
-  #   mode    => '0644',
-  #   require => File[$nba_config_dir],
-  # }
 
   file { '/etc/logrotate.d/nba':
     content => template('nba/nba/wildfly/logrotate.erb'),
@@ -108,38 +97,8 @@ class nba (
     xmx                     => $wildfly_xmx,
     xms                     => $wildfly_xms,
     maxpermsize             => $wildlfy_maxpermsize,
-    version                 => $wildfly_version,
   }
 
-
-
-  # file { "/opt/nba_ear/${deploy_file}":
-  #   ensure  => present,
-  #   source  => "${deploy_source_dir}${deploy_file}",
-  #   owner   => 'wildfly',
-  #   group   => 'wildfly',
-  #   require => File['/opt/nba_ear'],
-  #   notify  => Exec["deploy or update war with ${deploy_file}"],
-  # }
-
-  # exec { "deploy or update war with ${deploy_file}":
-  #   command     => "/bin/cp -f /opt/nba_ear/${deploy_file} /opt/wildfly_deployments/${application_name}",
-  #   require     => [Class['wildfly'],File['/opt/wildfly_deployments']],
-  #   refreshonly => true,
-  # }
-
-  # Moved to nginx loadbalancer/rp
-  #
-  # class { 'nginx': }
-  #
-  # nginx::resource::upstream { 'nba_v1_wildfly_app':
-  #   members => ['localhost:8080',],
-  # }
-  #
-  # nginx::resource::vhost { 'api.biodiversity.nl':
-  #   proxy => 'http://nba_v1_wildfly_app/',
-  #   # proxy => 'http://nba_v1_wildfly_app/nl.naturalis.nda.service.rest/',
-  # }
 
   file { '/opt/how_to_manual_deploy.txt':
     ensure  => present,
