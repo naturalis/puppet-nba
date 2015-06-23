@@ -17,8 +17,8 @@ class  nba::roles::appdev (
   }
 
   exec {'add ivy env':
-      cmd    => '/bin/echo \'IVY_HOME=/usr/share/maven-repo/org/apache/ivy/ivy/2.3.0/\' >> /etc/environment',
-      unless => '/bin/grep environment -e IVY_HOME',
+      command => '/bin/echo \'IVY_HOME=/usr/share/maven-repo/org/apache/ivy/ivy/2.3.0/\' >> /etc/environment',
+      unless  => '/bin/grep environment -e IVY_HOME',
   }
 
   class { 'nba':
