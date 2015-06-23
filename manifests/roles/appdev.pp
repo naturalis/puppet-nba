@@ -2,24 +2,8 @@
 #
 #
 class  nba::roles::devapp (
-
-  # required variables
-  $github_repository_key,
-  $github_repository_version,
-  $elasticsearch_cluster_name,
-  $elasticsearch_ip_addresses,
   $wildfly_console_password,
-
-  #optional variables
-  $wildfly_debug    = false,
-  $dcwa_eml_version = 'master',
-  $deploy_export    = false,
-
 ){
-
-  # stage { ['wildfly','build']:}
-  #
-  # Stage['wildfly'] -> Stage['build'] -> Stage['main']
 
   file {'/opt/wildfly_deployments':
     ensure => directory,
@@ -38,12 +22,11 @@ class  nba::roles::devapp (
   }
 
   class { 'nba':
-    nba_cluster_id      => $elasticsearch_cluster_name,
+    nba_cluster_id      => 'something random because of dev',
     console_listen_ip   => '127.0.0.1',
     admin_password      => $wildfly_console_password,
     extra_users_hash    => undef,
     nba_config_dir      => '/etc/nba',
-    es_host_ip          => $elasticsearch_ip_addresses,
     es_transport_port   => '9300',
     index_name          => 'nda',
     wildfly_debug       => true,
