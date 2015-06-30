@@ -30,7 +30,7 @@ class nba::roles::import(
     buildtype     => 'tag',
     build_ear     => false,
     build_export  => $deploy_export,
-    build_import  => false,
+    build_import  => true,
     main_es_ip    => '127.0.0.1',
     es_replicas   => 0,
     stage         => build,
