@@ -18,10 +18,10 @@ class nba::roles::import(
 
   Stage['build'] -> Stage['main'] -> Stage['import']
 
-  package {['git','ant','ivy','openjdk-7-jdk']:
-    ensure => installed,
-    before => [Class['nba::build'],Class['nba::es']]
-  }
+  # package {['git','ant','ivy','openjdk-7-jdk']:
+  #   ensure => installed,
+  #   before => [Class['nba::build'],Class['nba::es']]
+  # }
 
   class { 'nba::build':
     checkout      => $github_repository_version,
