@@ -30,13 +30,13 @@ class nba::roles::estestdata(
     ensure   => present,
     type     => 'url',
     settings => {
-      'location' => $import_snapshot_url,
+      'url' => $import_snapshot_url,
     },
     ip       => '127.0.0.1',
     port     => '9200',
     require  => Class['nba::es'],
   }
-  
+
   if ($deploy_with_snapshot == true) {
     es_restore { 'deploy_restore':
       ensure        => present,
