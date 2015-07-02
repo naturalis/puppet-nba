@@ -26,6 +26,13 @@ class nba::roles::estestdata(
     install_java         => true,
   }
 
+  sleep { 'wait for es to be up':
+    bedtime       => 300,
+    dozetime      => 5,
+    failontimeout => true,
+    wakeupfor     => 'curl -s -XGET localhost:9200/_cat/health | grep green',
+  }
+
   es_repo { 'import':
     ensure   => present,
     type     => 'url',
@@ -34,7 +41,7 @@ class nba::roles::estestdata(
     },
     ip       => '127.0.0.1',
     port     => '9200',
-    require  => Class['nba::es'],
+    require  => Sleep['wait for es to be up'],
   }
 
   if ($deploy_with_snapshot == true) {
