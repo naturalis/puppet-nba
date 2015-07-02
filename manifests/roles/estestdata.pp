@@ -50,6 +50,7 @@ class nba::roles::estestdata(
       snapshot_name => $deploy_snapshot_name,
       store_state   => true,
       repo          => 'import',
+      indices       => ['nda'],
       ip            => '127.0.0.1',
       port          => '9200',
       require       => Es_repo['import']
