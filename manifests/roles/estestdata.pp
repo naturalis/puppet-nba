@@ -30,8 +30,9 @@ class nba::roles::estestdata(
     bedtime       => 300,
     dozetime      => 5,
     failontimeout => true,
-    #wakeupfor     => 'curl -s -XGET localhost:9200/_cat/health | grep green',
-    wakeupfor     => '/bin/ls /tmp | grep yes'
+    wakeupfor     => 'curl -s -XGET localhost:9200/_cat/health | grep green',
+    #wakeupfor     => '/bin/ls /tmp | grep yes',
+    require       => Class['nba::es']
   }
 
   es_repo { 'import':
