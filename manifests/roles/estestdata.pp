@@ -30,7 +30,8 @@ class nba::roles::estestdata(
     bedtime       => 300,
     dozetime      => 5,
     failontimeout => true,
-    wakeupfor     => 'curl -s -XGET localhost:9200/_cat/health | grep green',
+    #wakeupfor     => 'curl -s -XGET localhost:9200/_cat/health | grep green',
+    wakeupfor     => '/bin/ls /tmp | grep yes'
   }
 
   es_repo { 'import':
@@ -50,7 +51,6 @@ class nba::roles::estestdata(
       snapshot_name => $deploy_snapshot_name,
       store_state   => true,
       repo          => 'import',
-      indices       => ['nda'],
       ip            => '127.0.0.1',
       port          => '9200',
       require       => Es_repo['import']
