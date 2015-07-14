@@ -61,7 +61,7 @@ class nba::import()
     }
 
     exec { 'import - brahms':
-      command   => '/bin/mv /data/upload/brahms/* /data/import/brahms',
+      command   => '/bin/mv /data/upload/brahms/* /data/import/brahms && /bin/sh /data/nba-import/sh/import-brahms.sh&',
       logoutput => false,
       unless    => '/usr/bin/lsof /data/upload/brahms/*  2>&1 | grep "status\|COMMAND"',
       require   => Exec['import - bootstrap'],
