@@ -12,17 +12,6 @@ define nba::lb::vhosts(
     require => File['/var/www'],
   }
 
-  file { "${www_root}/index.html" :
-    ensure  => present,
-    content => template('nba/404.html.erb'),
-    require => File[$www_root],
-  }
-
-  file { "${www_root}/404.html" :
-    ensure  => present,
-    content => template('nba/404.html.erb'),
-    require => File[$www_root],
-  }
 
   nginx::resource::vhost { $name:
     www_root             => $www_root,
