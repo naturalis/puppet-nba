@@ -2,12 +2,13 @@
 #
 #
 class nba::lb (
-  $vhost            = {},
+  $vhost            = [],
   $app_servers_hash = {}
 ){
 
   class { 'nginx': }
-  create_resources(nba::lb::vhosts,$vhost,{})
+  nba::lb::vhosts { $vhost : }
+  #create_resources(nba::lb::vhosts,$vhost,{})
   create_resources(nba::lb::sites,$app_servers_hash,{})
 
 }
