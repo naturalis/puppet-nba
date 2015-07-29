@@ -52,6 +52,10 @@ class nba (
   $wildfly_xmx         = '1024m',
   $wildfly_xms         = '256m',
   $wildlfy_maxpermsize = '512m',
+  $wildfly_sys_prop    = {
+    'nl.naturalis.nda.conf.dir' => '/etc/nba'
+  },
+  $wildfly_logging     = 'default',
   $install_java        = true
 ){
 
@@ -83,21 +87,38 @@ class nba (
     mode    => '0644',
   }
 
-  class { 'wildfly':
-    admin_password          => 'nda',
-    admin_user              => 'nda',
-    deployment_dir          => '/opt/wildfly_deployments',
-    install_java            => $install_java,
-    bind_address_management => $console_listen_ip,
-    system_properties       => {
-      'nl.naturalis.nda.conf.dir' => $nba_config_dir
-    },
-    require                 => Package['curl'],
-    debug_mode              => $wildfly_debug,
-    xmx                     => $wildfly_xmx,
-    xms                     => $wildfly_xms,
-    maxpermsize             => $wildlfy_maxpermsize,
+  if ($wildfly_logging == 'default') {
+    class { 'wildfly':
+      admin_password          => 'nda',
+      admin_user              => 'nda',
+      deployment_dir          => '/opt/wildfly_deployments',
+      install_java            => $install_java,
+      bind_address_management => $console_listen_ip,
+      system_properties       => $wildfly_sys_prop,
+      require                 => Package['curl'],
+      debug_mode              => $wildfly_debug,
+      xmx                     => $wildfly_xmx,
+      xms                     => $wildfly_xms,
+      maxpermsize             => $wildlfy_maxpermsize,
+    }
+  }else{
+    class { 'wildfly':
+      admin_password          => 'nda',
+      admin_user              => 'nda',
+      deployment_dir          => '/opt/wildfly_deployments',
+      install_java            => $install_java,
+      bind_address_management => $console_listen_ip,
+      system_properties       => $wildfly_sys_prop,
+      require                 => Package['curl'],
+      debug_mode              => $wildfly_debug,
+      xmx                     => $wildfly_xmx,
+      xms                     => $wildfly_xms,
+      maxpermsize             => $wildlfy_maxpermsize,
+      logging_properties      => $wildfly_logging,
+    }
   }
+
+
 
 
   file { '/opt/how_to_manual_deploy.txt':
