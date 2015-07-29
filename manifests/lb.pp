@@ -15,11 +15,13 @@ class nba::lb (
     ensure => directory,
   }
 
-  file { $htmlfiles :
-    ensure  => present,
-    path    => "/var/www/${htmlfiles}",
-    content => template("${htmlfiles}.erb"),
-    require => File[$directories],
+  if ($htmlfiles != []) {
+    file { $htmlfiles :
+      ensure  => present,
+      path    => "/var/www/${htmlfiles}",
+      content => template("${htmlfiles}.erb"),
+      require => File[$directories],
+    }
   }
 
   create_resources(nginx::resource::vhost,$vhost,{})
