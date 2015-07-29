@@ -7,8 +7,9 @@ define nba::lb::vhosts(
 
   $www_root = "/var/www/${name}"
 
-  file { ['/var/www',$name] :
-    ensure => directory,
+  file { $www_root :
+    ensure  => directory,
+    require => File['/var/www'],
   }
 
   file { "${www_root}/index.html" :
