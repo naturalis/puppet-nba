@@ -19,7 +19,7 @@ class nba::lb (
     file { $htmlfiles :
       ensure  => present,
       path    => "/var/www/${htmlfiles}",
-      content => template("${htmlfiles}.erb"),
+      content => template("nba/${htmlfiles}.erb"),
       require => File[$directories],
     }
   }
