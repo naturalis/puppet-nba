@@ -92,19 +92,19 @@ class  nba::roles::purl (
   #   #stage               => wildfly,
   # }
 
-  file { '/tmp/purl.war':
-    ensure => present,
-    source => 'puppet:///modules/nba/purl.war',
-    owner  => 'wildfly',
-    group  => 'wildfly',
-    notify => Exec['deploy or update war with purl.war'],
-  }
-
-  exec { 'deploy or update war with purl.war':
-    command     => '/bin/cp -f /tmp/purl.war /opt/wildfly_deployments/purl.war',
-    require     => File['/opt/wildfly_deployments'],
-    refreshonly => true,
-  }
+  # file { '/tmp/purl.war':
+  #   ensure => present,
+  #   source => 'puppet:///modules/nba/purl.war',
+  #   owner  => 'wildfly',
+  #   group  => 'wildfly',
+  #   notify => Exec['deploy or update war with purl.war'],
+  # }
+  #
+  # exec { 'deploy or update war with purl.war':
+  #   command     => '/bin/cp -f /tmp/purl.war /opt/wildfly_deployments/purl.war',
+  #   require     => File['/opt/wildfly_deployments'],
+  #   refreshonly => true,
+  # }
 
 
 }
