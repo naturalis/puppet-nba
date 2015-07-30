@@ -23,14 +23,14 @@ class  nba::roles::purl (
     group   => 'wildfly',
   }
 
-  file {'/etc/purl/purl.properties':
-    ensure  => present,
-    mode    => '0750',
-    require => File['/etc/purl'],
-    owner   => 'wildfly',
-    group   => 'wildfly',
-    content => template('nba/purl/purl.properties.erb')
-  }
+  # file {'/etc/purl/purl.properties':
+  #   ensure  => present,
+  #   mode    => '0750',
+  #   require => File['/etc/purl'],
+  #   owner   => 'wildfly',
+  #   group   => 'wildfly',
+  #   content => template('nba/purl/purl.properties.erb')
+  # }
 
 
   $logging_properties = {
