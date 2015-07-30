@@ -12,13 +12,13 @@ class  nba::roles::purl (
   file {'/opt/wildfly_deployments':
     ensure => directory,
     mode   => '0777',
-    before => Class['nba']
+    before => Class['wildfly']
   }
 
   file {'/etc/purl':
     ensure  => directory,
     mode    => '0750',
-    require => Class['nba'],
+    require => Class['wildfly'],
     owner   => 'wildfly',
     group   => 'wildfly',
   }
