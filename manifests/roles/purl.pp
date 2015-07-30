@@ -69,7 +69,7 @@ class  nba::roles::purl (
 
   wildfly_cli { 'SystempropertyPurlDir':
     command  => '/system-property=nl.naturalis.purl.conf.dir:add(value=/etc/purl)',
-    unless   => '(result == /etc/purl) of /system-property=nl.naturalis.purl.conf.dir:read-attribute(name=system-properties',
+    unless   => '(result == /etc/purl) of /system-property=nl.naturalis.purl.conf.dir:read-attribute',
     username => 'wildfly',
     password => 'wildfly',
   }
