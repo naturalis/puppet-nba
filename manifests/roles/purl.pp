@@ -67,6 +67,13 @@ class  nba::roles::purl (
       },
   }
 
+  wildfly_cli { 'Systemproperty Purl Dir':
+    command  => '/system-property=nl.naturalis.purl.conf.dir:add(value=/etc/purl)',
+    unless   => '(result == true) of /system-property=nl.naturalis.purl.conf.dir:read-attribute(value=/etc/purl)',
+    username => 'wildfly',
+    password => 'wildfly',
+  }
+
 
   # exec {'add ivy env':
   #     command => '/bin/echo \'IVY_HOME=/usr/share/maven-repo/org/apache/ivy/ivy/2.3.0/\' >> /etc/environment',
