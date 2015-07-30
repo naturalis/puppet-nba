@@ -74,6 +74,13 @@ class  nba::roles::purl (
     password => 'wildfly',
   }
 
+  wildfly_cli { 'Purllogging':
+    command  => '/subsystem=logging/logger=nl.naturalis.purl:add(level=DEBUG)',
+    unless   => '(result has "nl.naturalis.purl") of ls subsystem=logging/logger',
+    username => 'wildfly',
+    password => 'wildfly',
+  }
+
 
   # exec {'add ivy env':
   #     command => '/bin/echo \'IVY_HOME=/usr/share/maven-repo/org/apache/ivy/ivy/2.3.0/\' >> /etc/environment',
