@@ -67,24 +67,23 @@ class  nba::roles::purl (
       },
   }
 
-  wildfly_cli { 'SystempropertyPurlDir':
-    command  => '/system-property=nl.naturalis.purl.conf.dir:add(value=/etc/purl)',
-    unless   => '(result has "nl.naturalis.purl.conf.dir") of /core-service=platform-mbean/type=runtime:read-attribute(name=system-properties)',
-    username => 'wildfly',
-    password => 'wildfly',
-  }
-
-  # wildfly_cli { 'Purllogging':
-  #   command  => '/subsystem=logging/logger=nl.naturalis.purl:add(level=DEBUG)',
-  #   unless   => '(result has "nl.naturalis.purl") of /subsystem=logging:read-resource(recursive-depth=2)',
+  # wildfly_cli { 'SystempropertyPurlDir':
+  #   command  => '/system-property=nl.naturalis.purl.conf.dir:add(value=/etc/purl)',
+  #   unless   => '(result has "nl.naturalis.purl.conf.dir") of /core-service=platform-mbean/type=runtime:read-attribute(name=system-properties)',
   #   username => 'wildfly',
   #   password => 'wildfly',
   # }
 
+  exec {'create purl conf dir':
+    command => '/opt/wildfly/bin/jboss-cli.sh -c command="/system-property=nl.naturalis.purl.conf.dir:add(value=/etc/purl)"',
+    unless  => '/opt/wildfly/bin/jboss-cli.sh -c command="ls systemproperty | /bin/grep nl.naturalis.purl.conf.dir',
+    require => Class['wildfly'],
+  }
+
   exec {'create purl logger':
     cwd     => '/opt/wildfly/bin',
     command => '/opt/wildfly/bin/jboss-cli.sh -c command="/subsystem=logging/logger=nl.naturalis.purl:add(level=DEBUG)"',
-    unless  => '/opt/wildfly/bin/jboss-cli.sh -c command="ls subsystem=logging/logger" | /bin/grep purl',
+    unless  => '/opt/wildfly/bin/jboss-cli.sh -c command="ls subsystem=logging/logger" | /bin/grep nl.naturalis.purl',
     require => Class['wildfly'],
   }
 
