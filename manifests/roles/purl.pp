@@ -76,7 +76,7 @@ class  nba::roles::purl (
 
   exec {'create purl conf dir':
     command => '/opt/wildfly/bin/jboss-cli.sh -c command="/system-property=nl.naturalis.purl.conf.dir:add(value=/etc/purl)"',
-    unless  => '/opt/wildfly/bin/jboss-cli.sh -c command="ls systemproperty | /bin/grep nl.naturalis.purl.conf.dir',
+    unless  => '/opt/wildfly/bin/jboss-cli.sh -c command="ls system-property | /bin/grep nl.naturalis.purl.conf.dir',
     require => Class['wildfly'],
   }
 
