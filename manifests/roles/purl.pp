@@ -84,7 +84,7 @@ class  nba::roles::purl (
   exec {'create purl logger':
     cwd     => '/opt/wildfly/bin',
     command => '/opt/wildfly/bin/jboss-cli.sh -c command="/subsystem=logging/logger=nl.naturalis.purl:add(level=DEBUG)"',
-    unless  => '/opt/wildfly/bin/jboss-cli.sh -c command="ls subsystem=logging/logger" /bin/grep purl',
+    unless  => '/opt/wildfly/bin/jboss-cli.sh -c command="ls subsystem=logging/logger" | /bin/grep purl',
     require => Class['wildfly'],
   }
 
