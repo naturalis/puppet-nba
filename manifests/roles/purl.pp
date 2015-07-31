@@ -74,11 +74,18 @@ class  nba::roles::purl (
     password => 'wildfly',
   }
 
-  wildfly_cli { 'Purllogging':
-    command  => '/subsystem=logging/logger=nl.naturalis.purl:add(level=DEBUG)',
-    unless   => '(result has "nl.naturalis.purl") of /subsystem=logging:read-resource(recursive-depth=2)',
-    username => 'wildfly',
-    password => 'wildfly',
+  # wildfly_cli { 'Purllogging':
+  #   command  => '/subsystem=logging/logger=nl.naturalis.purl:add(level=DEBUG)',
+  #   unless   => '(result has "nl.naturalis.purl") of /subsystem=logging:read-resource(recursive-depth=2)',
+  #   username => 'wildfly',
+  #   password => 'wildfly',
+  # }
+
+  exec {'create purl logger':
+    cwd     => '/opt/wildfly/bin',
+    command => './jboss-cli.sh -c command="/subsystem=logging/logger=nl.naturalis.purl:add(level=DEBUG)"',
+    unless  => './jboss-cli.sh -c command="ls subsystem=logging/logger" /bin/grep purl',
+    require => Class['wildfly'],
   }
 
 
