@@ -9,11 +9,11 @@ class  nba::roles::purl (
     ip => '10.42.1.192'
   }
 
-  file {'/opt/wildfly_deployments':
-    ensure => directory,
-    mode   => '0777',
-    before => Class['wildfly']
-  }
+  # file {'/opt/wildfly_deployments':
+  #   ensure => directory,
+  #   mode   => '0777',
+  #   before => Class['wildfly']
+  # }
 
   file {'/etc/purl':
     ensure  => directory,
@@ -23,20 +23,20 @@ class  nba::roles::purl (
     group   => 'wildfly',
   }
 
-  # file {'/etc/purl/purl.properties':
-  #   ensure  => present,
-  #   mode    => '0750',
-  #   require => File['/etc/purl'],
-  #   owner   => 'wildfly',
-  #   group   => 'wildfly',
-  #   content => template('nba/purl/purl.properties.erb')
-  # }
-
-
-  $logging_properties = {
-    'logger.nl.naturalis.purl.level' => { value => 'DEBUG'},
-    'logger.nl.naturalis.purl.useParentHandlers' => { value => true},
+  file {'/etc/purl/purl.properties':
+    ensure  => present,
+    mode    => '0750',
+    require => File['/etc/purl'],
+    owner   => 'wildfly',
+    group   => 'wildfly',
+    content => template('nba/purl/purl.properties.erb')
   }
+
+
+  # $logging_properties = {
+  #   'logger.nl.naturalis.purl.level' => { value => 'DEBUG'},
+  #   'logger.nl.naturalis.purl.useParentHandlers' => { value => true},
+  # }
 
   # package {['git','ant','ivy','openjdk-7-jdk']:
   #   ensure => installed,
@@ -112,19 +112,19 @@ class  nba::roles::purl (
   #   #stage               => wildfly,
   # }
 
-  # file { '/tmp/purl.war':
-  #   ensure => present,
-  #   source => 'puppet:///modules/nba/purl.war',
-  #   owner  => 'wildfly',
-  #   group  => 'wildfly',
-  #   notify => Exec['deploy or update war with purl.war'],
-  # }
-  #
-  # exec { 'deploy or update war with purl.war':
-  #   command     => '/bin/cp -f /tmp/purl.war /opt/wildfly_deployments/purl.war',
-  #   require     => File['/opt/wildfly_deployments'],
-  #   refreshonly => true,
-  # }
+  file { '/tmp/purl.war':
+    ensure => present,
+    source => 'puppet:///modules/nba/purl.war',
+    owner  => 'wildfly',
+    group  => 'wildfly',
+    notify => Exec['deploy or update war with purl.war'],
+  }
+
+  exec { 'deploy or update war with purl.war':
+    command     => '/bin/cp -f /tmp/purl.war /opt/wildfly/standalone/deployments/purl.war',
+    require     => Class['wildfly'],
+    refreshonly => true,
+  }
 
 
 }
