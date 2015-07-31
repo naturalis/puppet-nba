@@ -58,7 +58,7 @@ class  nba::roles::purl (
     java_xmx         => '1024m',
     java_xms         => '256m',
     java_maxpermsize => '512m',
-    java_opts        => '-Djboss.server.log.dir="/var/log/wildfly"',
+    java_opts        => '-Djboss.server.log.dir="/var/log/wildfly/server.log"',
     mgmt_bind        => '127.0.0.1',
     users_mgmt       => {
       'wildfly' => {
