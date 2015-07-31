@@ -76,7 +76,7 @@ class  nba::roles::purl (
 
   wildfly_cli { 'Purllogging':
     command  => '/subsystem=logging/logger=nl.naturalis.purl:add(level=DEBUG)',
-    unless   => '(result has nl.naturalis.purl) of   /subsystem=logging:read-resource(recursive-depth=2)',
+    unless   => '(result has nl.naturalis.purl) of /subsystem=logging:read-resource(recursive-depth=2)',
     username => 'wildfly',
     password => 'wildfly',
   }
