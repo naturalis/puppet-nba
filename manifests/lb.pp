@@ -5,25 +5,25 @@ class nba::lb (
   $vhost       = {},
   $location    = {},
   $upstream    = {},
-  $directories = ['/var/www'],
-  $htmlfiles   = [],
+  $files       = {}
 ){
 
   class { 'nginx': }
 
-  file { $directories :
-    ensure => directory,
-  }
+  # file { $directories :
+  #   ensure => directory,
+  # }
+  # 
+  # if ($htmlfiles != []) {
+  #   file { $htmlfiles :
+  #     ensure  => present,
+  #     path    => "/var/www/${htmlfiles}",
+  #     content => template("nba/${htmlfiles}.erb"),
+  #     require => File[$directories],
+  #   }
+  # }
 
-  if ($htmlfiles != []) {
-    file { $htmlfiles :
-      ensure  => present,
-      path    => "/var/www/${htmlfiles}",
-      content => template("nba/${htmlfiles}.erb"),
-      require => File[$directories],
-    }
-  }
-
+  create_resources(file,$files,{})
   create_resources(nginx::resource::vhost,$vhost,{})
   create_resources(nginx::resource::location,$location,{})
   create_resources(nginx::resource::upstream,$upstream,{})
