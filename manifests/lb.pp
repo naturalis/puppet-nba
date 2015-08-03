@@ -13,7 +13,7 @@ class nba::lb (
   # file { $directories :
   #   ensure => directory,
   # }
-  # 
+  #
   # if ($htmlfiles != []) {
   #   file { $htmlfiles :
   #     ensure  => present,
@@ -23,7 +23,7 @@ class nba::lb (
   #   }
   # }
 
-  create_resources(file,$files,{})
+  create_resources(nba::lb::wwwfiles,$files,{})
   create_resources(nginx::resource::vhost,$vhost,{})
   create_resources(nginx::resource::location,$location,{})
   create_resources(nginx::resource::upstream,$upstream,{})
