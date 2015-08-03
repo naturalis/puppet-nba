@@ -9,12 +9,6 @@ class  nba::roles::purl (
     ip => '10.42.1.192'
   }
 
-  # file {'/opt/wildfly_deployments':
-  #   ensure => directory,
-  #   mode   => '0777',
-  #   before => Class['wildfly']
-  # }
-
   file {'/etc/purl':
     ensure  => directory,
     mode    => '0750',
@@ -32,11 +26,6 @@ class  nba::roles::purl (
     content => template('nba/purl/purl.properties.erb')
   }
 
-
-  # $logging_properties = {
-  #   'logger.nl.naturalis.purl.level' => { value => 'DEBUG'},
-  #   'logger.nl.naturalis.purl.useParentHandlers' => { value => true},
-  # }
 
   # package {['git','ant','ivy','openjdk-7-jdk']:
   #   ensure => installed,
@@ -58,7 +47,6 @@ class  nba::roles::purl (
     java_xmx         => '1024m',
     java_xms         => '256m',
     java_maxpermsize => '512m',
-    java_opts        => '-Djboss.server.log.dir="/var/log/wildfly/"',
     mgmt_bind        => '127.0.0.1',
     users_mgmt       => {
       'wildfly' => {
@@ -67,13 +55,6 @@ class  nba::roles::purl (
         }
       },
   }
-
-  # wildfly_cli { 'SystempropertyPurlDir':
-  #   command  => '/system-property=nl.naturalis.purl.conf.dir:add(value=/etc/purl)',
-  #   unless   => '(result has "nl.naturalis.purl.conf.dir") of /core-service=platform-mbean/type=runtime:read-attribute(name=system-properties)',
-  #   username => 'wildfly',
-  #   password => 'wildfly',
-  # }
 
   exec {'create purl conf dir':
     command => '/opt/wildfly/bin/jboss-cli.sh -c command="/system-property=nl.naturalis.purl.conf.dir:add(value=/etc/purl)"',
@@ -87,31 +68,6 @@ class  nba::roles::purl (
     unless  => '/opt/wildfly/bin/jboss-cli.sh -c command="ls subsystem=logging/logger" | /bin/grep nl.naturalis.purl',
     require => Class['wildfly'],
   }
-
-
-  # exec {'add ivy env':
-  #     command => '/bin/echo \'IVY_HOME=/usr/share/maven-repo/org/apache/ivy/ivy/2.3.0/\' >> /etc/environment',
-  #     unless  => '/bin/grep environment -e IVY_HOME',
-  # }
-  # class { 'nba':
-  #   nba_cluster_id      => 'something random because of dev',
-  #   console_listen_ip   => '127.0.0.1',
-  #   admin_password      => $wildfly_console_password,
-  #   extra_users_hash    => undef,
-  #   nba_config_dir      => '/etc/nba',
-  #   es_transport_port   => '9300',
-  #   index_name          => 'nda',
-  #   wildfly_debug       => true,
-  #   wildfly_xmx         => '1024m',
-  #   wildfly_xms         => '256m',
-  #   wildlfy_maxpermsize => '512m',
-  #   wildfly_sys_prop    => {
-  #     'nl.naturalis.purl.conf.dir' => '/etc/purl'
-  #   },
-  #   install_java        => true,
-  #   wildfly_logging     => $logging_properties,
-  #   #stage               => wildfly,
-  # }
 
   file { '/tmp/purl.war':
     ensure => present,
