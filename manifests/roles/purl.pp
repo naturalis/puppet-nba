@@ -80,7 +80,7 @@ class  nba::roles::purl (
 
   exec { 'deploy or update war with purl.war':
     command     => '/bin/cp -f /tmp/purl.war /opt/wildfly/standalone/deployments/purl.war',
-    require     => Class['wildfly'],
+    require     => [Exec['create purl conf dir'],Exec['create purl logger']],
     refreshonly => true,
   }
 
