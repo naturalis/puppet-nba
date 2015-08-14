@@ -3,10 +3,11 @@
 #
 class  nba::roles::purl (
   $wildfly_console_password,
+  $ip_of_loadbalancer = '10.42.1.192',
 ){
 
   host {'api.biodiversitydata.nl':
-    ip => '10.42.1.192'
+    ip => $ip_of_loadbalancer,
   }
 
   file {'/etc/purl':
