@@ -96,7 +96,7 @@ class  nba::roles::app (
 
   file {'/etc/nba/logback.xml':
     ensure  => present,
-    content => content => template('nba/nba/wildfly/logback.xml.erb'),
+    content => template('nba/nba/wildfly/logback.xml.erb'),
     mode    => '0644',
     require => File['/etc/nba'],
     before  => Class['nba::build'],
