@@ -27,8 +27,8 @@ class  nba::roles::app (
   }
 
   class { 'wildfly':
-    version          => '8.2.1',
-    install_source   => 'http://download.jboss.org/wildfly/8.2.1.Final/wildfly-8.2.1.Final.tar.gz',
+    version          => '8.1.0',
+    install_source   => 'http://download.jboss.org/wildfly/8.1.0.Final/wildfly-8.1.0.Final.tar.gz',
     group            => 'wildfly',
     user             => 'wildfly',
     dirname          => '/opt/wildfly',
