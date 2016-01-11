@@ -47,14 +47,16 @@ class  nba::roles::app (
   }
 
   wildfly::config::interfaces{'management':
-  inet_address_value => '127.0.0.1',
-  require  => Class['wildfly'],
-}
+    inet_address_value => '127.0.0.1',
+    require  => Class['wildfly'],
+    notify   => Service['wildfly'],
+  }
 
-wildfly::config::interfaces{'public':
-  inet_address_value => $::ipaddress,
-  require  => Class['wildfly'],
-}
+  wildfly::config::interfaces{'public':
+    inet_address_value => $::ipaddress,
+    require  => Class['wildfly'],
+    notify   => Service['wildfly'],
+  }
 
   exec {'create nba conf dir':
     command => '/opt/wildfly/bin/jboss-cli.sh -c command="/system-property=nl.naturalis.nda.conf.dir:add(value=/etc/nba)"',
@@ -111,6 +113,7 @@ wildfly::config::interfaces{'public':
     mode    => '0644',
     require => File['/etc/nba'],
     before  => Class['nba::build'],
+    notify  => Service['wildfly']
   }
 
   # if ($deploy_export == true) {
