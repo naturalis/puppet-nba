@@ -77,7 +77,7 @@ class nba::es (
     }
   }else{
     elasticsearch::plugin{ 'knapsack':
-      ensure     => ablssent,
+      ensure     => absent,
       url        => "http://xbib.org/repository/org/xbib/elasticsearch/plugin/elasticsearch-knapsack/${es_version}.0/elasticsearch-knapsack-${es_version}.0-plugin.zip",
       module_dir => 'knapsack',
       instances  => $es_instance_name,
