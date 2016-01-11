@@ -51,7 +51,7 @@ class  nba::roles::purl (
     mgmt_bind        => '127.0.0.1',
     users_mgmt       => {
       'wildfly' => {
-        username => 'wildfly',
+        #username => 'wildfly',
         password => 'wildfly'
         }
       },
