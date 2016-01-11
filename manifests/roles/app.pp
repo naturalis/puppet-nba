@@ -89,6 +89,19 @@ class  nba::roles::app (
     require       => Class['wildfly']
   }
 
+  file {'/etc/nba':
+    ensure => directory,
+    mode   => '0755',
+  }
+
+  file {'/etc/nba/logback.xml':
+    ensure  => present,
+    content => content => template('nba/nba/wildfly/logback.xml.erb'),
+    mode    => '0644',
+    require => File['/etc/nba'],
+    before  => Class['nba::build'],
+  }
+
   # if ($deploy_export == true) {
   #   class { 'nba::export':
   #     version => $dcwa_eml_version,
