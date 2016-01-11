@@ -36,7 +36,7 @@ class  nba::roles::app (
     java_xmx         => '1024m',
     java_xms         => '256m',
     java_maxpermsize => '512m',
-    mgmt_bind        => '127.0.0.1',
+    #mgmt_bind        => '127.0.0.1',
     public_bind      => $::ipaddress,
     users_mgmt       => {
       'wildfly' => {
