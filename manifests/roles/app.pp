@@ -97,7 +97,7 @@ class  nba::roles::app (
     build_export  => $deploy_export,
     deploy_ear    => true,
     main_es_ip    => $elasticsearch_ip_addresses,
-    es_replicas   => 0,
+    es_replicas   => 1,
     #stage         => build,
     require       => Class['wildfly']
   }
