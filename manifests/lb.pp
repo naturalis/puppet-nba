@@ -20,6 +20,8 @@ class nba::lb (
     }
   }
 
+  class {'nginx': }
+
   #access_log
   # file { $directories :
   #   ensure => directory,
