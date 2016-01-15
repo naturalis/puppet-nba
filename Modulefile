@@ -1,4 +1,4 @@
-name    'naturalis-nba'
+name    'puppet-nba'
 version '0.1.0'
 source 'UNKNOWN'
 author 'naturalis'
