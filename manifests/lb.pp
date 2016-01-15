@@ -17,7 +17,7 @@ class nba::lb (
     }
   }
 
-  
+  access_log
   # file { $directories :
   #   ensure => directory,
   # }
@@ -32,7 +32,7 @@ class nba::lb (
   # }
 
   create_resources(nba::lb::wwwfiles,$files,{})
-  create_resources(nginx::resource::vhost,$vhost,{})
+  create_resources(nginx::resource::vhost,$vhost,{'access_log' => '/var/log/nginx/api.biodiversitydata.nl.access.log json'})
   create_resources(nginx::resource::location,$location,{})
   create_resources(nginx::resource::upstream,$upstream,{})
 
