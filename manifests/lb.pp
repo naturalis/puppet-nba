@@ -12,7 +12,7 @@ class nba::lb (
 ){
 
   $log_default = { format_log => 'json'}
-  Anchor['nginx::begin']
+  Anchor['::nginx::begin']
   ->
   class { '::nginx::config':
     log_format => {
