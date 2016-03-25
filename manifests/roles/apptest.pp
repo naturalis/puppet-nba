@@ -18,7 +18,7 @@ class  nba::roles::apptest (
 
   exec {'add ivy env':
       command => '/bin/echo \'IVY_HOME=/usr/share/maven-repo/org/apache/ivy/ivy/2.3.0/\' >> /etc/environment',
-      unless  => '/bin/grep environment -e IVY_HOME',
+      unless  => '/bin/grep /etc/environment -e IVY_HOME',
   }
 
   class { 'nba':
