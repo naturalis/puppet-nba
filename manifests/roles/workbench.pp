@@ -45,8 +45,8 @@ class  nba::roles::workbench()
 
   staging::deploy { "kibana-${kibana_version}-linux-x64.tar.gz":
     source  => $kibana_link,
-    target  => '/opt/'
-    require => Class['elasticsearch']
+    target  => '/opt/',
+    require => Class['elasticsearch'],
   }
 
   exec {'install sense':
