@@ -21,20 +21,49 @@ class  nba::roles::apptest (
       unless  => '/bin/grep /etc/environment -e IVY_HOME',
   }
 
-  class { 'nba':
-    nba_cluster_id      => 'something random because of dev',
-    console_listen_ip   => '127.0.0.1',
-    admin_password      => $wildfly_console_password,
-    extra_users_hash    => undef,
-    nba_config_dir      => '/etc/nba',
-    es_transport_port   => '9300',
-    index_name          => 'nda',
-    wildfly_debug       => true,
-    wildfly_xmx         => '1024m',
-    wildfly_xms         => '256m',
-    wildlfy_maxpermsize => '512m',
-    install_java        => false,
-    #stage               => wildfly,
+  class { 'wildfly':
+    version          => '8.1.0',
+    install_source   => 'http://download.jboss.org/wildfly/8.1.0.Final/wildfly-8.1.0.Final.tar.gz',
+    group            => 'wildfly',
+    user             => 'wildfly',
+    dirname          => '/opt/wildfly',
+    java_home        => '/usr/lib/jvm/java-1.7.0-openjdk-amd64',
+    java_xmx         => '1024m',
+    java_xms         => '256m',
+    java_maxpermsize => '512m',
+    #mgmt_bind        => '127.0.0.1',
+    public_bind      => $::ipaddress,
+    users_mgmt       => {
+      'wildfly' => {
+        #username => 'wildfly',
+        password => 'wildfly'
+        }
+      },
+  }
+
+  wildfly::config::interfaces{'management':
+    inet_address_value => '127.0.0.1',
+    require            => Class['wildfly'],
+    notify             => Service['wildfly'],
+  }
+
+  wildfly::config::interfaces{'public':
+    inet_address_value => $::ipaddress,
+    require            => Class['wildfly'],
+    notify             => Service['wildfly'],
+  }
+
+  exec {'create nba conf dir':
+    command => '/opt/wildfly/bin/jboss-cli.sh -c command="/system-property=nl.naturalis.nda.conf.dir:add(value=/etc/nba)"',
+    unless  => '/opt/wildfly/bin/jboss-cli.sh -c command="ls system-property" | /bin/grep nl.naturalis.nda.conf.dir',
+    require => Class['wildfly'],
+  }
+
+  exec {'create nba logger':
+    cwd     => '/opt/wildfly/bin',
+    command => '/opt/wildfly/bin/jboss-cli.sh -c command="/subsystem=logging/logger=nl.naturalis.nda:add(level=DEBUG)"',
+    unless  => '/opt/wildfly/bin/jboss-cli.sh -c command="ls subsystem=logging/logger" | /bin/grep nl.naturalis.nda',
+    require => Class['wildfly'],
   }
 
 
