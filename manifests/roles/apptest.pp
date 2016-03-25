@@ -5,11 +5,11 @@ class  nba::roles::apptest (
   $wildfly_console_password,
 ){
 
-  file {'/opt/wildfly_deployments':
-    ensure => directory,
-    mode   => '0777',
-    before => Class['nba']
-  }
+  # file {'/opt/wildfly_deployments':
+  #   ensure => directory,
+  #   mode   => '0777',
+  #   before => Class['nba']
+  # }
 
   package {['git','ant','ivy','openjdk-7-jdk']:
     ensure => installed,
