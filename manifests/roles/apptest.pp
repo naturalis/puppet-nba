@@ -10,10 +10,10 @@ class  nba::roles::apptest (
   #   mode   => '0777',
   #   before => Class['nba']
   # }
+  class { '::java': }
 
-  package {['git','ant','ivy','openjdk-7-jdk']:
+  package {['git','ant','ivy']:
     ensure => installed,
-    before => Class['nba']
   }
 
   exec {'add ivy env':
@@ -39,6 +39,7 @@ class  nba::roles::apptest (
         password => 'wildfly'
         }
       },
+    require          => Class['::java']
   }
 
   wildfly::config::interfaces{'management':

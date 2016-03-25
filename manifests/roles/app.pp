@@ -20,11 +20,11 @@ class  nba::roles::app (
   # stage { ['wildfly','build']:}
   #
   # Stage['wildfly'] -> Stage['build'] -> Stage['main']
-
-  package {'openjdk-7-jdk':
-    ensure => present,
-    before => Class['wildfly'],
-  }
+  class {'::java' }
+  # package {'openjdk-7-jdk':
+  #   ensure => present,
+  #   before => Class['wildfly'],
+  # }
 
   class { 'wildfly':
     version          => '8.1.0',
