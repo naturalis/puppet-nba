@@ -51,7 +51,7 @@ class  nba::roles::workbench()
 
   exec {'install sense':
     command => "/opt/kibana-${kibana_version}-linux-x64/bin/kibana plugin --install elastic/sense",
-    unless  => "/bin/test -d /opt/kibana-${kibana_version}-linux-x64/installedPlugins/sense",
+    unless  => "/usr/bin/test -d /opt/kibana-${kibana_version}-linux-x64/installedPlugins/sense",
     require => Staging::Deploy["kibana-${kibana_version}-linux-x64.tar.gz"],
     before  => Service['kibana'],
   }
@@ -63,12 +63,12 @@ class  nba::roles::workbench()
     require => Staging::Deploy["kibana-${kibana_version}-linux-x64.tar.gz"],
   }
 
-  file_line {'server_host_config':
-    path    => "/opt/kibana-${kibana_version}-linux-x64/config/kibana.yml",
-    line    => 'server.host: 127.0.0.1',
-    match   => '^server.host',
-    require => Staging::Deploy["kibana-${kibana_version}-linux-x64.tar.gz"],
-  }
+  # file_line {'server_host_config':
+  #   path    => "/opt/kibana-${kibana_version}-linux-x64/config/kibana.yml",
+  #   line    => 'server.host: 127.0.0.1',
+  #   match   => '^server.host',
+  #   require => Staging::Deploy["kibana-${kibana_version}-linux-x64.tar.gz"],
+  # }
 
   file { 'kibana service init':
     content => template('role_logging/kibana/init.erb'),
