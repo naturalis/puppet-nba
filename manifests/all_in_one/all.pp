@@ -16,7 +16,7 @@ class nba::all_in_one::all(
       notify {'elastic search not running asuming 1 node config':}
       $ips = ["${::ipaddress}:8080"]
     } else {
-      $ips = suffix(split($::cluster_ips,','),':8080'
+      $ips = suffix(split($::cluster_ips,','),':8080')
     }
   }else {
     $ips = ["${::ipaddress}:8080"]
