@@ -7,7 +7,7 @@ class nba::all_in_one::lb(
     'datatest.biodiversitydata.nl' => {'proxy' => 'http://purl/purl'}
   },
   $location = {
-    'api_v0' => {'location' => '/v0','vhost'=>'apitest.biodiversitydata.nl','proxy'=>'http://avpi_v0/v0'}
+    'api_v0' => {'location' => '/v0','vhost'=>'apitest.biodiversitydata.nl','proxy'=>'http://api_v0/v0'}
   },
   $upstream = {
       'api_v0' => {'members'=> [ $::ipaddress ]},
