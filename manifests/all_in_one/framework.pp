@@ -56,6 +56,19 @@ class nba::all_in_one::framework(
     notify             => Service['wildfly'],
   }
 
+  exec {'create nba conf dir':
+    command => '/opt/wildfly/bin/jboss-cli.sh -c command="/system-property=nl.naturalis.nda.conf.dir:add(value=/etc/nba)"',
+    unless  => '/opt/wildfly/bin/jboss-cli.sh -c command="ls system-property" | /bin/grep nl.naturalis.nda.conf.dir',
+    require => Service['wildfly'],
+  }
+
+  exec {'create nba logger':
+    cwd     => '/opt/wildfly/bin',
+    command => '/opt/wildfly/bin/jboss-cli.sh -c command="/subsystem=logging/logger=nl.naturalis.nda:add(level=DEBUG)"',
+    unless  => '/opt/wildfly/bin/jboss-cli.sh -c command="ls subsystem=logging/logger" | /bin/grep nl.naturalis.nda',
+    require => Service['wildfly'],
+  }
+
 
   class { 'elasticsearch':
     manage_repo  => true,
