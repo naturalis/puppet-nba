@@ -44,7 +44,7 @@ class nba::all_in_one::all(
   } ->
 
   class {'nba::all_in_one::lb':
-    require => Service['elasticsearch-nba-es']
+    require => Service['elasticsearch-nba-es'],
     upstream => {
       'api_v0' => {
         'members' => $ips
