@@ -13,4 +13,9 @@ root@bla:/etc/puppet/modules# git clone https://github.com/elastic/puppet-elasti
 root@bla:/etc/puppet/modules# git clone https://github.com/puppetlabs/puppetlabs-stdlib stdlib
 root@bla:/etc/puppet/modules# git clone https://github.com/puppetlabs/puppetlabs-apt apt
 root@bla:/etc/puppet/modules# git clone https://github.com/richardc/puppet-datacat datacat
-root@bla:/etc/puppet/modules# git clone https://github.com/beezly/biemond-wildfly wildfly
+root@bla:/etc/puppet/modules# git clone https://github.com/biemond/biemond-wildfly wildfly -b d30a22afe77225235cc37f05afd3a19a285fb478
+root@bla:/etc/puppet/modules# git clone https://github.com/puppetlabs/puppetlabs-java java
+root@bla:/etc/puppet/modules# git clone https://github.com/jfryman/puppet-nginx nginx
+
+
+ puppet apply -e "class {'nba::all_in_one::all':}"
