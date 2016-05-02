@@ -46,7 +46,7 @@ class nba::all_in_one::api(
     ensure   => present,
     provider => git,
     source   => "https://${git_username}:${git_password}@github.com/naturalis/naturalis_data_api",
-    revision => $::checkout,
+    revision => $checkout,
     require  => Package['git'],
     #user     => 'root',
   }
