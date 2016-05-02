@@ -3,43 +3,44 @@
 #
 class nba::all_in_one::api(
   $checkout,
-  $repokey,
+  $git_username,
+  $git_password,
   ){
 
 
-  file { '/root/.ssh':
-    ensure => directory,
-  }->
-# Create /root/.ssh/repokeyname file
-  file { '/root/.ssh/nbagit':
-    ensure  => present,
-    content => $::repokey,
-    mode    => '0600',
-  }->
-# Create sshconfig file
-  file { '/root/.ssh/config':
-    ensure  => present,
-    content =>  "Host github.com\n\tIdentityFile ~/.ssh/nbagit",
-    mode    => '0600',
-  }->
-# copy known_hosts.sh file from puppet module
-  file{ '/usr/local/sbin/known_hosts.sh' :
-    ensure => present,
-    mode   => '0700',
-    source => 'puppet:///modules/nba/known_hosts.sh',
-  }->
-# run known_hosts.sh for future acceptance of github key
-  exec{ 'add_known_hosts' :
-    command  => '/usr/local/sbin/known_hosts.sh',
-    path     => '/sbin:/usr/bin:/usr/local/bin/:/bin/',
-    provider => shell,
-    user     => 'root',
-    unless   => 'test -f /root/.ssh/known_hosts',
-  }->
-# give known_hosts file the correct permissions
-  file{ '/root/.ssh/known_hosts':
-    mode  => '0600',
-  }->
+#   file { '/root/.ssh':
+#     ensure => directory,
+#   }->
+# # Create /root/.ssh/repokeyname file
+#   file { '/root/.ssh/nbagit':
+#     ensure  => present,
+#     content => $::repokey,
+#     mode    => '0600',
+#   }->
+# # Create sshconfig file
+#   file { '/root/.ssh/config':
+#     ensure  => present,
+#     content =>  "Host github.com\n\tIdentityFile ~/.ssh/nbagit",
+#     mode    => '0600',
+#   }->
+# # copy known_hosts.sh file from puppet module
+#   file{ '/usr/local/sbin/known_hosts.sh' :
+#     ensure => present,
+#     mode   => '0700',
+#     source => 'puppet:///modules/nba/known_hosts.sh',
+#   }->
+# # run known_hosts.sh for future acceptance of github key
+#   exec{ 'add_known_hosts' :
+#     command  => '/usr/local/sbin/known_hosts.sh',
+#     path     => '/sbin:/usr/bin:/usr/local/bin/:/bin/',
+#     provider => shell,
+#     user     => 'root',
+#     unless   => 'test -f /root/.ssh/known_hosts',
+#   }->
+# # give known_hosts file the correct permissions
+#   file{ '/root/.ssh/known_hosts':
+#     mode  => '0600',
+#   }->
 
   vcsrepo { '/source/nba-git':
     ensure   => present,
@@ -47,7 +48,9 @@ class nba::all_in_one::api(
     source   => 'git@github.com:naturalis/naturalis_data_api.git',
     revision => $::checkout,
     require  => Package['git'],
-    user     => 'root',
+    #user     => 'root',
+    basic_auth_username => $git_username,
+    basic_auth_password => $git_password,
   }
 
   file { '/source/nba-git/nl.naturalis.nda.build/build.properties':

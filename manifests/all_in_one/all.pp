@@ -2,9 +2,13 @@
 #
 #
 class nba::all_in_one::all(
-  $cluster_id = 'demo',
-  $es_replicas   = '0',
+  $cluster_id   = 'demo',
+  $es_replicas  = '0',
   $es_memory_gb = '1',
+  $nba_checkout = 'v0.15',
+  $build_nba    = true,
+  $git_username,
+  $git_password,
   ){
 
   if ($::cluster_ips) {
@@ -48,7 +52,11 @@ class nba::all_in_one::all(
         'members' => $ips
         }
       },
+  } ->
+
+  class {'nba::all_in_one::api':
+    checkout     => $nba_checkout,
+    git_username => $git_username,
+    git_password => $git_password,
   }
-
-
 }

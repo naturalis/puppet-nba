@@ -4,7 +4,7 @@ elasticsearch.transportaddress.host=<%= scope.lookupvar("::ipaddress") %>
 elasticsearch.transportaddress.port=9300
 elasticsearch.index.name=nda
 elasticsearch.index.numshards=9
-elasticsearch.index.numreplicas=<%= scope.lookupvar("nba::all_in_one::all::replicas") %>
+elasticsearch.index.numreplicas=<%= scope.lookupvar("nba::all_in_one::all::es_replicas") %>
 
 ear.install.dir=/opt/wildfly/standalone/deployments
 
