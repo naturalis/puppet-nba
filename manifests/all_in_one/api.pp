@@ -45,13 +45,12 @@ class nba::all_in_one::api(
   vcsrepo { '/source/nba-git':
     ensure   => present,
     provider => git,
-    source   => 'git@github.com:naturalis/naturalis_data_api.git',
+    source   => "https://${git_username}:${git_password}@github.com:naturalis/naturalis_data_api.git",
     revision => $::checkout,
     require  => Package['git'],
     #user     => 'root',
-    basic_auth_username => $git_username,
-    basic_auth_password => $git_password,
   }
+
 
   file { '/source/nba-git/nl.naturalis.nda.build/build.properties':
     ensure  => present,
