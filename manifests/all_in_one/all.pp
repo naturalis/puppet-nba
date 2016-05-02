@@ -34,9 +34,9 @@ class nba::all_in_one::all(
     es_version              => '1.3.4',
     es_repo_version         => '1.3',
     es_shards               => '9',
-    es_replicas             => $es_replicas
+    es_replicas             => $es_replicas,
     es_minimal_master_nodes => '1',
-    es_memory_gb            => $es_memory_gb
+    es_memory_gb            => $es_memory_gb,
   } ->
 
   class {'nba::all_in_one::lb':
