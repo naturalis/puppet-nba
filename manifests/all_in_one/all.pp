@@ -14,12 +14,12 @@ class nba::all_in_one::all(
   if ($::cluster_ips) {
     if ($::cluster_ips == 'es_not_up') {
       notify {'elastic search not running asuming 1 node config':}
-      $ips = [$::ipaddress]
+      $ips = ["${::ipaddress}:8080"]
     } else {
-      $ips = split($::cluster_ips,',')
+      $ips = suffix(split($::cluster_ips,','),':8080'
     }
   }else {
-    $ips = [$::ipaddress]
+    $ips = ["${::ipaddress}:8080"]
   }
 
   file {['/etc/facter','/etc/facter/facts.d/']:

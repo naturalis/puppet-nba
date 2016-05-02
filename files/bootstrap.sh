@@ -3,13 +3,16 @@ set -e
 ### SETTINGS ####
 GIT_USERNAME='AtzedeVries'
 GIT_PASSWORD=''
-
+CLUSTER_ID='demo'
+ES_REPLICAS='0'
+ES_MEMORY_GB='1'
+NBA_CHECKOUT='v0.15'
 
 ### do not modify beyond ###
-$cluster_id   = 'demo',
-$es_replicas  = '0',
-$es_memory_gb = '1',
-$nba_checkout = 'v0.15',
+#$cluster_id   = 'demo',
+#$es_replicas  = '0',
+#$es_memory_gb = '1',
+#$nba_checkout = 'v0.15',
 
 . /etc/lsb-release
 REPO_DEB_URL="http://apt.puppetlabs.com/puppetlabs-release-${DISTRIB_CODENAME}.deb"
@@ -32,4 +35,7 @@ git clone https://github.com/puppetlabs/puppetlabs-concat /etc/puppet/modules/co
 git clone https://github.com/puppetlabs/puppetlabs-vcsrepo /etc/puppet/modules/vcsrepo
 
 
+puppet apply -e "class {'nba::all_in_one::all': git_username => '"${GIT_USERNAME}"' , git_password => '"${GIT_PASSWORD}"' }"
+#waiting for other nodes to be up then run again
+sleep 120
 puppet apply -e "class {'nba::all_in_one::all': git_username => '"${GIT_USERNAME}"' , git_password => '"${GIT_PASSWORD}"' }"
