@@ -10,12 +10,12 @@ class nba::all_in_one::all(
   if ($::cluster_ips) {
     if ($::cluster_ips == 'es_not_up') {
       notify {'elastic search not running asuming 1 node config':}
-      $ips = $::ipaddress
+      $ips = [$::ipaddress]
     } else {
       $ips = split($::cluster_ips,',')
     }
   }else {
-    $ips = $::ipaddress
+    $ips = [$::ipaddress]
   }
 
   file {['/etc/facter','/etc/facter/facts.d/']:
