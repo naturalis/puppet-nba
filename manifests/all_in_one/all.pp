@@ -18,7 +18,15 @@ class nba::all_in_one::all(
     $ips = $::ipaddress
   }
 
+  file {['/etc/facter','/etc/facter/facts.d/']:
+    ensure => directory,
+  } ->
 
+  file {'/etc/facter/facts.d/es_nodes.py':
+    ensure  => present,
+    content => template('nba/facts/es_nodes.py'),
+    mode    => '0775',
+  }
 
 
   class {'nba::all_in_one::framework':
