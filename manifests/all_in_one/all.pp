@@ -27,7 +27,7 @@ class nba::all_in_one::all(
   if ($::cluster_nodes) {
     if ($::cluster_nodes == 'es_not_up') {
       notify {'elastic search not running asuming 1 node config':}
-      $reps = '0',
+      $reps = '0'
     } else {
       $reps = $::cluster_nodes
     }
