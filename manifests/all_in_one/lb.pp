@@ -3,7 +3,7 @@
 #
 class nba::all_in_one::lb(
   $vhost = {
-    'apitest.biodiversitydata.nl' => {'www_root' => '/var/www/apitest.biodiversitydata.nl'},
+    'apitest.biodiversitydata.nl' => {'www_root' => '/var/www/api.biodiversitydata.nl'},
     'datatest.biodiversitydata.nl' => {'proxy' => 'http://purl/purl'}
   },
   $location = {
@@ -15,7 +15,7 @@ class nba::all_in_one::lb(
   },
   $files = {
     '/var/www' => {'type' => 'dir'},
-    '/var/www/apitest.biodiversitydata.nl' => {'type' => 'dir'}
+    '/var/www/api.biodiversitydata.nl' => {'type' => 'dir'}
   }
   ){
 

@@ -13,6 +13,8 @@ ES_MEMORY_GB='1'
 
 # nba git taq or branch (not yet sure if hash works)
 NBA_CHECKOUT='v0.15'
+API_DNS_NAME='apitest.biodiversitydata.nl'
+PURL_DNS_NAME='datatest.biodiversitydata.nl'
 
 ###############################
 ##   DO NOT MODIFY BELOW!!!  ##
@@ -40,21 +42,25 @@ git clone https://github.com/puppetlabs/puppetlabs-vcsrepo /etc/puppet/modules/v
 
 
 puppet apply -e "class {'nba::all_in_one::all':
-git_username => '"${GIT_USERNAME}"' ,
-git_password => '"${GIT_PASSWORD}"',
-cluster_id   => '"${CLUSTER_ID}"',
-es_memory_gb => '"${ES_MEMORY_GB}"',
-nba_checkout => '"${NBA_CHECKOUT}"',
+git_username  => '"${GIT_USERNAME}"' ,
+git_password  => '"${GIT_PASSWORD}"',
+cluster_id    => '"${CLUSTER_ID}"',
+es_memory_gb  => '"${ES_MEMORY_GB}"',
+nba_checkout  => '"${NBA_CHECKOUT}"',
+api_dns_name  => '"${API_DNS_NAME}"',
+purl_dns_name => '"${PURL_DNS_NAME}"',
 }"
 #waiting for other nodes to be up then run again
 echo "Waiting for 60 seconds to get all ES nodes in a cluster"
 sleep 60
 puppet apply -e "class {'nba::all_in_one::all':
-git_username => '"${GIT_USERNAME}"' ,
-git_password => '"${GIT_PASSWORD}"',
-cluster_id   => '"${CLUSTER_ID}"',
-es_memory_gb => '"${ES_MEMORY_GB}"',
-nba_checkout => '"${NBA_CHECKOUT}"',
+git_username  => '"${GIT_USERNAME}"' ,
+git_password  => '"${GIT_PASSWORD}"',
+cluster_id    => '"${CLUSTER_ID}"',
+es_memory_gb  => '"${ES_MEMORY_GB}"',
+nba_checkout  => '"${NBA_CHECKOUT}"',
+api_dns_name  => '"${API_DNS_NAME}"',
+purl_dns_name => '"${PURL_DNS_NAME}"',
 }
 "
 echo "Done, happy whatever.."

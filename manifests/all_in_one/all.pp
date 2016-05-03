@@ -2,13 +2,15 @@
 #
 #
 class nba::all_in_one::all(
-  $cluster_id   = 'demo',
-  $es_replicas  = '0',
-  $es_memory_gb = '1',
-  $nba_checkout = 'v0.15',
-  $build_nba    = true,
+  $cluster_id    = 'demo',
+  $es_replicas   = '0',
+  $es_memory_gb  = '1',
+  $nba_checkout  = 'v0.15',
+  $build_nba     = true,
   $git_username,
   $git_password,
+  $api_dns_name  = 'apitest.biodiversitydata.nl',
+  $purl_dns_name = 'datatest.biodiversitydata.nl'
   ){
 
   if ($::cluster_ips) {
@@ -46,11 +48,15 @@ class nba::all_in_one::all(
   class {'nba::all_in_one::lb':
     upstream => {
       'api_v0' => {
-        'members' => $ips
-        },
+        'members' => $ips },
       'purl'   => {
-        'members' => $ips
-        }
+        'members' => $ips }
+      },
+      vhost  => {
+        $api_dns_name  => {
+          'www_root' => '/var/www/api.biodiversitydata.nl'},
+        $purl_dns_name => {
+          'proxy' => 'http://purl/purl'}
       },
     require  => Service['elasticsearch-nba-es'],
   }
