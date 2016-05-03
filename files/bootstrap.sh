@@ -1,19 +1,19 @@
 #!/usr/bin/env bash
 set -e
+
 ### SETTINGS ####
 
+# Git username password to clone NBA repo
 GIT_USERNAME='AtzedeVries'
 GIT_PASSWORD=''
+
+# es settings (use different id if you don't want to join clusters)
 CLUSTER_ID='demo'
-ES_REPLICAS='0'
 ES_MEMORY_GB='1'
+
+# nba git taq or branch (not yet sure if hash works)
 NBA_CHECKOUT='v0.15'
 
-### do not modify beyond ###
-#$cluster_id   = 'demo',
-#$es_replicas  = '0',
-#$es_memory_gb = '1',
-#$nba_checkout = 'v0.15',
 
 . /etc/lsb-release
 REPO_DEB_URL="http://apt.puppetlabs.com/puppetlabs-release-${DISTRIB_CODENAME}.deb"
@@ -38,13 +38,20 @@ git clone https://github.com/puppetlabs/puppetlabs-vcsrepo /etc/puppet/modules/v
 
 puppet apply -e "class {'nba::all_in_one::all':
 git_username => '"${GIT_USERNAME}"' ,
-git_password => '"${GIT_PASSWORD}"'
+git_password => '"${GIT_PASSWORD}"',
+cluster_id   => '"${CLUSTER_ID}"',
+es_memory_gb => '"${ES_MEMORY_GB}"',
+nba_checkout => '"${NBA_CHECKOUT}"',
 }"
 #waiting for other nodes to be up then run again
 echo "Waiting for 60 seconds to get all ES nodes in a cluster"
 sleep 60
 puppet apply -e "class {'nba::all_in_one::all':
 git_username => '"${GIT_USERNAME}"' ,
-git_password => '"${GIT_PASSWORD}"' }
+git_password => '"${GIT_PASSWORD}"',
+cluster_id   => '"${CLUSTER_ID}"',
+es_memory_gb => '"${ES_MEMORY_GB}"',
+nba_checkout => '"${NBA_CHECKOUT}"',
+}
 "
 echo "Done, happy whatever.."
