@@ -10,7 +10,8 @@ class nba::all_in_one::all(
   $git_username,
   $git_password,
   $api_dns_name  = 'apitest.biodiversitydata.nl',
-  $purl_dns_name = 'datatest.biodiversitydata.nl'
+  $purl_dns_name = 'datatest.biodiversitydata.nl',
+  $always_build_latest = 'false',
   ){
 
   if ($::cluster_ips) {
@@ -35,6 +36,11 @@ class nba::all_in_one::all(
     $reps ='0'
   }
 
+  if ($always_build_latest == 'false') {
+    $what_to_build = 'present'
+  } else {
+    $what_to_build = 'latest'
+  }
   file {['/etc/facter','/etc/facter/facts.d/']:
     ensure => directory,
   } ->
@@ -73,10 +79,11 @@ class nba::all_in_one::all(
   }
 
   class {'nba::all_in_one::api':
-    checkout     => $nba_checkout,
-    git_username => $git_username,
-    git_password => $git_password,
-    require      => Class['nba::all_in_one::lb'],
+    checkout      => $nba_checkout,
+    git_username  => $git_username,
+    git_password  => $git_password,
+    what_to_build => $what_to_build,
+    require       => Class['nba::all_in_one::lb'],
   }
 
   class {'nba::all_in_one::purl':
