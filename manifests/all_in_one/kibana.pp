@@ -45,7 +45,7 @@ class nba::all_in_one::kibana(
   }
 
   exec {'install sense':
-    command => "/opt/kibana-${kibana_version}-linux-x64/bin/kibana --install elastic/sense",
+    command => "/opt/kibana-${kibana_version}-linux-x64/bin/kibana plugin --install elastic/sense",
     require => Staging::Deploy["kibana-${kibana_version}-linux-x64.tar.gz"],
     before  => Service['kibana'],
   }

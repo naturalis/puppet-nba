@@ -87,4 +87,10 @@ class nba::all_in_one::all(
     require      => Class['nba::all_in_one::lb'],
   }
 
+  cron { 'suricataboot_cron':
+    command => '/usr/bin/puppet apply /etc/puppet/manifests/nba.pp',
+    user    => root,
+    special => reboot,
+  }
+
 }
