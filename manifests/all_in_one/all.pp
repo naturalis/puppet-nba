@@ -44,7 +44,6 @@ class nba::all_in_one::all(
   } ->
 
   class {'nba::all_in_one::lb':
-    require => Service['elasticsearch-nba-es'],
     upstream => {
       'api_v0' => {
         'members' => $ips
@@ -53,11 +52,18 @@ class nba::all_in_one::all(
         'members' => $ips
         }
       },
-  } ->
+    require  => Service['elasticsearch-nba-es'],
+  }
 
   class {'nba::all_in_one::api':
     checkout     => $nba_checkout,
     git_username => $git_username,
     git_password => $git_password,
+    require      => Class['nba::all_in_one::lb'],
   }
+
+  class {'nba::all_in_one::purl':
+    require      => Class['nba::all_in_one::lb'],
+  }
+
 }

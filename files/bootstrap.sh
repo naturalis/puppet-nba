@@ -1,6 +1,7 @@
 #!/usr/bin/env bash
 set -e
 ### SETTINGS ####
+
 GIT_USERNAME='AtzedeVries'
 GIT_PASSWORD=''
 CLUSTER_ID='demo'
@@ -35,7 +36,15 @@ git clone https://github.com/puppetlabs/puppetlabs-concat /etc/puppet/modules/co
 git clone https://github.com/puppetlabs/puppetlabs-vcsrepo /etc/puppet/modules/vcsrepo
 
 
-puppet apply -e "class {'nba::all_in_one::all': git_username => '"${GIT_USERNAME}"' , git_password => '"${GIT_PASSWORD}"' }"
+puppet apply -e "class {'nba::all_in_one::all':
+git_username => '"${GIT_USERNAME}"' ,
+git_password => '"${GIT_PASSWORD}"'
+}"
 #waiting for other nodes to be up then run again
-sleep 120
-puppet apply -e "class {'nba::all_in_one::all': git_username => '"${GIT_USERNAME}"' , git_password => '"${GIT_PASSWORD}"' }"
+echo "Waiting for 60 seconds to get all ES nodes in a cluster"
+sleep 60
+puppet apply -e "class {'nba::all_in_one::all':
+git_username => '"${GIT_USERNAME}"' ,
+git_password => '"${GIT_PASSWORD}"' }
+"
+echo "Done, happy whatever.."
