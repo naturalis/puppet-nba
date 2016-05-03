@@ -1,0 +1,11 @@
+/var/log/kibana/*log {
+  missingok
+  sharedscripts
+  create 0644 root root
+  compress
+  rotate 7
+
+  postrotate
+    [ -e /etc/init.d/kibana ] && /etc/init.d/kibana restart > /dev/null 2>&1 || true
+  endscript
+}

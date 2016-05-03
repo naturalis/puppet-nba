@@ -13,6 +13,7 @@ ES_MEMORY_GB='1'
 
 # nba git taq or branch (not yet sure if hash works)
 NBA_CHECKOUT='v0.15'
+# dns records for loadbalancer. Add these plus your foating ip to your hosts file.
 API_DNS_NAME='apitest.biodiversitydata.nl'
 PURL_DNS_NAME='datatest.biodiversitydata.nl'
 
@@ -39,6 +40,7 @@ git clone https://github.com/puppetlabs/puppetlabs-java /etc/puppet/modules/java
 git clone https://github.com/jfryman/puppet-nginx /etc/puppet/modules/nginx
 git clone https://github.com/puppetlabs/puppetlabs-concat /etc/puppet/modules/concat
 git clone https://github.com/puppetlabs/puppetlabs-vcsrepo /etc/puppet/modules/vcsrepo
+git clone https://github.com/nanliu/puppet-staging /etc/puppet/modules/staging
 
 
 puppet apply -e "class {'nba::all_in_one::all':

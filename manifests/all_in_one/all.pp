@@ -24,6 +24,17 @@ class nba::all_in_one::all(
     $ips = ["${::ipaddress}:8080"]
   }
 
+  if ($::cluster_nodes) {
+    if ($::cluster_nodes == 'es_not_up') {
+      notify {'elastic search not running asuming 1 node config':}
+      $reps = '0',
+    } else {
+      $reps = $::cluster_nodes
+    }
+  }else {
+    $reps ='0'
+  }
+
   file {['/etc/facter','/etc/facter/facts.d/']:
     ensure => directory,
   } ->
@@ -40,7 +51,7 @@ class nba::all_in_one::all(
     es_version              => '1.3.4',
     es_repo_version         => '1.3',
     es_shards               => '9',
-    es_replicas             => $es_replicas,
+    es_replicas             => $reps,
     es_minimal_master_nodes => '1',
     es_memory_gb            => $es_memory_gb,
   } ->
@@ -69,6 +80,10 @@ class nba::all_in_one::all(
   }
 
   class {'nba::all_in_one::purl':
+    require      => Class['nba::all_in_one::lb'],
+  }
+
+  class {'nba::all_in_one::kibana':
     require      => Class['nba::all_in_one::lb'],
   }
 
