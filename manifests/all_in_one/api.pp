@@ -42,7 +42,6 @@ class nba::all_in_one::api(
   exec {'/usr/bin/ant clean install-export-module': } ->
   exec {'/data/nda-import/sh/bootstrap-nba.sh':
     cwd    => '/data/nda-import/sh',
-    notify => Service['wildfly']
   }
 
 

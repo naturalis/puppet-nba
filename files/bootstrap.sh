@@ -14,6 +14,9 @@ ES_MEMORY_GB='1'
 # nba git taq or branch (not yet sure if hash works)
 NBA_CHECKOUT='v0.15'
 
+###############################
+##   DO NOT MODIFY BELOW!!!  ##
+###############################
 
 . /etc/lsb-release
 REPO_DEB_URL="http://apt.puppetlabs.com/puppetlabs-release-${DISTRIB_CODENAME}.deb"
