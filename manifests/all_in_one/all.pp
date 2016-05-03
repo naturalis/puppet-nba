@@ -53,9 +53,9 @@ class nba::all_in_one::all(
         'members' => $ips }
       },
       vhost  => {
-        $api_dns_name  => {
+        "${api_dns_name}"  => {
           'www_root' => '/var/www/api.biodiversitydata.nl'},
-        $purl_dns_name => {
+        "${purl_dns_name}" => {
           'proxy' => 'http://purl/purl'}
       },
     require  => Service['elasticsearch-nba-es'],
