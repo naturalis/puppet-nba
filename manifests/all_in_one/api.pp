@@ -11,7 +11,7 @@ class nba::all_in_one::api(
   Exec {
     path        => '/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin',
     environment => 'IVY_HOME=/usr/share/maven-repo/org/apache/ivy/ivy/2.3.0/',
-    logoutput   => true,
+    logoutput   => false,
     cwd         => '/source/nba-git/nl.naturalis.nda.build',
   }
 
@@ -36,11 +36,13 @@ class nba::all_in_one::api(
     #notify  => Exec['build sh-config'],
   } ->
 
-
   exec {'/usr/bin/ant clean build-ear-file': } ->
   exec {'/usr/bin/ant deploy-ear-file': } ->
   exec {'/usr/bin/ant clean install-import-module': } ->
-  exec {'/usr/bin/ant clean install-export-module': }
+  exec {'/usr/bin/ant clean install-export-module': } ->
+  exec {'/data/nda-import/sh/bootstrap-nba.sh':
+    cwd => '/data/nda-import/sh',
+  }
 
 
   # exec { 'build ear':
