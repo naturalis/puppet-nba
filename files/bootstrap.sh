@@ -43,19 +43,7 @@ git clone https://github.com/puppetlabs/puppetlabs-vcsrepo /etc/puppet/modules/v
 git clone https://github.com/nanliu/puppet-staging /etc/puppet/modules/staging
 
 
-puppet apply -e "class {'nba::all_in_one::all':
-git_username  => '"${GIT_USERNAME}"' ,
-git_password  => '"${GIT_PASSWORD}"',
-cluster_id    => '"${CLUSTER_ID}"',
-es_memory_gb  => '"${ES_MEMORY_GB}"',
-nba_checkout  => '"${NBA_CHECKOUT}"',
-api_dns_name  => '"${API_DNS_NAME}"',
-purl_dns_name => '"${PURL_DNS_NAME}"',
-}"
-#waiting for other nodes to be up then run again
-echo "Waiting for 60 seconds to get all ES nodes in a cluster"
-sleep 60
-puppet apply -e "class {'nba::all_in_one::all':
+echo  "class {'nba::all_in_one::all':
 git_username  => '"${GIT_USERNAME}"' ,
 git_password  => '"${GIT_PASSWORD}"',
 cluster_id    => '"${CLUSTER_ID}"',
@@ -64,5 +52,10 @@ nba_checkout  => '"${NBA_CHECKOUT}"',
 api_dns_name  => '"${API_DNS_NAME}"',
 purl_dns_name => '"${PURL_DNS_NAME}"',
 }
-"
+" > /etc/puppet/manifests/nba.pp
+#waiting for other nodes to be up then run again
+puppet apply /etc/puppet/manifests/nba.pp
+echo "Waiting for 60 seconds to get all ES nodes in a cluster"
+sleep 60
+puppet apply /etc/puppet/manifests/nba.pp
 echo "Done, happy whatever.."

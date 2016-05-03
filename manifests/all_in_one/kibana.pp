@@ -33,15 +33,15 @@ class nba::all_in_one::kibana(
     require => Staging::Deploy["kibana-${kibana_version}-linux-x64.tar.gz"],
   }
 
-  file {'kibana log directory':
-    ensure => directory,
-    path   => '/var/log/kibana',
-    before => Service['kibana']
-  }
-
   file {'kibana log rotate':
     content => template('nba/kibana/logrotate.erb'),
     path    => '/etc/logrotate.d/kibana',
+  }
+
+  file {'kibana log directory':
+    ensure => directory,
+    path   => '/var/log/kibana',
+    before => Exec['install sense'],
   }
 
   exec {'install sense':
