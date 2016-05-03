@@ -40,8 +40,8 @@ class nba::all_in_one::api(
   exec {'/usr/bin/ant deploy-ear-file': } ->
   exec {'/usr/bin/ant clean install-import-module': } ->
   exec {'/usr/bin/ant clean install-export-module': } ->
-  exec {'/data/nda-import/sh/bootstrap-nba.sh':
-    cwd    => '/data/nda-import/sh',
+  exec {'/data/nba-import/sh/bootstrap-nba.sh':
+    cwd    => '/data/nba-import/sh',
   }
 
 
