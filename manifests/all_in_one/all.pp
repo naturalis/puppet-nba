@@ -111,4 +111,9 @@ class nba::all_in_one::all(
     special => reboot,
   }
 
+  exec {'set es number of replicas':
+    command => "/bin/sleep 30 ; /usr/bin/curl -XPUT ${::ipaddress}:9200/_settings -d '{ \"index\":{\"number_of_replicas\": ${reps} } }'",
+    require => Class['nba::all_in_one::framework'],
+  }
+
 }

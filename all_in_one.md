@@ -81,3 +81,29 @@ DNS records at which the loadbalancer listens. You can add these to your hosts f
 This will describe how to make the following setups
 * Two instances with two different clusters
 * Create one elasticsearch cluster with multiple versions of NBA
+
+#### Two different clusters
+1. Launch a instance. Add the scirpt and change `CLUSTER_ID` to `CLUSTER_ID=demo-1`
+2. Launch a instance. Add the scirpt and change `CLUSTER_ID` to `CLUSTER_ID=demo-2`
+
+#### One ES cluster, different versions
+1. Launch a instance. Add the scirpt and change `NBA_CHECKOUT` to `NBA_CHECKOUT=v0.15`
+2. Launch a instance. Add the scirpt and change `NBA_CHECKOUT` to `NBA_CHECKOUT=v0.15.1`
+3. Access the differ versions via floating ip's on 8080 port number
+
+## Handy extra's
+
+#### Add volume storage to instance to have extra harddrive space
+This is usefull when importing large amounts of data.
+1. Create volume
+2. attach it to the instance
+3. Log in
+  ```
+  sudo -s
+  mkfs.ext4 /dev/vdb
+  mkdir /storage
+  mount /dev/vdb /storage
+  mkdir /storage/import
+  ln -s /storage/import /data/import
+
+  ```
