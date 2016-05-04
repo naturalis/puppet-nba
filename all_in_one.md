@@ -16,7 +16,7 @@
 * Insert data into ES (not yet)
 * Install Admin interface (not yet)
 * Replicate export zips over nodes (not yet)
-* Bring cofee (not yet..)
+* Bring coffee (not yet..)
 
 #### Quickstart
 This will launch a 3 cluster setup:
