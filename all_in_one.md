@@ -27,7 +27,7 @@ This will launch a 3 cluster setup:
 5. Select ubuntu 14.04 Image
 6. Select network
 7. Select security groups (more on this futher)
-8. Add your keypair
+8. Add your public key
 9. Add bootstrap script to the configuration
   10. The script can be found here: https://raw.githubusercontent.com/naturalis/puppet-nba/feature/biemondwildfly/files/bootstrap.sh
   11. Change setting of
@@ -37,6 +37,8 @@ This will launch a 3 cluster setup:
 11. You can check progress in the log tab of the instances
 12. Log into the instance with ubuntu@your-floating-ip
 13. Log into sense with http://floating-ip:5601/app/sense
+14. Goto http://floatingip/v0/version
+15. Goto http://floatingip:8080/(v0 or purl)
 
 #### Security group
 For this to work, create a security group with the following rules. You only have to do this once.
@@ -66,15 +68,16 @@ ES_MEMORY_GB='1'
 ```
 Memory heap of ES, change this to half of the size of RAM of instance for best performance
 ```
-# nba git taq or branch (not yet sure if hash works)
 NBA_CHECKOUT='v0.15'
-# always (false/true) build latest on reboot (or on running 'sudo puppet apply /etc/puppet/manifests/nba.pp')
-ALWAYS_BUILD_LATEST='false'
-# dns records for loadbalancer. Add these plus your foating ip to your hosts file.
+```
+Github branch or tag to use (not yet tested  with hash)
+```
 API_DNS_NAME='apitest.biodiversitydata.nl'
 PURL_DNS_NAME='datatest.biodiversitydata.nl'
 ```
+DNS records at which the loadbalancer listens. You can add these to your hosts file in combination with the floating ip.
 
-## Create setups
+## Setup examples
 This will describe how to make the following setups
 * Two instances with two different clusters
+* Create one elasticsearch cluster with multiple versions of NBA

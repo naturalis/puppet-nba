@@ -13,8 +13,6 @@ ES_MEMORY_GB='1'
 
 # nba git taq or branch (not yet sure if hash works)
 NBA_CHECKOUT='v0.15'
-# always (false/true) build latest on reboot (or on running 'sudo puppet apply /etc/puppet/manifests/nba.pp')
-ALWAYS_BUILD_LATEST='false'
 # dns records for loadbalancer. Add these plus your foating ip to your hosts file.
 API_DNS_NAME='apitest.biodiversitydata.nl'
 PURL_DNS_NAME='datatest.biodiversitydata.nl'
@@ -53,7 +51,6 @@ es_memory_gb        => '"${ES_MEMORY_GB}"',
 nba_checkout        => '"${NBA_CHECKOUT}"',
 api_dns_name        => '"${API_DNS_NAME}"',
 purl_dns_name       => '"${PURL_DNS_NAME}"',
-always_build_latest => '"${ALWAYS_BUILD_LATEST}"',
 }
 " > /etc/puppet/manifests/nba.pp
 #waiting for other nodes to be up then run again

@@ -91,7 +91,7 @@ class nba::all_in_one::framework(
   }
 
   exec {'set es number of replicas':
-    command => "/usr/bin/curl -XPUT ${::ipaddress}:9200/_settings -q -d '{ \"index\":{\"number_of_replicas\": ${es_replicas} } }'",
-    require => Service['elasticsearch-nba-es'],
+    command => "/bin/sleep 30 ; /usr/bin/curl -XPUT ${::ipaddress}:9200/_settings -d '{ \"index\":{\"number_of_replicas\": ${es_replicas} } }'",
+    require => Class['elasticsearch'],
   }
 }
