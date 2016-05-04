@@ -47,3 +47,34 @@ For this to work, create a security group with the following rules. You only hav
 * (rule) Custom TCP Rule (direction) Ingress (Open port) port  (port) -1 (remote) Security Group (Security grout) <name of your security group> (ether type) IPV4
 * (rule) Custom UDP Rule (direction) Ingress (Open port) port  (port) -1 (remote) Security Group (Security grout) <name of your security group> (ether type) IPV4
 * (rule) Custom CMDP Rule (direction) Ingress (Type) -1  (Code) -1 (remote) Security Group (Security grout) <name of your security group> (ether type) IPV4
+
+
+
+#### Settings in bootstrap.sh
+The boostrap has the following settings
+```
+GIT_USERNAME='AtzedeVries'
+GIT_PASSWORD=''
+```
+Your github username and password to clone the naturalis_data_api repository
+```
+CLUSTER_ID='demo'
+```
+ID of your cluster. Keep this the same if you want the cluster to join. Change this if you want differnt clusters
+```
+ES_MEMORY_GB='1'
+```
+Memory heap of ES, change this to half of the size of RAM of instance for best performance
+```
+# nba git taq or branch (not yet sure if hash works)
+NBA_CHECKOUT='v0.15'
+# always (false/true) build latest on reboot (or on running 'sudo puppet apply /etc/puppet/manifests/nba.pp')
+ALWAYS_BUILD_LATEST='false'
+# dns records for loadbalancer. Add these plus your foating ip to your hosts file.
+API_DNS_NAME='apitest.biodiversitydata.nl'
+PURL_DNS_NAME='datatest.biodiversitydata.nl'
+```
+
+## Create setups
+This will describe how to make the following setups
+* Two instances with two different clusters
