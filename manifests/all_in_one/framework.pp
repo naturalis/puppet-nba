@@ -91,6 +91,6 @@ class nba::all_in_one::framework(
   }
 
   exec {'set es number of replicas':
-    command => "curl -XPUT localhost:9200/_settings -d '{ \"index\":{\"number_of_replicas\": ${es_replicas} } }'",
+    command => "/usr/bin/curl -XPUT localhost:9200/_settings -d '{ \"index\":{\"number_of_replicas\": ${es_replicas} } }'",
   }
 }
