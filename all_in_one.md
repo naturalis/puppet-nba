@@ -96,6 +96,7 @@ This will describe how to make the following setups
 
 #### Add volume storage to instance to have extra harddrive space
 This is usefull when importing large amounts of data.
+
 1. Create volume
 2. attach it to the instance
 3. Log in and
