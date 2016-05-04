@@ -97,7 +97,7 @@ This will describe how to make the following setups
 This is usefull when importing large amounts of data.
 1. Create volume
 2. attach it to the instance
-3. Log in
+3. Log in and
   ```
   sudo -s
   mkfs.ext4 /dev/vdb
@@ -105,5 +105,6 @@ This is usefull when importing large amounts of data.
   mount /dev/vdb /storage
   mkdir /storage/import
   ln -s /storage/import /data/import
-
   ```
+
+#### Remove elasticsearch node from cluster
