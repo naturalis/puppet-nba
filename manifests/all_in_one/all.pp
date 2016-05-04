@@ -25,15 +25,26 @@ class nba::all_in_one::all(
     $ips = ["${::ipaddress}:8080"]
   }
 
-  if ($::cluster_nodes) {
-    if ($::cluster_nodes == 'es_not_up') {
+  if ($::suggested_reps) {
+    if ($::suggested_reps == 'es_not_up') {
       notify {'elastic search not running asuming 1 node config':}
       $reps = '0'
     } else {
-      $reps = $::cluster_nodes
+      $reps = $::suggested_reps
     }
   }else {
     $reps ='0'
+  }
+
+  if ($::suggested_master_nodes) {
+    if ($::suggested_master_nodes == 'es_not_up') {
+      notify {'elastic search not running asuming 1 node config':}
+      $minmaster = '1'
+    } else {
+      $minmaster = $::suggested_master_nodes
+    }
+  }else {
+    $minmaster ='1'
   }
 
   if ($always_build_latest == 'false') {
@@ -41,6 +52,7 @@ class nba::all_in_one::all(
   } else {
     $what_to_build = 'latest'
   }
+  
   file {['/etc/facter','/etc/facter/facts.d/']:
     ensure => directory,
   } ->
@@ -58,7 +70,7 @@ class nba::all_in_one::all(
     es_repo_version         => '1.3',
     es_shards               => '9',
     es_replicas             => $reps,
-    es_minimal_master_nodes => '1',
+    es_minimal_master_nodes => $minmaster,
     es_memory_gb            => $es_memory_gb,
   } ->
 
@@ -94,7 +106,7 @@ class nba::all_in_one::all(
     require      => Class['nba::all_in_one::lb'],
   }
 
-  cron { 'suricataboot_cron':
+  cron { 'apply puppet at boot':
     command => '/usr/bin/puppet apply /etc/puppet/manifests/nba.pp',
     user    => root,
     special => reboot,
