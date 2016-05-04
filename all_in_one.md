@@ -100,6 +100,7 @@ This is usefull when importing large amounts of data.
 1. Create volume
 2. attach it to the instance
 3. Log in and
+
   ```
   sudo -s
   mkfs.ext4 /dev/vdb
