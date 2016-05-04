@@ -26,6 +26,7 @@ This will launch a 3 cluster setup:
 3. Give a name
 4. Set count to 3
 5. Select ubuntu 14.04 Image
+6. Select flavor
 6. Select network
 7. Select security groups (more on this futher)
 8. Add your public key
