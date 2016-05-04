@@ -14,6 +14,9 @@ class nba::all_in_one::api(
     environment => 'IVY_HOME=/usr/share/maven-repo/org/apache/ivy/ivy/2.3.0/',
     logoutput   => false,
     cwd         => '/source/nba-git/nl.naturalis.nda.build',
+    subscribe   => Vcsrepo['/source/nba-git'],
+    refreshonly => true,
+    require     => File['/source/nba-git/nl.naturalis.nda.build/build.properties'],
   }
 
 
@@ -23,7 +26,6 @@ class nba::all_in_one::api(
     source   => "https://${git_username}:${git_password}@github.com/naturalis/naturalis_data_api",
     revision => $checkout,
     require  => Package['git'],
-    #user     => 'root',
   } ->
 
   file {'/data':
@@ -33,16 +35,11 @@ class nba::all_in_one::api(
   file { '/source/nba-git/nl.naturalis.nda.build/build.properties':
     ensure  => present,
     content => template('nba/build/build.properties_all.erb'),
-    #require => Vcsrepo['/source/nba-git'],
-    #notify  => Exec['build sh-config'],
-  } ->
+  }
 
 
   exec {'/usr/bin/ant clean install-import-module': } ->
   exec {'/usr/bin/ant clean install-export-module': } ->
-  exec {'/data/nba-import/sh/bootstrap-nba.sh':
-    cwd    => '/data/nba-import/sh',
-  } ->
   exec {'/usr/bin/ant clean build-ear-file': } ->
   exec {'/usr/bin/ant deploy-ear-file': }
 

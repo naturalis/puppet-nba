@@ -89,4 +89,8 @@ class nba::all_in_one::framework(
       'ES_HEAP_SIZE' => "${es_memory_gb}g"
     },
   }
+
+  exec {'set es number of replicas':
+    command => "curl -XPUT localhost:9200/_settings -d '{ \"index\":{\"number_of_replicas\": ${es_replicas} } }'",
+  }
 }
