@@ -20,6 +20,7 @@
 
 #### Quickstart
 This will launch a 3 cluster setup:
+
 1. Log into stack.naturalis.nl
 2. Create a new instance
 3. Give a name
@@ -89,7 +90,7 @@ This will describe how to make the following setups
 #### One ES cluster, different versions
 1. Launch a instance. Add the scirpt and change `NBA_CHECKOUT` to `NBA_CHECKOUT=v0.15`
 2. Launch a instance. Add the scirpt and change `NBA_CHECKOUT` to `NBA_CHECKOUT=v0.15.1`
-3. Access the differ versions via floating ip's on 8080 port number
+3. Access the different versions via floating ip's on 8080 port number
 
 ## Handy extra's
 
@@ -108,3 +109,11 @@ This is usefull when importing large amounts of data.
   ```
 
 #### Remove elasticsearch node from cluster
+Run the following `PUT` request where the ip address is the IP to the fo be removed node.
+```
+PUT _cluster/settings  {
+  "transient" :{
+      "cluster.routing.allocation.exclude._ip" : "10.0.0.1"
+   }
+}
+```
