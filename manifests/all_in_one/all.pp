@@ -3,7 +3,6 @@
 #
 class nba::all_in_one::all(
   $cluster_id    = 'demo',
-  $es_replicas   = '0',
   $es_memory_gb  = '1',
   $nba_checkout  = 'v0.15',
   $build_nba     = true,
@@ -52,7 +51,7 @@ class nba::all_in_one::all(
   } else {
     $what_to_build = 'latest'
   }
-  
+
   file {['/etc/facter','/etc/facter/facts.d/']:
     ensure => directory,
   } ->
