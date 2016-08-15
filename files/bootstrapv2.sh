@@ -10,6 +10,7 @@ GIT_PASSWORD=''
 # es settings (use different id if you don't want to join clusters)
 CLUSTER_ID='demo'
 ES_MEMORY_GB='1'
+NBAV2='true'
 
 # nba git taq or branch (not yet sure if hash works)
 NBA_CHECKOUT='v0.15'
@@ -51,6 +52,7 @@ es_memory_gb        => '"${ES_MEMORY_GB}"',
 nba_checkout        => '"${NBA_CHECKOUT}"',
 api_dns_name        => '"${API_DNS_NAME}"',
 purl_dns_name       => '"${PURL_DNS_NAME}"',
+nbav2               => '"${NBAV2}"',
 }
 " > /etc/puppet/manifests/nba.pp
 #waiting for other nodes to be up then run again
