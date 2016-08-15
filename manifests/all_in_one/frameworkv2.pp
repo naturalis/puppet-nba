@@ -22,11 +22,27 @@ class nba::all_in_one::frameworkv2(
     match => '^IVY_HOME',
   }
 
-  ::java::oracle { 'jdk8' :
-    ensure  => 'present',
-    version => '8',
-    java_se => 'jdk',
+
+  include apt
+
+  apt::ppa { 'ppa:openjdk-r/ppa':
+    ensure => present,
   }
+
+  exec { 'apt-update':
+    command => '/usr/bin/apt-get update',
+    require => [
+      Apt::Ppa['ppa:openjdk-r/ppa']
+    ],
+  }
+
+  package { 'openjdk-8-jdk':
+    require  => [
+      Exec['apt-update'],
+      Apt::Ppa['ppa:openjdk-r/ppa'],
+    ],
+  }
+
 
 
   class { '::wildfly':
@@ -45,7 +61,7 @@ class nba::all_in_one::frameworkv2(
         password => 'wildfly'
         }
       },
-    require          => Class['::java:oracle']
+    require          => Package['openjdk-8-jdk']
   }
 
   wildfly::config::interfaces{'management':
