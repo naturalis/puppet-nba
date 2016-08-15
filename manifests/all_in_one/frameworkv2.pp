@@ -101,7 +101,7 @@ class nba::all_in_one::frameworkv2(
       'index_number_of_replicas'           => $es_replicas,
       'discovery.zen.minimum_master_nodes' => $es_minimal_master_nodes
     },
-    require      => Class['::java']
+    require      =>  Package['openjdk-8-jdk']
   }
 
   elasticsearch::instance { 'nba-es' :
