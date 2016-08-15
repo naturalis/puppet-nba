@@ -10,7 +10,9 @@ class nba::all_in_one::all(
   $git_password,
   $api_dns_name  = 'apitest.biodiversitydata.nl',
   $purl_dns_name = 'datatest.biodiversitydata.nl',
-  $always_build_latest = 'false',
+  $always_build_latest = false,
+  $nbav2               = false,
+
   ){
 
   if ($::cluster_ips) {
@@ -46,7 +48,7 @@ class nba::all_in_one::all(
     $minmaster ='1'
   }
 
-  if ($always_build_latest == 'false') {
+  if ($always_build_latest == false) {
     $what_to_build = 'present'
   } else {
     $what_to_build = 'latest'
@@ -63,15 +65,26 @@ class nba::all_in_one::all(
   }
 
 
-  class {'nba::all_in_one::framework':
-    nba_cluster_name        => $cluster_id,
-    es_version              => '1.3.4',
-    es_repo_version         => '1.3',
-    es_shards               => '9',
-    es_replicas             => $reps,
-    es_minimal_master_nodes => $minmaster,
-    es_memory_gb            => $es_memory_gb,
-  } ->
+  if ($nbav2 == true) {
+    class {'nba::all_in_one::frameworkv2':
+      nba_cluster_name        => $cluster_id,
+      es_replicas             => $reps,
+      es_minimal_master_nodes => $minmaster,
+      es_memory_gb            => $es_memory_gb,
+      before                  => Class['nba::all_in_one::lb']
+    }
+  }else {
+    class {'nba::all_in_one::framework':
+      nba_cluster_name        => $cluster_id,
+      es_version              => '1.3.4',
+      es_repo_version         => '1.3',
+      es_shards               => '9',
+      es_replicas             => $reps,
+      es_minimal_master_nodes => $minmaster,
+      es_memory_gb            => $es_memory_gb,
+      before                  => Class['nba::all_in_one::lb']
+    }
+  }
 
   class {'nba::all_in_one::lb':
     upstream => {

@@ -18,6 +18,10 @@
 * Replicate export zips over nodes (not yet)
 * Bring coffee (not yet..)
 
+#### Know's bugs
+* After adding a new instance to an already existing cluster the loadbalancer config of the existing nodes
+is not updated. You can manualy update them by logging in to the 'old' instance and run `puppet apply /etc/puppet/manifests/nba.pp`
+
 #### Quickstart
 This will launch a 3 cluster setup:
 
@@ -31,7 +35,10 @@ This will launch a 3 cluster setup:
 7. Select security groups (more on this futher)
 8. Add your public key
 9. Add bootstrap script to the configuration
-  10. The script can be found here: https://raw.githubusercontent.com/naturalis/puppet-nba/feature/biemondwildfly/files/bootstrap.sh
+  10. In case of NBAv1:
+    11. The script can be found here: https://raw.githubusercontent.com/naturalis/puppet-nba/feature/biemondwildfly/files/bootstrap.sh
+  12. In cave of nbav2
+    13. The script can be found here: https://raw.githubusercontent.com/naturalis/nbav2-allinone/files/bootstrap.sh
   11. Change setting of
     12. GIT_USERNAME to your github username
     13. GIT_PASSWORD to your github password

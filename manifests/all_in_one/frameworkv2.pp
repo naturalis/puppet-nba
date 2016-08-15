@@ -3,13 +3,12 @@
 #
 class nba::all_in_one::framework(
   $nba_cluster_name        = 'demo',
-  $es_version              = '1.3.4',
-  $es_repo_version         = '1.3',
+  $es_version              = '2.3.4',
+  $es_repo_version         = '2.3',
   $es_shards               = '9',
   $es_replicas             = '0',
   $es_minimal_master_nodes = '1',
   $es_memory_gb            = '1'
-
   ) {
 
   package {['git','ant','ivy']:
@@ -23,16 +22,20 @@ class nba::all_in_one::framework(
     match => '^IVY_HOME',
   }
 
-  class { '::java': }
+  ::java::oracle { 'jdk8' :
+    ensure  => 'present',
+    version => '8',
+    java_se => 'jdk',
+  }
 
 
   class { '::wildfly':
-    version          => '8.1.0',
-    install_source   => 'http://download.jboss.org/wildfly/8.1.0.Final/wildfly-8.1.0.Final.tar.gz',
+    version          => '10.0.0',
+    install_source   => 'http://download.jboss.org/wildfly/10.0.0.Final/wildfly-10.0.0.Final.tar.gz',
     group            => 'wildfly',
     user             => 'wildfly',
     dirname          => '/opt/wildfly',
-    java_home        => '/usr/lib/jvm/java-1.7.0-openjdk-amd64',
+    java_home        => "${::java_default_home}/jdk/",
     java_xmx         => '1024m',
     java_xms         => '256m',
     java_maxpermsize => '512m',
@@ -42,7 +45,7 @@ class nba::all_in_one::framework(
         password => 'wildfly'
         }
       },
-    require          => Class['::java']
+    require          => Class['::java:oracle']
   }
 
   wildfly::config::interfaces{'management':
