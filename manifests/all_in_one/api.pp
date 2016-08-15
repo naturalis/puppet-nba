@@ -6,6 +6,7 @@ class nba::all_in_one::api(
   $git_username,
   $git_password,
   $what_to_build = 'present',
+  $build = true
   ){
 
   ## Defaults
@@ -37,11 +38,12 @@ class nba::all_in_one::api(
     content => template('nba/build/build.properties_all.erb'),
   }
 
-
-  exec {'/usr/bin/ant clean install-import-module': } ->
-  exec {'/usr/bin/ant clean install-export-module': } ->
-  exec {'/usr/bin/ant clean build-ear-file': } ->
-  exec {'/usr/bin/ant deploy-ear-file': }
+  if ( $build == true ) {
+    exec {'/usr/bin/ant clean install-import-module': } ->
+    exec {'/usr/bin/ant clean install-export-module': } ->
+    exec {'/usr/bin/ant clean build-ear-file': } ->
+    exec {'/usr/bin/ant deploy-ear-file': }
+  }
 
 
   # exec { 'build ear':

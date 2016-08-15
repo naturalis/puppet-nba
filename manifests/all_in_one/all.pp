@@ -106,6 +106,7 @@ class nba::all_in_one::all(
     git_username  => $git_username,
     git_password  => $git_password,
     what_to_build => $what_to_build,
+    build         => $build_nba,
     require       => Class['nba::all_in_one::lb'],
   }
 
