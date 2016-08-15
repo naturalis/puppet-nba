@@ -38,7 +38,7 @@ This will launch a 3 cluster setup:
   10. In case of NBAv1:
     11. The script can be found here: https://raw.githubusercontent.com/naturalis/puppet-nba/feature/biemondwildfly/files/bootstrap.sh
   12. In cave of nbav2
-    13. The script can be found here: https://raw.githubusercontent.com/naturalis/puppet-nba/nbav2-allinone/files/bootstrap.sh
+    13. The script can be found here: https://raw.githubusercontent.com/naturalis/puppet-nba/nbav2-allinone/files/bootstrapv2.sh
   11. Change setting of
     12. GIT_USERNAME to your github username
     13. GIT_PASSWORD to your github password

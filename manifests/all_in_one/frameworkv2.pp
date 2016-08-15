@@ -1,7 +1,7 @@
 #
 #
 #
-class nba::all_in_one::framework(
+class nba::all_in_one::frameworkv2(
   $nba_cluster_name        = 'demo',
   $es_version              = '2.3.4',
   $es_repo_version         = '2.3',
