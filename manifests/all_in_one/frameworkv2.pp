@@ -64,16 +64,16 @@ class nba::all_in_one::frameworkv2(
     require          => Package['openjdk-8-jdk']
   }
 
-  wildfly::config::interfaces{'management':
-    inet_address_value => '127.0.0.1',
-    require            => Class['::wildfly'],
-    notify             => Service['wildfly'],
-  }
-
-  wildfly::config::interfaces{'public':
-    inet_address_value => $::ipaddress,
-    require            => Class['::wildfly'],
-    notify             => Service['wildfly'],
+  # wildfly::config::interfaces{'management':
+  #   inet_address_value => '127.0.0.1',
+  #   require            => Class['::wildfly'],
+  #   notify             => Service['wildfly'],
+  # }
+  #
+  # wildfly::config::interfaces{'public':
+  #   inet_address_value => $::ipaddress,
+  #   require            => Class['::wildfly'],
+  #   notify             => Service['wildfly'],
   }
 
   exec {'create nba conf dir':
