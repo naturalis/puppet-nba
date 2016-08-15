@@ -74,7 +74,7 @@ class nba::all_in_one::frameworkv2(
   #   inet_address_value => $::ipaddress,
   #   require            => Class['::wildfly'],
   #   notify             => Service['wildfly'],
-  }
+  # }
 
   exec {'create nba conf dir':
     command => '/opt/wildfly/bin/jboss-cli.sh -c command="/system-property=nl.naturalis.nda.conf.dir:add(value=/etc/nba)"',
