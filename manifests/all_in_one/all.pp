@@ -17,7 +17,7 @@ class nba::all_in_one::all(
 
   if ($::cluster_ips) {
     if ($::cluster_ips == 'es_not_up') {
-      notify {'elastic search not running asuming 1 node config':}
+      notify {'elastic search not running asuming 1 node config, using one ip only':}
       $ips = ["${::ipaddress}:8080"]
     } else {
       $ips = suffix(split($::cluster_ips,','),':8080')
@@ -28,7 +28,7 @@ class nba::all_in_one::all(
 
   if ($::suggested_reps) {
     if ($::suggested_reps == 'es_not_up') {
-      notify {'elastic search not running asuming 1 node config':}
+      notify {'elastic search not running asuming 1 node config with 0 replicas':}
       $reps = '0'
     } else {
       $reps = $::suggested_reps
