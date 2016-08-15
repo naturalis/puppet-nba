@@ -89,8 +89,12 @@ class nba::all_in_one::all(
     upstream => {
       'api_v0' => {
         'members' => $ips },
-      'purl'   => {      "${api_dns_name}"  => {
-
+      'purl'   => {
+        'members' => $ips }
+      },
+      vhost  => {
+        "${api_dns_name}"  => {
+          'www_root' => '/var/www/api.biodiversitydata.nl'},
         "${purl_dns_name}" => {
           'proxy' => 'http://purl/purl'}
       },
