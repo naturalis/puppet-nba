@@ -51,7 +51,7 @@ class nba::all_in_one::frameworkv2(
     group            => 'wildfly',
     user             => 'wildfly',
     dirname          => '/opt/wildfly',
-    java_home        => '/usr/lib/jvm/java-1.7.0-openjdk-amd64',
+    java_home        => '/usr/lib/jvm/java-1.8.0-openjdk-amd64',
     java_xmx         => '1024m',
     java_xms         => '256m',
     java_maxpermsize => '512m',
