@@ -55,7 +55,7 @@ class nba::all_in_one::frameworkv2(
     java_xmx         => '1024m',
     java_xms         => '256m',
     java_maxpermsize => '512m',
-    custom_init      => 'nba/widfly/wildfly.init.erb',
+    custom_init      => 'nba/wildfly/wildfly.init.erb',
     public_bind      => $::ipaddress,
     users_mgmt       => {
       'wildfly' => {
