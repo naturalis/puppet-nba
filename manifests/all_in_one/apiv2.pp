@@ -13,10 +13,10 @@ class nba::all_in_one::apiv2(
   Exec {
     path        => '/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin',
     logoutput   => false,
-    cwd         => '/source/nba-git/nl.naturalis.nda.build',
+    cwd         => '/source/nba-git/nl.naturalis.nba.build',
     subscribe   => Vcsrepo['/source/nba-git'],
     refreshonly => true,
-    require     => File['/source/nba-git/nl.naturalis.nda.build/build.v2.properties'],
+    require     => File['/source/nba-git/nl.naturalis.nba.build/build.v2.properties'],
   }
 
 
@@ -34,7 +34,7 @@ class nba::all_in_one::apiv2(
 
 
 
-  file { '/source/nba-git/nl.naturalis.nda.build/build.v2.properties':
+  file { '/source/nba-git/nl.naturalis.nba.build/build.v2.properties':
     ensure  => present,
     content => template('nba/build/build.v2.properties_all.erb'),
   }
