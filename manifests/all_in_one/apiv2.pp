@@ -40,8 +40,8 @@ class nba::all_in_one::apiv2(
   }
 
   if ( $build == true ) {
-    exec {'/usr/bin/ant clean install-service': } ->
-    exec {'/usr/bin/ant clean install-etl': }
+    exec {'/usr/bin/ant  install-service': } ->
+    exec {'/usr/bin/ant  install-etl': }
   }
 
 
