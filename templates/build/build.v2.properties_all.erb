@@ -1,0 +1,40 @@
+
+elasticsearch.cluster.name=<%= scope.lookupvar("nba::all_in_one::all::cluster_id") %>
+elasticsearch.transportaddress.host=<%= scope.lookupvar("::ipaddress") %>
+elasticsearch.transportaddress.port=9300
+elasticsearch.index.name=nda
+elasticsearch.index.numshards=9
+elasticsearch.index.numreplicas=<%= scope.lookupvar("nba::all_in_one::all::reps") %>
+elasticsearch.index.0.types=Specimen,MultiMediaObject,Taxon,GeoArea
+
+ear.install.path=/opt/wildfly/standalone/deployments/nba.ear
+
+nl.naturalis.nda.conf.dir=/etc/nba
+nl.naturalis.nda.baseurl=v0
+
+nda.import.install.dir=/data/nba-import
+nda.import.crs.datadir=/data/import/crs
+nda.import.col.datadir=/data/import/col
+nda.import.brahms.datadir=/data/import/brahms
+nda.import.nsr.datadir=/data/import/nsr
+nda.import.col.year=2015
+nda.import.log.dir=/data/import-logs
+
+
+etl.install.dir=/data/etl
+
+# Directories containing the CSV dumps, XML dumps, etc.
+etl.crs.data.dir=/data/crs
+etl.col.data.dir=/data/col
+etl.brahms.data.dir=/data/brahms
+etl.nsr.data.dir=/data/nsr
+etl.ndff.data.dir=nba/data/ndff
+etl.col.year=2015
+
+etl.purl.baseurl=
+
+
+nda.export.install.dir=/data/nba-export
+nda.export.output.dir=/data/dwca-zip
+nda.export.user.conf.dir=/data/dwca-conf
+nda.export.log.dir=/data/export-log

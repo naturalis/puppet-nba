@@ -11,15 +11,8 @@ class nba::all_in_one::frameworkv2(
   $es_memory_gb            = '1'
   ) {
 
-  package {['git','ant','ivy']:
+  package {['git','ant']
     ensure => installed,
-  }
-
-
-  file_line {'ivy_home':
-    path  => '/etc/environment',
-    line  => 'IVY_HOME=/usr/share/maven-repo/org/apache/ivy/ivy/2.3.0/',
-    match => '^IVY_HOME',
   }
 
 

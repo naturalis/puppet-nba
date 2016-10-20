@@ -72,7 +72,18 @@ class nba::all_in_one::all(
       es_memory_gb            => $es_memory_gb,
       before                  => Class['nba::all_in_one::lb']
     }
+
+    class {'nba::all_in_one::apiv2':
+      checkout      => $nba_checkout,
+      git_username  => $git_username,
+      git_password  => $git_password,
+      what_to_build => $what_to_build,
+      build         => $build_nba,
+      require       => Class['nba::all_in_one::lb'],
+    }
+
   } else {
+
     class {'nba::all_in_one::framework':
       nba_cluster_name        => $cluster_id,
       es_version              => '1.3.4',
@@ -82,6 +93,15 @@ class nba::all_in_one::all(
       es_minimal_master_nodes => $minmaster,
       es_memory_gb            => $es_memory_gb,
       before                  => Class['nba::all_in_one::lb']
+    }
+
+    class {'nba::all_in_one::api':
+      checkout      => $nba_checkout,
+      git_username  => $git_username,
+      git_password  => $git_password,
+      what_to_build => $what_to_build,
+      build         => $build_nba,
+      require       => Class['nba::all_in_one::lb'],
     }
   }
 
@@ -101,14 +121,7 @@ class nba::all_in_one::all(
     require  => Service['elasticsearch-nba-es'],
   }
 
-  class {'nba::all_in_one::api':
-    checkout      => $nba_checkout,
-    git_username  => $git_username,
-    git_password  => $git_password,
-    what_to_build => $what_to_build,
-    build         => $build_nba,
-    require       => Class['nba::all_in_one::lb'],
-  }
+
 
   if ( $nbav2 == false ) {
     class {'nba::all_in_one::purl':

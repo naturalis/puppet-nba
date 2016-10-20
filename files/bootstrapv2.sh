@@ -15,7 +15,7 @@ ES_MEMORY_GB='1'
 NBAV2='true'
 BUILD_NBA='true'
 # nba git taq or branch (not yet sure if hash works)
-NBA_CHECKOUT='v0.15'
+NBA_CHECKOUT='V2_master'
 # dns records for loadbalancer. Add these plus your foating ip to your hosts file.
 API_DNS_NAME='apitest.biodiversitydata.nl'
 PURL_DNS_NAME='datatest.biodiversitydata.nl'
