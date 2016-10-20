@@ -37,7 +37,7 @@ class nba::all_in_one::frameworkv2(
   }
 
   exec {'set java-8 as default':
-    command => 'update-java-alternatives -s java-1.8.0-openjdk-amd64',
+    command => '/usr/bin/update-java-alternatives -s java-1.8.0-openjdk-amd64',
     require => Package['openjdk-8-jdk']
   }
 
