@@ -11,7 +11,7 @@ class nba::all_in_one::frameworkv2(
   $es_memory_gb            = '1'
   ) {
 
-  package {['git','ant']
+  package {['git','ant']:
     ensure => installed,
   }
 
