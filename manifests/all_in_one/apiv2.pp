@@ -12,7 +12,7 @@ class nba::all_in_one::apiv2(
   ## Defaults
   Exec {
     path        => '/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin',
-    logoutput   => false,
+    logoutput   => true,
     cwd         => '/source/nba-git/nl.naturalis.nba.build',
     subscribe   => Vcsrepo['/source/nba-git'],
     refreshonly => true,
