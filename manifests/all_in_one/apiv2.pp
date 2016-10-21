@@ -12,7 +12,7 @@ class nba::all_in_one::apiv2(
   ## Defaults
   Exec {
     path        => '/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin',
-    logoutput   => true,
+    logoutput   => false,
     cwd         => '/source/nba-git/nl.naturalis.nba.build',
     subscribe   => Vcsrepo['/source/nba-git'],
     refreshonly => true,
@@ -48,8 +48,8 @@ class nba::all_in_one::apiv2(
   }
 
   if ( $build == true ) {
-    exec {'/usr/bin/ant  -s install-service': } ->
-    exec {'/usr/bin/ant  -s install-etl-module': }
+    exec {'/usr/bin/ant install-service': } ->
+    exec {'/usr/bin/ant install-etl-module': }
   }
 
 
