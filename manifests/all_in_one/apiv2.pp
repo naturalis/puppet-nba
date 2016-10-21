@@ -16,7 +16,15 @@ class nba::all_in_one::apiv2(
     cwd         => '/source/nba-git/nl.naturalis.nba.build',
     subscribe   => Vcsrepo['/source/nba-git'],
     refreshonly => true,
-    require     => File['/source/nba-git/nl.naturalis.nba.build/build.v2.properties'],
+    require     => [
+      File['/source/nba-git/nl.naturalis.nba.build/build.v2.properties'],
+      Es_Instance_Conn_Validator['nba-es'],
+    ],
+  }
+
+  es_instance_conn_validator { 'nba-es' :
+    server => 'localhost',
+    port   => '9200',
   }
 
 
