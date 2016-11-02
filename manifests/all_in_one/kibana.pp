@@ -3,6 +3,7 @@
 #
 class nba::all_in_one::kibana(
   $kibana_version = '4.5.0',
+  $disable_kibana = true,
 ){
 
   $kibana_link = "https://download.elastic.co/kibana/kibana/kibana-${kibana_version}-linux-x64.tar.gz"
@@ -12,18 +13,20 @@ class nba::all_in_one::kibana(
     target => '/opt/'
   }
 
-  file_line {'disable kibana':
-    path    => "/opt/kibana-${kibana_version}-linux-x64/config/kibana.yml",
-    line    => 'kibana.enabled: false',
-    match   => '^kibana.enabled',
-    require => Staging::Deploy["kibana-${kibana_version}-linux-x64.tar.gz"],
-  }
+  if ( $disable_kibana == true ) {
+    file_line {'disable kibana':
+      path    => "/opt/kibana-${kibana_version}-linux-x64/config/kibana.yml",
+      line    => 'kibana.enabled: false',
+      match   => '^kibana.enabled',
+      require => Staging::Deploy["kibana-${kibana_version}-linux-x64.tar.gz"],
+    }
 
-  file_line {'disable elasticsearch for kibana':
-    path    => "/opt/kibana-${kibana_version}-linux-x64/config/kibana.yml",
-    line    => 'elasticsearch.enabled: false',
-    match   => '^selasticsearch.enabled',
-    require => Staging::Deploy["kibana-${kibana_version}-linux-x64.tar.gz"],
+    file_line {'disable elasticsearch for kibana':
+      path    => "/opt/kibana-${kibana_version}-linux-x64/config/kibana.yml",
+      line    => 'elasticsearch.enabled: false',
+      match   => '^selasticsearch.enabled',
+      require => Staging::Deploy["kibana-${kibana_version}-linux-x64.tar.gz"],
+    }
   }
 
   file { 'kibana service init':

@@ -127,10 +127,15 @@ class nba::all_in_one::all(
     class {'nba::all_in_one::purl':
       require      => Class['nba::all_in_one::lb'],
     }
-  }
 
-  class {'nba::all_in_one::kibana':
-    require      => Class['nba::all_in_one::lb'],
+    class {'nba::all_in_one::kibana':
+      require      => Class['nba::all_in_one::lb'],
+    }
+  } else {
+    class {'nba::all_in_one::kibana':
+      require        => Class['nba::all_in_one::lb'],
+      disable_kibana => false,
+    }
   }
 
   cron { 'apply puppet at boot':

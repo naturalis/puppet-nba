@@ -40,6 +40,10 @@ class nba::all_in_one::apiv2(
     ensure => directory
   } ->
 
+  file {'/etc/nba':
+    ensure => directory
+  } ->
+
 
 
   file { '/source/nba-git/nl.naturalis.nba.build/build.v2.properties':
