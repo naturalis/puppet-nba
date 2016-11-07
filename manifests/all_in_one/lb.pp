@@ -31,7 +31,8 @@ class nba::all_in_one::lb(
   class {'nginx': }
 
   create_resources(nba::lb::wwwfiles,$files,{})
-  create_resources(nginx::resource::vhost,$vhost,$log_default)
+# create_resources(nginx::resource::vhost,$vhost,$log_default)
+  create_resources(nginx::resource::vhost,$vhost)
   create_resources(nginx::resource::location,$location,{})
   create_resources(nginx::resource::upstream,$upstream,{})
 }
