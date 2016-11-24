@@ -34,7 +34,7 @@ apt-get update >/dev/null
 DEBIAN_FRONTEND=noninteractive apt-get -y -o Dpkg::Options::="--force-confdef" -o Dpkg::Options::="--force-confold" install puppet git >/dev/null
 
 git clone https://github.com/naturalis/puppet-nba /etc/puppet/modules/nba -b nbav2-allinone
-git clone https://github.com/elastic/puppet-elasticsearch /etc/puppet/modules/elasticsearch
+git clone -b 0.14.0 https://github.com/elastic/puppet-elasticsearch /etc/puppet/modules/elasticsearch
 git clone https://github.com/puppetlabs/puppetlabs-stdlib /etc/puppet/modules/stdlib
 git clone https://github.com/puppetlabs/puppetlabs-apt /etc/puppet/modules/apt
 git clone https://github.com/richardc/puppet-datacat /etc/puppet/modules/datacat
