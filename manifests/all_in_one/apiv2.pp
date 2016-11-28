@@ -27,11 +27,17 @@ class nba::all_in_one::apiv2(
     port   => '9200',
   }
 
+  file {'/root/.netrc':
+    ensure  => present,
+    content => template('nba/netrc.erb'),
+    mode    => '0600',
+    owner   => 'root',
+  } ->
 
   vcsrepo { '/source/nba-git':
     ensure   => $what_to_build,
     provider => git,
-    source   => "https://${git_username}:${git_password}@github.com/naturalis/naturalis_data_api",
+    source   => 'https://github.com/naturalis/naturalis_data_api',
     revision => $checkout,
     require  => Package['git'],
   } ->
