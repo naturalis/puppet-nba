@@ -67,7 +67,7 @@ class nba::docker::builder::nba(
     expose  => '9300',
     tag     =>  $elasticsearch_version,
     env     => ['ES_JAVA_OPTS="-Xms512m -Xmx512m"'],
-    command => 'elasticsearch -E cluster.name="buider-cluster"',
+    command => 'elasticsearch -Des.cluster.name="buider-cluster"',
     require => Sysctl['vm.max_map_count'],
   }
 
