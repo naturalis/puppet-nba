@@ -13,8 +13,11 @@ class nba::docker::builder::nba(
   #4 Produce war and config - DONE
   #5 change config
   #6 create image with nba and config script
+  #sysctl -w vm.max_map_count=262144
 
-
+  systctl {'vm.max_map_count':
+    value => '262144',
+  }
   ## BUILD STUFF
   file {['/payload','/docker-files','/var/log/docker-nba-builder']:
     ensure => directory,
@@ -61,9 +64,11 @@ class nba::docker::builder::nba(
   docker::run{'nba-es-buildsupport':
     image   => 'elasticsearch',
     ports   => '9310:9300',
+    expose  => '9300',
     tag     =>  $elasticsearch_version,
     env     => ['ES_JAVA_OPTS="-Xms512m -Xmx512m"'],
     command => 'elasticsearch -E cluster.name="buider-cluster"',
+    require => Sysctl['max_map_count'],
   }
 
   docker::run{'nba-builder':
