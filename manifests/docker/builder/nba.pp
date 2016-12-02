@@ -63,7 +63,7 @@ class nba::docker::builder::nba(
     ports   => '9310:9300',
     tag     =>  $elasticsearch_version,
     env     => ['ES_JAVA_OPTS="-Xms512m -Xmx512m"'],
-    command => 'elasticsearch -Des.cluster.name="buider-cluster"',
+    command => 'elasticsearch -E cluster.name="buider-cluster"',
   }
 
   docker::run{'nba-builder':
