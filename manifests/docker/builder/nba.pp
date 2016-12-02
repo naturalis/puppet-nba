@@ -16,7 +16,7 @@ class nba::docker::builder::nba(
 
 
   ## BUILD STUFF
-  file {['/payload','/docker-files']:
+  file {['/payload','/docker-files','var/log/docker-nba-builder']:
     ensure => directory,
   }
 
@@ -36,6 +36,13 @@ class nba::docker::builder::nba(
     require   => Vcsrepo['/nba-repo']
   }
 
+  file {'/nba-repo/nl.naturalis.nba.build/log':
+    ensure    => link,
+    target    => 'var/log/docker-nba-builder',
+    subscribe => Vcsrepo['/nba-repo'],
+    require   => Vcsrepo['/nba-repo']
+  }
+
   # docker::image{'nba-builder':
   #   docker_file => '/docker-files/nba-builder',
   #   subscribe   => [Vcsrepo['/nba-repo'],
@@ -48,19 +55,21 @@ class nba::docker::builder::nba(
   #   ensure  => present,
   #   content => 'RUN yum -y install ant'
   # }
-
+  #ES_HEAP_SIZE=512mb
   # RUN STUFF
 
   docker::run{'nba-es-buildsupport':
     image => 'elasticsearch',
     ports => '9310:9300',
     tag   =>  $elasticsearch_version,
+    env   => ['ES_HEAP_SIZE=512m'],
+    run   => 'elasticsearch -Des.cluster.name="buider-cluster"',
   }
 
   docker::run{'nba-builder':
     tag       => 'openjdk-8',
     image     => 'openjdk',
-    volumes   => ['/nba-repo:/code','/payload:/payload'],
+    volumes   => ['/nba-repo:/code','/payload:/payload','var/log/docker-nba-builder:/var/log'],
     command   => '/bin/bash -c "/usr/bin/apt-get update ; /usr/bin/apt-get -y install ant ; cd /code/nl.naturalis.nba.build ; ant install-service"',
     #depends   => 'nba-es-buildsupport',
     subscribe => Vcsrepo['/nba-repo'],
