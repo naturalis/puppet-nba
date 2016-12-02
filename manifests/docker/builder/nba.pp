@@ -62,7 +62,7 @@ class nba::docker::builder::nba(
   # RUN STUFF
 
   docker::run{'nba-es-buildsupport':
-    image   => 'elasticsearch',
+    image   => 'elasticsearch:2.3.5',
     ports   => '9310:9300',
     expose  => '9300',
     tag     =>  $elasticsearch_version,
