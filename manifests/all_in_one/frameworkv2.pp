@@ -76,7 +76,7 @@ class nba::all_in_one::frameworkv2(
 
   exec {'create nba conf dir':
     environment => 'JAVA_HOME=/usr/lib/jvm/java-1.8.0-openjdk-amd64',
-    command     => '/opt/wildfly/bin/jboss-cli.sh -c command="/system-property=nl.naturalis.nda.conf.dir:add(value=/etc/nba)"',
+    command     => '/opt/wildfly/bin/jboss-cli.sh -c command="/system-property=nl.naturalis.nba.v2.conf.dir:add(value=/etc/nba)"',
     unless      => '/opt/wildfly/bin/jboss-cli.sh -c command="ls system-property" | /bin/grep nl.naturalis.nda.conf.dir',
     require     => Service['wildfly'],
   }
