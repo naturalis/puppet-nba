@@ -59,11 +59,11 @@ class nba::docker::builder::nba(
   # RUN STUFF
 
   docker::run{'nba-es-buildsupport':
-    image => 'elasticsearch',
-    ports => '9310:9300',
-    tag   =>  $elasticsearch_version,
-    env   => ['ES_HEAP_SIZE=512m'],
-    run   => 'elasticsearch -Des.cluster.name="buider-cluster"',
+    image   => 'elasticsearch',
+    ports   => '9310:9300',
+    tag     =>  $elasticsearch_version,
+    env     => ['ES_HEAP_SIZE=512m'],
+    command => 'elasticsearch -Des.cluster.name="buider-cluster"',
   }
 
   docker::run{'nba-builder':
