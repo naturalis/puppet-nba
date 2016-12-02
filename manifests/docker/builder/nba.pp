@@ -62,7 +62,7 @@ class nba::docker::builder::nba(
     image   => 'elasticsearch',
     ports   => '9310:9300',
     tag     =>  $elasticsearch_version,
-    env     => ['ES_HEAP_SIZE=512m'],
+    env     => ['ES_JAVA_OPTS=-Xms512m -Xmx512m'],
     command => 'elasticsearch -Des.cluster.name="buider-cluster"',
   }
 
