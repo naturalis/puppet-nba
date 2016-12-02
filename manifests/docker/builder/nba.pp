@@ -24,7 +24,7 @@ class nba::docker::builder::nba(
 
   vcsrepo { '/nba-repo':
     ensure   => latest,
-    provider => git,
+    provider => 'git',
     source   => 'https://github.com/naturalis/naturalis_data_api',
     revision => $git_checkout,
     require  => Package['git'],
@@ -52,16 +52,19 @@ class nba::docker::builder::nba(
   # RUN STUFF
 
   docker::run{'nba-es-buildsupport':
-    image  => 'elasticsearch',
-    expose => '9310:9300',
-    tag    =>  $elasticsearch_version,
+    image => 'elasticsearch',
+    ports => '9310:9300',
+    tag   =>  $elasticsearch_version,
   }
 
   docker::run{'nba-builder':
     tag       => 'openjdk-8',
     image     => 'openjdk',
     volumes   => ['/nba-repo:/code','/payload:/payload'],
-    command   => '/usr/bin/apt-get -y install ant; cd /code/nl.naturalis.nba.build ; /usr/bin/ant install-service',
+    command   => '/usr/bin/apt-get update ;
+                  /usr/bin/apt-get -y install ant;
+                  cd /code/nl.naturalis.nba.build ;
+                  /usr/bin/ant install-service',
     depends   => 'nba-es-buildsupport',
     subscribe => Vcsrepo['/nba-repo'],
     require   => File['/nba-repo/nl.naturalis.nba.build/build.v2.properties']
