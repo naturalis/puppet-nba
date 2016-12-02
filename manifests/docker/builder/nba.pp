@@ -58,8 +58,8 @@ class nba::docker::builder::nba(
   }
 
   docker::run{'nba-builder':
-    tag       => $wildfly_version,
-    image     => '/openjdk:8-jdk',
+    tag       => 'openjdk-8',
+    image     => 'openjdk',
     volumes   => ['/nba-repo:/code','/payload:/payload'],
     command   => '/usr/bin/apt-get -y install ant; cd /code/nl.naturalis.nba.build ; /usr/bin/ant install-service',
     depends   => 'nba-es-buildsupport',
