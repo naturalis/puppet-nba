@@ -61,7 +61,7 @@ class nba::docker::builder::nba(
     tag       => 'openjdk-8',
     image     => 'openjdk',
     volumes   => ['/nba-repo:/code','/payload:/payload'],
-    command   => '/bin/bash -c "/usr/bin/apt-get update ; /usr/bin/apt-get -y install ant ; cd /code/nl.natrualis.nba.build ; ant install-service',
+    command   => '/bin/bash -c "/usr/bin/apt-get update ; /usr/bin/apt-get -y install ant ; cd /code/nl.naturalis.nba.build ; ant install-service"',
     #depends   => 'nba-es-buildsupport',
     subscribe => Vcsrepo['/nba-repo'],
     require   => File['/nba-repo/nl.naturalis.nba.build/build.v2.properties']
