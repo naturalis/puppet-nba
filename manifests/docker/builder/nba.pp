@@ -15,7 +15,7 @@ class nba::docker::builder::nba(
   #6 create image with nba and config script
   #sysctl -w vm.max_map_count=262144
 
-  systctl {'vm.max_map_count':
+  sysctl {'vm.max_map_count':
     value => '262144',
   }
   ## BUILD STUFF
