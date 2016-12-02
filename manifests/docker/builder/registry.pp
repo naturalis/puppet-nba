@@ -13,12 +13,13 @@ class nba::docker::builder::registry(
   }
 
   docker::run {$registry_name:
-    image   => 'registry:2',
-    ports   => "${listen_port}:5000",
-    volumes => ["/${registry_name}:/var/lib/registry",
-                "/var/log/docker-${registry_name}:/var/log"],
-    require => [File["/${registry_name}"],
-                File["/var/log/docker-${registry_name}"]],
+    image            => 'registry:2',
+    ports            => "${listen_port}:5000",
+    volumes          => ["/${registry_name}:/var/lib/registry",
+                        "/var/log/docker-${registry_name}:/var/log"],
+    extra_parameters => [ '--restart=always' ],
+    require          => [File["/${registry_name}"],
+                        File["/var/log/docker-${registry_name}"]],
   }
 
 }
