@@ -16,7 +16,7 @@ class nba::docker::builder::nba(
 
 
   ## BUILD STUFF
-  file {['/payload','/docker-files','var/log/docker-nba-builder']:
+  file {['/payload','/docker-files','/var/log/docker-nba-builder']:
     ensure => directory,
   }
 
@@ -38,7 +38,7 @@ class nba::docker::builder::nba(
 
   file {'/nba-repo/nl.naturalis.nba.build/log':
     ensure    => link,
-    target    => 'var/log/docker-nba-builder',
+    target    => '/var/log/docker-nba-builder',
     subscribe => Vcsrepo['/nba-repo'],
     require   => Vcsrepo['/nba-repo']
   }
@@ -69,7 +69,7 @@ class nba::docker::builder::nba(
   docker::run{'nba-builder':
     tag       => 'openjdk-8',
     image     => 'openjdk',
-    volumes   => ['/nba-repo:/code','/payload:/payload','var/log/docker-nba-builder:/var/log'],
+    volumes   => ['/nba-repo:/code','/payload:/payload','/var/log/docker-nba-builder:/var/log'],
     command   => '/bin/bash -c "/usr/bin/apt-get update ; /usr/bin/apt-get -y install ant ; cd /code/nl.naturalis.nba.build ; ant install-service"',
     depends   => 'nba-es-buildsupport',
     detach    => false,
