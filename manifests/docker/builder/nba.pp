@@ -64,11 +64,10 @@ class nba::docker::builder::nba(
     require   => File['/nba-repo/nl.naturalis.nba.build/build.v2.properties'],
   }
 
-  #create exec which only ifs if state of
   exec {'start build':
     command     => '/usr/sbin/service docker-nba-builder start',
     refreshonly => true,
-    require     => Docker::Run['nba-builder'],
+    require     => Service['docker-nba-builder'],
     notify      => Docker::Image['wildfly_nba_v2'],
   }
 
