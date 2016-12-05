@@ -68,7 +68,7 @@ class nba::docker::builder::nba(
     command     => '/usr/sbin/service docker-nba-builder start',
     refreshonly => true,
     require     => Service['docker-nba-builder'],
-    notify      => Docker::Image['wildfly_nba_v2'],
+    #notify      => Docker::Image['wildfly_nba_v2'],
   }
 
   file {'/payload/Dockerfile':
@@ -81,6 +81,7 @@ class nba::docker::builder::nba(
     image      => "jboss/wildfly:${wildfly_version}",
     docker_dir => '/payload',
     require    => File['/payload/Dockerfile'],
+    subscribe  => Exec['start build'],
   }
 
 
