@@ -68,7 +68,7 @@ class nba::docker::builder::nba(
   exec {'start build':
     command     => '/usr/sbin/service docker-nba-builder start',
     refreshonly => true,
-    require     => Docker::run['nba-builder'],
+    require     => Docker::Run['nba-builder'],
     #notify      => run docker wildfly container
   }
 
