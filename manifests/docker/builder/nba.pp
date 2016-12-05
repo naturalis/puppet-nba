@@ -69,12 +69,20 @@ class nba::docker::builder::nba(
     command     => '/usr/sbin/service docker-nba-builder start',
     refreshonly => true,
     require     => Docker::Run['nba-builder'],
-    #notify      => run docker wildfly container
+    notify      => Docker::Image['wildfly_nba_v2'],
   }
 
-  #docker::image{'wildfly_nba_v2':
-  #  image   => "jboss/wildfly:${wildfly_version}",
-  #}
+  file {'/payload/Dockerfile':
+    content => template('nba/docker/wildfly_nba_Dockerfile.erb'),
+    require => File['/payload'],
+  }
+
+
+  docker::image{'wildfly_nba_v2':
+    image      => "jboss/wildfly:${wildfly_version}",
+    docker_dir => '/payload',
+    require    => [Exec['start-build'],File['/payload/Dockerfile']],
+  }
 
 
 }
