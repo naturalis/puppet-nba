@@ -39,28 +39,6 @@ class nba::docker::builder::nba(
     require   => Vcsrepo['/nba-repo']
   }
 
-  # file {'/nba-repo/nl.naturalis.nba.build/log':
-  #   ensure    => link,
-  #   target    => '/var/log/docker-nba-builder',
-  #   subscribe => Vcsrepo['/nba-repo'],
-  #   require   => Vcsrepo['/nba-repo']
-  # }
-
-  # docker::image{'nba-builder':
-  #   docker_file => '/docker-files/nba-builder',
-  #   subscribe   => [Vcsrepo['/nba-repo'],
-  #                   File['/nba-repo/nl.naturalis.nba.build/build.v2.properties']
-  #                   File['/docker-files/nba-builder'],
-  #   ],
-  # }
-  #
-  # file {'/docker-files/docker-builder':
-  #   ensure  => present,
-  #   content => 'RUN yum -y install ant'
-  # }
-  #ES_HEAP_SIZE=512mb
-  # RUN STUFF
-
   docker::run{'nba-es-buildsupport':
     image   => 'elasticsearch:2.3.5',
     ports   => '9310:9300',
@@ -80,8 +58,15 @@ class nba::docker::builder::nba(
     detach    => false,
     subscribe => Vcsrepo['/nba-repo'],
     require   => File['/nba-repo/nl.naturalis.nba.build/build.v2.properties'],
+    notify    => Exec['check if war is produced'],
   }
 
-
+  #create exec which only ifs if state of
+  exec {'check if war is produced':
+    command     => '/bin/echo hi',
+    onlyif      => '/usr/bin/test -f /payload/nba.war',
+    refreshonly => true,
+    #notify      => run docker wildfly container
+  }
 
 }
