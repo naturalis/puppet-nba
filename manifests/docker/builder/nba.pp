@@ -37,7 +37,7 @@ class nba::docker::builder::nba(
     notify   => Service['docker-nba-builder'],
   }
 
-  file {"/nba-repo-${git_checkout}/nl.naturalis.nba.build/build.v2.properties" :
+  file {"/nba-repo-${buildname}/nl.naturalis.nba.build/build.v2.properties" :
     content   => template('nba/build/docker_build.v2.properties.erb'),
     subscribe => Vcsrepo["/nba-repo-${buildname}"],
     require   => Vcsrepo["/nba-repo-${buildname}"]
@@ -73,11 +73,17 @@ class nba::docker::builder::nba(
   }
 
 
-  docker::image{"nba-${buildname}-wildfly-image":
-    #image      => "jboss/wildfly:${wildfly_version}",
-    docker_dir => "/payload-${buildname}",
-    subscribe  => File["/payload-${buildname}/Dockerfile"],
-    notify     => Exec["cleanup ${buildname} payload files"],
+  # docker::image{"nba-${buildname}-wildfly-image":
+  #   #image      => "jboss/wildfly:${wildfly_version}",
+  #   docker_dir => "/payload-${buildname}",
+  #   subscribe  => File["/payload-${buildname}/Dockerfile"],
+  #   notify     => Exec["cleanup ${buildname} payload files"],
+  # }
+  exec {"build docker image for ${buildname}" :
+    command     => "/usr/bin/docker build -t nba-${buildname}-wildfy /payload-${buildname}",
+    refreshonly => true,
+    require     => File["/payload-${buildname}/Dockerfile"],
+    subscribe   => Service['docker-nba-builder'],
   }
 
   exec {"cleanup ${buildname} payload files" :
