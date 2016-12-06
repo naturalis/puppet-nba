@@ -51,16 +51,16 @@ class nba::docker::builder::nba(
   }
 
   docker::run{'nba-builder':
-    image     => 'openjdk:openjdk-8',
-    volumes   => ['/nba-repo:/code',
+    image   => 'openjdk:openjdk-8',
+    volumes => ['/nba-repo:/code',
                   '/payload:/payload',
                   '/var/log/docker-nba-builder:/var/log',
                   '/var/log/docker-nba-builder:/code/nl.naturalis.nba.build/log'],
-    command   => '/bin/bash -c "/usr/bin/apt-get update ;/usr/bin/apt-get -y install ant ; cd /code/nl.naturalis.nba.build ; ant install-service"',
-    depends   => 'nba-es-buildsupport',
-    running   => false,
-    detach    => false,
-    require   => File['/nba-repo/nl.naturalis.nba.build/build.v2.properties'],
+    command => '/bin/bash -c "/usr/bin/apt-get update ;/usr/bin/apt-get -y install ant ; cd /code/nl.naturalis.nba.build ; ant install-service"',
+    depends => 'nba-es-buildsupport',
+    running => false,
+    detach  => false,
+    require => File['/nba-repo/nl.naturalis.nba.build/build.v2.properties'],
   }
 
   file {'/payload/Dockerfile':
@@ -72,7 +72,7 @@ class nba::docker::builder::nba(
   docker::image{'nba-v2-wildfly-image':
     #image      => "jboss/wildfly:${wildfly_version}",
     docker_dir => '/payload',
-    subscribe  => File['/payload/Dockerfile'],
+    subscribe  => [File['/payload/Dockerfile'],Service['docker-nba-builder']],
   }
 
   # docker::run{'nba-v2-wildfly':
