@@ -62,7 +62,7 @@ class nba::docker::builder::nba(
     depends => 'nba-es-buildsupport',
     running => false,
     detach  => false,
-    require => File['/nba-repo/nl.naturalis.nba.build/build.v2.properties'],
+    require => File["/nba-repo-${git_checkout}/nl.naturalis.nba.build/build.v2.properties"],
     notify  => Exec["cleanup ${git_checkout} repo"],
   }
 
