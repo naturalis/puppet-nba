@@ -32,7 +32,7 @@ class nba::docker::builder::nba(
     ensure   => latest,
     provider => git,
     source   => 'https://github.com/naturalis/naturalis_data_api',
-    revision => $git_checkout,
+    revision => "${git_checkout}",
     require  => Package['git'],
     notify   => Exec["trigger build of nba-${buildname}"],
   }
