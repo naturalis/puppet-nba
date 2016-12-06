@@ -75,7 +75,7 @@ class nba::docker::builder::nba(
 
 
   exec {"trigger build of nba-${buildname}" :
-    command     => "/usr/sbin/service restart docker-nba-builder",
+    command     => "/usr/sbin/service docker-nba-builder start",
     refreshonly => true,
     require     => Docker::Run['nba-builder'],
     notify      => Exec["build docker image for ${buildname}"]
