@@ -27,11 +27,11 @@ class nba::docker::builder::nba(
 
   vcsrepo { '/nba-repo':
     ensure   => latest,
-    provider => 'git',
+    provider => git,
     source   => 'https://github.com/naturalis/naturalis_data_api',
     revision => $git_checkout,
     require  => Package['git'],
-    notify   => Exec['start build']
+    notify   => Service['docker-nba-builder'],
   }
 
   file {'/nba-repo/nl.naturalis.nba.build/build.v2.properties':
@@ -60,15 +60,7 @@ class nba::docker::builder::nba(
     depends   => 'nba-es-buildsupport',
     running   => false,
     detach    => false,
-    subscribe => Vcsrepo['/nba-repo'],
     require   => File['/nba-repo/nl.naturalis.nba.build/build.v2.properties'],
-  }
-
-  exec {'start build':
-    command     => '/usr/sbin/service docker-nba-builder start',
-    refreshonly => true,
-    require     => Service['docker-nba-builder'],
-    #notify      => Docker::Image['wildfly_nba_v2'],
   }
 
   file {'/payload/Dockerfile':
@@ -77,11 +69,16 @@ class nba::docker::builder::nba(
   }
 
 
-  docker::image{'wildfly_nba_v2':
-    image      => "jboss/wildfly:${wildfly_version}",
+  docker::image{'nba-v2-wildfly-image':
+    #image      => "jboss/wildfly:${wildfly_version}",
     docker_dir => '/payload',
     require    => File['/payload/Dockerfile'],
-    subscribe  => Exec['start build'],
+  }
+
+  docker::run{'nba-v2-wildfly':
+    image   => 'nba-v2-wildfly-image',
+    depends => 'nba-builder',
+    running => false,
   }
 
 
