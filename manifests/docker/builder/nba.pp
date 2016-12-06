@@ -72,7 +72,7 @@ class nba::docker::builder::nba(
   docker::image{'nba-v2-wildfly-image':
     #image      => "jboss/wildfly:${wildfly_version}",
     docker_dir => '/payload',
-    subscribe  => [File['/payload/Dockerfile'],Service['docker-nba-builder']],
+    subscribe  => [File['/payload/Dockerfile']],
   }
 
   # docker::run{'nba-v2-wildfly':
