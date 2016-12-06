@@ -34,7 +34,7 @@ class nba::docker::builder::nba(
     source   => 'https://github.com/naturalis/naturalis_data_api',
     revision => $git_checkout,
     require  => Package['git'],
-    notify   => Service['docker-nba-builder'],
+    notify   => Exec[{"trigger build of nba-${buildname}"],
   }
 
   file {"/nba-repo-${buildname}/nl.naturalis.nba.build/build.v2.properties" :
@@ -65,6 +65,7 @@ class nba::docker::builder::nba(
     detach  => false,
     require => File["/nba-repo-${buildname}/nl.naturalis.nba.build/build.v2.properties"],
     notify  => Exec["cleanup ${buildname} repo"],
+    # maybe pull on start to ensure latest image
   }
 
   file {"/payload-${buildname}/Dockerfile" :
@@ -73,6 +74,12 @@ class nba::docker::builder::nba(
   }
 
 
+  exec {"trigger build of nba-${buildname}" :
+    command     => "/usr/sbin/service restart docker-nba-builder",
+    refreshonly => true,
+    require     => Docker::Run['nba-builder'],
+    notify      => Exec["build docker image for ${buildname}"]
+  }
   # docker::image{"nba-${buildname}-wildfly-image":
   #   #image      => "jboss/wildfly:${wildfly_version}",
   #   docker_dir => "/payload-${buildname}",
@@ -80,11 +87,11 @@ class nba::docker::builder::nba(
   #   notify     => Exec["cleanup ${buildname} payload files"],
   # }
   exec {"build docker image for ${buildname}" :
-    command     => "/usr/bin/docker build -t nba-${buildname}-wildfy /payload-${buildname}",
+    command     => "/usr/bin/docker build -t nba-${buildname}-wildfly /payload-${buildname}",
     refreshonly => true,
     onlyif      => "/usr/bin/test -f /payload-${buildname}/nba.war",
     require     => File["/payload-${buildname}/Dockerfile"],
-    subscribe   => Service['docker-nba-builder'],
+    #subscribe   => Service['docker-nba-builder'],
   }
 
   exec {"cleanup ${buildname} payload files" :
