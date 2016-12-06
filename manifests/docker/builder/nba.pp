@@ -51,7 +51,7 @@ class nba::docker::builder::nba(
   }
 
   docker::run{'nba-builder':
-    image   => 'openjdk:openjdk-8',
+    image   => 'openjdk:8',
     volumes => ['/nba-repo:/code',
                   '/payload:/payload',
                   '/var/log/docker-nba-builder:/var/log',
