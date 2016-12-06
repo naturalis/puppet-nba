@@ -74,7 +74,7 @@ class nba::docker::builder::nba(
 
   docker::image{"nba-${git_checkout}-wildfly-image":
     #image      => "jboss/wildfly:${wildfly_version}",
-    docker_dir => '/payload',
+    docker_dir => "/payload-${git_checkout}",
     subscribe  => File["/payload-${git_checkout}/Dockerfile"],
     notify     => Exec["cleanup ${git_checkout} payload files"],
   }
@@ -90,6 +90,7 @@ class nba::docker::builder::nba(
     refreshonly => true,
   }
 
+  notify { $timestamp : }
 
 
   # docker::run{'nba-v2-wildfly':
