@@ -79,7 +79,7 @@ class nba::docker::builder::nba(
     notify     => Exec["cleanup ${git_checkout} payload files"],
   }
 
-  exec {"cleanup ${git_checkout}  payload files" :
+  exec {"cleanup ${git_checkout} payload files" :
     command     => "/bin/rm -fr /payload-${git_checkout}/*",
     refreshonly => true,
   }
