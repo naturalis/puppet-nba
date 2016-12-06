@@ -100,7 +100,7 @@ class nba::docker::builder::nba(
   }
 
   exec {"cleanup ${buildname} repo" :
-    command     => '/usr/bin/git reset --hard',
+    command     => "/usr/bin/git checkout ${git_checkout} ; /usr/bin/git reset --hard",
     cwd         => "/nba-repo-${buildname}",
     refreshonly => true,
   }
