@@ -15,19 +15,20 @@ class nba::docker::builder::nba(
   #6 create image with nba and config script
   #sysctl -w vm.max_map_count=262144
 
+  $buildname = downcase($git_checkout)
   $timestamp = strftime('%Y.%m.%d-%k.%M')
 
   sysctl {'vm.max_map_count':
     value => '262144',
   }
   ## BUILD STUFF
-  file {["/payload-${git_checkout}",'/docker-files','/var/log/docker-nba-builder']:
+  file {["/payload-${buildname}",'/docker-files','/var/log/docker-nba-builder']:
     ensure => directory,
   }
 
   package { ['git']: }
 
-  vcsrepo { "/nba-repo-${git_checkout}" :
+  vcsrepo { "/nba-repo-${buildname}" :
     ensure   => latest,
     provider => git,
     source   => 'https://github.com/naturalis/naturalis_data_api',
@@ -38,8 +39,8 @@ class nba::docker::builder::nba(
 
   file {"/nba-repo-${git_checkout}/nl.naturalis.nba.build/build.v2.properties" :
     content   => template('nba/build/docker_build.v2.properties.erb'),
-    subscribe => Vcsrepo["/nba-repo-${git_checkout}"],
-    require   => Vcsrepo["/nba-repo-${git_checkout}"]
+    subscribe => Vcsrepo["/nba-repo-${buildname}"],
+    require   => Vcsrepo["/nba-repo-${buildname}"]
   }
 
   docker::run{'nba-es-buildsupport':
@@ -54,39 +55,39 @@ class nba::docker::builder::nba(
 
   docker::run{'nba-builder':
     image   => 'openjdk:8',
-    volumes => ["/nba-repo-${git_checkout}:/code",
-                  "/payload-${git_checkout}:/payload",
+    volumes => ["/nba-repo-${buildname}:/code",
+                  "/payload-${buildname}:/payload",
                   '/var/log/docker-nba-builder:/var/log',
                   '/var/log/docker-nba-builder:/code/nl.naturalis.nba.build/log'],
     command => '/bin/bash -c "/usr/bin/apt-get update ;/usr/bin/apt-get -y install ant ; cd /code/nl.naturalis.nba.build ; ant install-service"',
     depends => 'nba-es-buildsupport',
     running => false,
     detach  => false,
-    require => File["/nba-repo-${git_checkout}/nl.naturalis.nba.build/build.v2.properties"],
-    notify  => Exec["cleanup ${git_checkout} repo"],
+    require => File["/nba-repo-${buildname}/nl.naturalis.nba.build/build.v2.properties"],
+    notify  => Exec["cleanup ${buildname} repo"],
   }
 
-  file {"/payload-${git_checkout}/Dockerfile" :
+  file {"/payload-${buildname}/Dockerfile" :
     content => template('nba/docker/wildfly_nba_Dockerfile.erb'),
-    require => File["/payload-${git_checkout}"],
+    require => File["/payload-${buildname}"],
   }
 
 
-  docker::image{"nba-${git_checkout}-wildfly-image":
+  docker::image{"nba-${buildname}-wildfly-image":
     #image      => "jboss/wildfly:${wildfly_version}",
-    docker_dir => "/payload-${git_checkout}",
-    subscribe  => File["/payload-${git_checkout}/Dockerfile"],
-    notify     => Exec["cleanup ${git_checkout} payload files"],
+    docker_dir => "/payload-${buildname}",
+    subscribe  => File["/payload-${buildname}/Dockerfile"],
+    notify     => Exec["cleanup ${buildname} payload files"],
   }
 
-  exec {"cleanup ${git_checkout} payload files" :
-    command     => "/bin/rm -fr /payload-${git_checkout}/*",
+  exec {"cleanup ${buildname} payload files" :
+    command     => "/bin/rm -fr /payload-${buildname}/*",
     refreshonly => true,
   }
 
-  exec {"cleanup ${git_checkout} repo" :
+  exec {"cleanup ${buildname} repo" :
     command     => '/usr/bin/git reset --hard',
-    cwd         => "/payload-${git_checkout}/*",
+    cwd         => "/payload-${buildname}/*",
     refreshonly => true,
   }
 
