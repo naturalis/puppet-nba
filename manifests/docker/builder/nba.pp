@@ -34,7 +34,7 @@ class nba::docker::builder::nba(
     source   => 'https://github.com/naturalis/naturalis_data_api',
     revision => $git_checkout,
     require  => Package['git'],
-    notify   => Exec[{"trigger build of nba-${buildname}"],
+    notify   => Exec["trigger build of nba-${buildname}"],
   }
 
   file {"/nba-repo-${buildname}/nl.naturalis.nba.build/build.v2.properties" :
