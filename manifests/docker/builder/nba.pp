@@ -82,6 +82,7 @@ class nba::docker::builder::nba(
   exec {"build docker image for ${buildname}" :
     command     => "/usr/bin/docker build -t nba-${buildname}-wildfy /payload-${buildname}",
     refreshonly => true,
+    onlyif      => "/usr/bin/test -f /payload-${buildname}/nba.war",
     require     => File["/payload-${buildname}/Dockerfile"],
     subscribe   => Service['docker-nba-builder'],
   }
@@ -93,7 +94,7 @@ class nba::docker::builder::nba(
 
   exec {"cleanup ${buildname} repo" :
     command     => '/usr/bin/git reset --hard',
-    cwd         => "/payload-${buildname}/*",
+    cwd         => "/nba-repo-${buildname}",
     refreshonly => true,
   }
 
