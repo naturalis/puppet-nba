@@ -29,7 +29,7 @@ class nba::docker::builder::nba(
   package { ['git']: }
 
   vcsrepo { "/nba-repo-${buildname}" :
-    ensure   => latest,
+    ensure   => present,
     provider => git,
     source   => 'https://github.com/naturalis/naturalis_data_api',
     revision => "${git_checkout}",
