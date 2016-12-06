@@ -75,13 +75,13 @@ class nba::docker::builder::nba(
     subscribe  => File['/payload/Dockerfile'],
   }
 
-  docker::run{'nba-v2-wildfly':
-    image   => 'nba-v2-wildfly-image',
-    tag     => '',
-    depends => 'nba-builder',
-    running => false,
-    require => Docker::Image['nba-v2-wildfly-image']
-  }
+  # docker::run{'nba-v2-wildfly':
+  #   image   => 'nba-v2-wildfly-image',
+  #   tag     => '',
+  #   depends => 'nba-builder',
+  #   running => false,
+  #   require => Docker::Image['nba-v2-wildfly-image']
+  # }
 
 
 }
