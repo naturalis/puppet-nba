@@ -76,7 +76,7 @@ class nba::docker::builder::nba(
   file {"/payload-${buildname}/Dockerfile" :
     content => template('nba/docker/wildfly_nba_Dockerfile.erb'),
     require => File["/payload-${buildname}"],
-    notify  => Exec["trigger build of nba-${buildname}"],
+    notify  => Exec["build docker image for ${image_name}"],
   }
 
 
