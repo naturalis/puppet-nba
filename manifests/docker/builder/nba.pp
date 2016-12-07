@@ -78,7 +78,7 @@ class nba::docker::builder::nba(
     command     => "/usr/sbin/service docker-nba-builder start",
     refreshonly => true,
     require     => Docker::Run['nba-builder'],
-    notify      => Exec["build docker image for ${buildname}"]
+    notify      => Exec["build docker image for ${image_name}"]
   }
   # docker::image{"nba-${buildname}-wildfly-image":
   #   #image      => "jboss/wildfly:${wildfly_version}",
