@@ -114,7 +114,7 @@ class nba::docker::builder::nba(
   }
 
   exec {"tag repository with ${image_name}:latest" :
-    command     => "/usr/bin/docker tag ${image_name}:latest localhost:5000/${image_name}:latest",
+    command     => "/usr/bin/docker tag ${image_name}:${timestamp} localhost:5000/${image_name}:latest",
     refreshonly => true,
     notify      => Exec["push to repository/${image_name}:latest"],
   }
