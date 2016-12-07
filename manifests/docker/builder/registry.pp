@@ -8,7 +8,7 @@ class nba::docker::builder::registry(
 {
   include 'docker'
 
-  file { ["/${registry_name}","/var/log/docker-${registry_name}"] :
+  file { ["/${registry_name}","/var/log/docker-${registry_name}","/${registry_name}-certs"] :
     ensure => directory,
   }
 
@@ -16,7 +16,9 @@ class nba::docker::builder::registry(
     image            => 'registry:2',
     ports            => "${listen_port}:5000",
     volumes          => ["/${registry_name}:/var/lib/registry",
-                        "/var/log/docker-${registry_name}:/var/log"],
+                        "/var/log/docker-${registry_name}:/var/log",
+                        "/${registry_name}-certs:/certs"],
+    env              => ['REGISTRY_HTTP_TLS_CERTIFICATE=/certs/domain.crt','REGISTRY_HTTP_TLS_KEY=/certs/domain.key']
     extra_parameters => [ '--restart=always' ],
     require          => [File["/${registry_name}"],
                         File["/var/log/docker-${registry_name}"]],
