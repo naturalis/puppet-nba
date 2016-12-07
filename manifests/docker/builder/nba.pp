@@ -17,6 +17,7 @@ class nba::docker::builder::nba(
 
   $buildname = downcase($git_checkout)
   $timestamp = strftime('%Y.%m.%d-%H.%M')
+  $image_name = "nba-wildfly-${buildname}"
 
   sysctl {'vm.max_map_count':
     value => '262144',
@@ -85,13 +86,13 @@ class nba::docker::builder::nba(
   #   subscribe  => File["/payload-${buildname}/Dockerfile"],
   #   notify     => Exec["cleanup ${buildname} payload files"],
   # }
-  exec {"build docker image for ${buildname}" :
-    command     => "/usr/bin/docker build --pull -t nba-${buildname}-wildfly:${timestamp} /payload-${buildname}",
+  exec {"build docker image for ${image_name}" :
+    command     => "/usr/bin/docker build --pull -t ${image_name}:${timestamp} /payload-${buildname}",
     refreshonly => true,
     onlyif      => "/usr/bin/test -f /payload-${buildname}/nba.war",
     require     => File["/payload-${buildname}/Dockerfile"],
-    notify      => [Exec["tag repository with ${buildname}:${timestamp}"],
-                    Exec["tag repository with ${buildname}:latest"]],
+    notify      => [Exec["tag repository with ${image_name}:${timestamp}"],
+                    Exec["tag repository with ${image_name}:latest"]],
   }
 
   exec {"cleanup ${buildname} payload files" :
@@ -106,25 +107,25 @@ class nba::docker::builder::nba(
     refreshonly => true,
   }
 
-  exec {"tag repository with ${buildname}:${timestamp}" :
-    command     => "/usr/bin/docker tag nba-${buildname}-wildfly:${timestamp} localhost:5000/${buildname}:${timestamp}",
+  exec {"tag repository with ${image_name}:${timestamp}" :
+    command     => "/usr/bin/docker tag ${image_name}:${timestamp} localhost:5000/${image_name}:${timestamp}",
     refreshonly => true,
-    notify      => Exec["push to repository/${buildname}:${timestamp}"],
+    notify      => Exec["push to repository/${image_name}:${timestamp}"],
   }
 
   exec {"tag repository with ${buildname}:latest" :
-    command     => "/usr/bin/docker tag nba-${buildname}-wildfly:latest localhost:5000/${buildname}:latest",
+    command     => "/usr/bin/docker tag ${image_name}:latest localhost:5000/${image_name}:latest",
     refreshonly => true,
-    notify      => Exec["push to repository/${buildname}:latest"],
+    notify      => Exec["push to repository/${image_name}:latest"],
   }
 
-  exec {"push to repository/${buildname}:${timestamp}" :
-    command     => "/usr/bin/docker push localhost:5000/nba-${buildname}-wildfly:${timestamp}",
+  exec {"push to repository/${image_name}:${timestamp}" :
+    command     => "/usr/bin/docker push localhost:5000/${image_name}:${timestamp}",
     refreshonly => true,
   }
 
-  exec {"push to repository/${buildname}:latest" :
-    command     => "/usr/bin/docker push localhost:5000/nba-${buildname}-wildfly:latest",
+  exec {"push to repository/${image_name}:latest" :
+    command     => "/usr/bin/docker push localhost:5000/${image_name}:latest",
     refreshonly => true,
   }
 
