@@ -29,7 +29,7 @@ class nba::docker::builder::nba(
   package { ['git']: }
 
   vcsrepo { "/nba-repo-${buildname}" :
-    ensure   => present,
+    ensure   => latest,
     provider => git,
     source   => 'https://github.com/naturalis/naturalis_data_api',
     revision => "${git_checkout}",
@@ -64,7 +64,6 @@ class nba::docker::builder::nba(
     running => false,
     detach  => false,
     require => File["/nba-repo-${buildname}/nl.naturalis.nba.build/build.v2.properties"],
-    notify  => Exec["cleanup ${buildname} repo"],
     # maybe pull on start to ensure latest image
   }
 
@@ -97,6 +96,7 @@ class nba::docker::builder::nba(
   exec {"cleanup ${buildname} payload files" :
     command     => "/bin/rm -fr /payload-${buildname}/*",
     refreshonly => true,
+    notify      => Exec["cleanup ${buildname} repo"],
   }
 
   exec {"cleanup ${buildname} repo" :
