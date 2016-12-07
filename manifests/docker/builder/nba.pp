@@ -86,11 +86,12 @@ class nba::docker::builder::nba(
   #   notify     => Exec["cleanup ${buildname} payload files"],
   # }
   exec {"build docker image for ${buildname}" :
-    command     => "/usr/bin/docker build -t nba-${buildname}-wildfly /payload-${buildname}",
+    command     => "/usr/bin/docker build --pull -t nba-${buildname}-wildfly:${timestamp} /payload-${buildname}",
     refreshonly => true,
     onlyif      => "/usr/bin/test -f /payload-${buildname}/nba.war",
     require     => File["/payload-${buildname}/Dockerfile"],
-    #subscribe   => Service['docker-nba-builder'],
+    notify      => [Exec["tag repository with ${buildname}:${timestamp}"],
+                    Exec["tag repository with ${buildname}:latest"]],
   }
 
   exec {"cleanup ${buildname} payload files" :
@@ -102,6 +103,28 @@ class nba::docker::builder::nba(
   exec {"cleanup ${buildname} repo" :
     command     => "/usr/bin/git checkout ${git_checkout} ; /usr/bin/git reset --hard",
     cwd         => "/nba-repo-${buildname}",
+    refreshonly => true,
+  }
+
+  exec {"tag repository with ${buildname}:${timestamp}" :
+    command     => "/usr/bin/docker tag ${buildname}:${timestamp} localhost:5000/${buildname}:${timestamp}",
+    refreshonly => true,
+    notify      => Exec["push to repository/${buildname}:${timestamp}"],
+  }
+
+  exec {"tag repository with ${buildname}:latest" :
+    command     => "/usr/bin/docker tag ${buildname}:latest localhost:5000/${buildname}:latest",
+    refreshonly => true,
+    notify      => Exec["push to repository/${buildname}:latest"],
+  }
+
+  exec {"push to repository/${buildname}:${timestamp}" :
+    command     => "/usr/bin/docker push localhost:5000/${buildname}:${timestamp}",
+    refreshonly => true,
+  }
+
+  exec {"push to repository/${buildname}:latest" :
+    command     => "/usr/bin/docker push localhost:5000/${buildname}:latest",
     refreshonly => true,
   }
 
