@@ -16,7 +16,7 @@ class nba::docker::builder::nba(
   #sysctl -w vm.max_map_count=262144
 
   $buildname = downcase($git_checkout)
-  $timestamp = strftime('%Y.%m.%d-%k.%M')
+  $timestamp = strftime('%Y.%m.%d-%H.%M')
 
   sysctl {'vm.max_map_count':
     value => '262144',
