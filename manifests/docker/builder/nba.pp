@@ -107,24 +107,24 @@ class nba::docker::builder::nba(
   }
 
   exec {"tag repository with ${buildname}:${timestamp}" :
-    command     => "/usr/bin/docker tag ${buildname}:${timestamp} localhost:5000/${buildname}:${timestamp}",
+    command     => "/usr/bin/docker tag nba-${buildname}-wildfly:${timestamp} localhost:5000/${buildname}:${timestamp}",
     refreshonly => true,
     notify      => Exec["push to repository/${buildname}:${timestamp}"],
   }
 
   exec {"tag repository with ${buildname}:latest" :
-    command     => "/usr/bin/docker tag ${buildname}:latest localhost:5000/${buildname}:latest",
+    command     => "/usr/bin/docker tag nba-${buildname}-wildfly:latest localhost:5000/${buildname}:latest",
     refreshonly => true,
     notify      => Exec["push to repository/${buildname}:latest"],
   }
 
   exec {"push to repository/${buildname}:${timestamp}" :
-    command     => "/usr/bin/docker push localhost:5000/${buildname}:${timestamp}",
+    command     => "/usr/bin/docker push localhost:5000/nba-${buildname}-wildfly:${timestamp}",
     refreshonly => true,
   }
 
   exec {"push to repository/${buildname}:latest" :
-    command     => "/usr/bin/docker push localhost:5000/${buildname}:latest",
+    command     => "/usr/bin/docker push localhost:5000/nba-${buildname}-wildfly:latest",
     refreshonly => true,
   }
 
