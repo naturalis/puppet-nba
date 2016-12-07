@@ -122,10 +122,17 @@ class nba::docker::builder::nba(
   exec {"push to repository/${image_name}:${timestamp}" :
     command     => "/usr/bin/docker push localhost:5000/${image_name}:${timestamp}",
     refreshonly => true,
+    notify      => Exec["cleanup local docker image ${image_name}"],
   }
 
   exec {"push to repository/${image_name}:latest" :
     command     => "/usr/bin/docker push localhost:5000/${image_name}:latest",
+    refreshonly => true,
+    notify      => Exec["cleanup local docker image ${image_name}"],
+  }
+
+  exec {"cleanup local docker image ${image_name}" :
+    command     => "/usr/bin/docker rmi ${image_name}:${timestamp}",
     refreshonly => true,
   }
 
