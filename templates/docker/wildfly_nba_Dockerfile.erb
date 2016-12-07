@@ -1,6 +1,7 @@
 FROM jboss/wildfly
 USER root
 RUN mkdir /etc/nba
-COPY dwca /etc/dwca
-ADD nba.properties /etc/nba/
+COPY dwca /etc/nba/dwca
+ADD nba-config.py /etc/nba/
 ADD nba.war /opt/jboss/wildfly/standalone/deployments/
+CMD /usr/bin/python2.7 /etc/nba/nba-config.py > /etc/nba/nba.properties ; /opt/jboss/wildfly/bin/standalone.sh -b 0.0.0.0

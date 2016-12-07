@@ -27,6 +27,11 @@ class nba::docker::builder::nba(
     ensure => directory,
   }
 
+  file { "/payload-${buildname}/nba-config.py" :
+    ensure => present,
+    source => 'puppet:///modules/nba/nba-config.py',
+  }
+
   package { ['git']: }
 
   vcsrepo { "/nba-repo-${buildname}" :
@@ -71,6 +76,7 @@ class nba::docker::builder::nba(
   file {"/payload-${buildname}/Dockerfile" :
     content => template('nba/docker/wildfly_nba_Dockerfile.erb'),
     require => File["/payload-${buildname}"],
+    notify  => Exec["trigger build of nba-${buildname}"],
   }
 
 
