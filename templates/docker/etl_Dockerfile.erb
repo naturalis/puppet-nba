@@ -1,0 +1,5 @@
+FROM jboss/wildfly
+USER root
+RUN mkdir /etl
+COPY software /etl/software
+WORKDIR /etl
