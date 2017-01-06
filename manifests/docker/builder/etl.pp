@@ -20,6 +20,7 @@ class nba::docker::builder::etl(
   $docker_dir = "/docker-dir-${image_name}"
   $log_dir = "/var/log/docker-${image_name}"
   $repo_dir = "/nba-repo-${image_name}"
+  $docker_builder = 'nba-etl-builder'
   ## BUILD STUFF
   file {[$docker_dir,$log_dir]:
     ensure => directory,
@@ -38,7 +39,7 @@ class nba::docker::builder::etl(
     source   => 'https://github.com/naturalis/naturalis_data_api',
     revision => $git_checkout,
     require  => Package['git'],
-    notify   => Exec["trigger build of nba-${buildname}"],
+    notify   => Exec["build etl-${buildname}"],
   }
 
   file {"${repo_dir}/nl.naturalis.nba.build/build.v2.properties" :
@@ -57,34 +58,34 @@ class nba::docker::builder::etl(
   #   require => Sysctl['vm.max_map_count'],
   # }
 
-  docker::run{"${image_name}-builder":
+  docker::run{ $docker_builder :
     image   => 'openjdk:8',
     volumes => ["${repo_dir}:/code",
                   "${docker_dir}:/payload",
                   "${log_dir}:/var/log",
-                  "${log_dir}:/var/log/docker-nba-builder:/code/nl.naturalis.nba.build/log"],
+                  "${log_dir}:/code/nl.naturalis.nba.build/log"],
     command => '/bin/bash -c "/usr/bin/apt-get update;
                 /usr/bin/apt-get -y install ant;
                 cd /code/nl.naturalis.nba.build;
-                ant install-etl"',
+                ant install-etl-module"',
     running => false,
     detach  => false,
-    require => File["/${repo_dir}/nl.naturalis.nba.build/build.v2.properties"],
+    require => File["${repo_dir}/nl.naturalis.nba.build/build.v2.properties"],
     # maybe pull on start to ensure latest image
   }
 
   file {"${docker_dir}/Dockerfile" :
     content => template('nba/docker/etl_Dockerfile.erb'),
     require => File[$docker_dir],
-    notify  => Exec["build docker image for ${image_name}"],
+    notify  => Exec["build etl-${buildname}"],
   }
 
 
   exec {"build etl-${buildname}" :
-    command     => "/usr/sbin/service docker-${image_name}-builder start",
+    command     => "/usr/sbin/service docker-${docker_builder} start",
     refreshonly => true,
-    require     => Docker::Run["${image_name}-builder"],
-    notify      => Exec["build docker image for ${image_name}"]
+    require     => Docker::Run[$docker_builder],
+    notify      => Exec["build docker image ${image_name}"]
   }
 
   exec {"build docker image ${image_name}" :

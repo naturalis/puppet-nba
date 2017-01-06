@@ -38,7 +38,7 @@ git clone https://github.com/elastic/puppet-elasticsearch /etc/puppet/modules/el
 git clone https://github.com/puppetlabs/puppetlabs-stdlib /etc/puppet/modules/stdlib
 git clone https://github.com/puppetlabs/puppetlabs-apt /etc/puppet/modules/apt
 git clone https://github.com/richardc/puppet-datacat /etc/puppet/modules/datacat
-git clone https://github.com/biemond/biemond-wildfly /etc/puppet/modules/wildfly
+git clone https://github.com/biemond/biemond-wildfly /etc/puppet/modules/wildfly -b d30a22afe77225235cc37f05afd3a19a285fb478
 git clone https://github.com/puppetlabs/puppetlabs-java /etc/puppet/modules/java
 git clone https://github.com/jfryman/puppet-nginx /etc/puppet/modules/nginx
 git clone https://github.com/puppetlabs/puppetlabs-concat /etc/puppet/modules/concat
